@@ -571,10 +571,7 @@ class _LessonAddState extends State<LessonAdd> {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                        child: Row(
-                                          children: [Text("여긴 어디?"),
-                                          LessonActionListTile(actionName: lessonNoteInfo.actionName!, apparatus: lessonNoteInfo.apratusName!, position: lessonNoteInfo.position, name: lessonNoteInfo.name, phoneNumber: lessonNoteInfo.phoneNumber, lessonDate: lessonNoteInfo.lessonDate, grade: lessonNoteInfo.grade, totalNote: lessonNoteInfo.totalNote, docId: widget.userInfo.docId, memberdocId: widget.userInfo.docId, uid: widget.userInfo.uid, pos: lessonNoteInfo.pos, isSelected: lessonNoteInfo.noteSelected!, isSelectable: true, isDraggable: true, customFunctionOnTap: (){})],
-                                        )
+                                        child: LessonActionListTile(actionName: lessonNoteInfo.actionName!, apparatus: lessonNoteInfo.apratusName!, position: lessonNoteInfo.position, name: lessonNoteInfo.name, phoneNumber: lessonNoteInfo.phoneNumber, lessonDate: lessonNoteInfo.lessonDate, grade: lessonNoteInfo.grade, totalNote: lessonNoteInfo.totalNote, docId: widget.userInfo.docId, memberdocId: widget.userInfo.docId, uid: widget.userInfo.uid, pos: lessonNoteInfo.pos, isSelected: lessonNoteInfo.noteSelected!, isSelectable: true, isDraggable: true, customFunctionOnTap: (){})
                                         ),
                                     Offstage(
                                       offstage: false,

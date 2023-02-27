@@ -1074,6 +1074,7 @@ class _LessonAddState extends State<LessonAdd> {
 
                             /// 시퀀스 영역 시작
                             Container(
+                              width: MediaQuery.of(context).size.height * 0.8,
                               padding: EdgeInsets.symmetric(horizontal: 15),
                               child: Column(children: [
                                 // 동작입력 버튼
@@ -1250,37 +1251,35 @@ class _LessonAddState extends State<LessonAdd> {
                                                 ['deleteSelected'] = false;
                                           }
                                         },
-                                        child: Expanded(
-                                          child: LessonActionListTile(
-                                              actionName: actionName,
-                                              apparatus: apratusName,
-                                              position: globalFunction
-                                                  .getActionPosition(
-                                                      apratusName,
-                                                      actionName,
-                                                      globalVariables
-                                                          .actionList),
-                                              name: name,
-                                              phoneNumber: phoneNumber,
-                                              lessonDate: lessonDate,
-                                              grade: grade,
-                                              totalNote: totalNote,
-                                              docId: userInfo.docId,
-                                              memberdocId: userInfo.docId,
-                                              uid: uid,
-                                              pos: pos,
-                                              isSelected: isSelected,
-                                              isSelectable: true,
-                                              isDraggable: true,
-                                              customFunctionOnTap: () {
-                                                doc['noteSelected'] =
-                                                    !doc['noteSelected'];
-                                                txtEdtCtrlrList[index].text =
-                                                    totalNote;
-                                                String tmp =
-                                                    txtEdtCtrlrList[index].text;
-                                              }),
-                                        ),
+                                        child: LessonActionListTile(
+                                            actionName: actionName,
+                                            apparatus: apratusName,
+                                            position: globalFunction
+                                                .getActionPosition(
+                                                    apratusName,
+                                                    actionName,
+                                                    globalVariables
+                                                        .actionList),
+                                            name: name,
+                                            phoneNumber: phoneNumber,
+                                            lessonDate: lessonDate,
+                                            grade: grade,
+                                            totalNote: totalNote,
+                                            docId: userInfo.docId,
+                                            memberdocId: userInfo.docId,
+                                            uid: uid,
+                                            pos: pos,
+                                            isSelected: isSelected,
+                                            isSelectable: true,
+                                            isDraggable: true,
+                                            customFunctionOnTap: () {
+                                              doc['noteSelected'] =
+                                                  !doc['noteSelected'];
+                                              txtEdtCtrlrList[index].text =
+                                                  totalNote;
+                                              String tmp =
+                                                  txtEdtCtrlrList[index].text;
+                                            }),
                                       );
                                     }),
 
