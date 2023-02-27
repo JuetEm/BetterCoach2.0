@@ -1258,8 +1258,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                 .getActionPosition(
                                                     apratusName,
                                                     actionName,
-                                                    globalVariables
-                                                        .actionList),
+                                                    globalVariables.actionList),
                                             name: name,
                                             phoneNumber: phoneNumber,
                                             lessonDate: lessonDate,
