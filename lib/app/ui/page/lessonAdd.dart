@@ -514,7 +514,7 @@ class _LessonAddState extends State<LessonAdd> {
                             height: 20,
                           ),
                           ReorderableListView.builder(
-                            padding: EdgeInsets.only(bottom: 100),
+                            padding: EdgeInsets.only(bottom: 20),
                             onReorder: (oldIndex, newIndex) {
                               if (newIndex > oldIndex) {
                                 newIndex -= 1;
@@ -534,6 +534,8 @@ class _LessonAddState extends State<LessonAdd> {
                             itemCount: 100,
                             itemBuilder: (context, index) {
                               Key? valueKey;
+                              valueKey = ValueKey(lessonActionList[
+                                                              index]['pos']); 
 
                               return GestureDetector(
                                 key: valueKey,
