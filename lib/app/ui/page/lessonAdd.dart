@@ -269,7 +269,7 @@ class _LessonAddState extends State<LessonAdd> {
               txtEdtCtrlrList.add(new TextEditingController());
             });
 
-            // setState(() {}); // 여기서 setState 호출하면 무한 획귀 오려 발생 하기도 함
+            // setState(() {}); // 여기서 setState 호출하면 무한 획귀 오류 발생 하기도 함
             // lessonService.notifyListeners();
           });
         }
