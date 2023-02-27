@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LessonNoteInfo{
+
+  
   /** 기본정보 */
   String uid;
   String memberId;
@@ -15,14 +17,14 @@ class LessonNoteInfo{
   int? pos;
   String? totalNote; // 동작별 노트
   String? apratusName;
-  Timestamp? anTimestamp;
-  
+  Timestamp? anTimestamp;  
 
   /**일별 레슨 노트 */
   String? todayNote; // 일별 레슨 노트
   Timestamp? dlTimestamp;
 
   /** 생성 정보 */
+  String position;
   bool? noteSelected;
   String? anId;
   String? dlId;
@@ -42,6 +44,7 @@ class LessonNoteInfo{
     this.anTimestamp,
     this.todayNote,
     this.dlTimestamp,
+    this.position,
     this.noteSelected,
     this.anId,
     this.dlId,

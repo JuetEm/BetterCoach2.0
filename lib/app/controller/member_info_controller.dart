@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:web_project/app/data/model/lessonInfo.dart';
 import 'package:web_project/app/data/model/lessonNoteInfo.dart';
 import 'package:web_project/app/data/repository/lesson_repository.dart';
+import 'package:web_project/app/ui/page/lessonAdd.dart';
+import 'package:web_project/main.dart';
 
 class MemberInfoController {
   MemberInfoController();
@@ -48,6 +50,7 @@ class MemberInfoController {
             aNelement['timestamp'],
             lNelement['todayNote'],
             lNelement['timestamp'],
+            globalFunction.getActionPosition(aNelement['apratusName'], aNelement['actionName'], globalVariables.actionList),
             aNelement['totalNote'].toString().isNotEmpty ? true : false,
             aNelement['id'],
             lNelement['id'],

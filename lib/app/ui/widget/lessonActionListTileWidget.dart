@@ -51,10 +51,10 @@ class LessonActionListTile extends StatefulWidget {
 
   /// 사람 정보
   final String name;
-  final String phoneNumber;
+  final String? phoneNumber;
   final String lessonDate;
-  final String grade;
-  final String totalNote;
+  final String? grade;
+  final String? totalNote;
   final String docId;
   final String memberdocId;
   final String uid;
@@ -229,8 +229,8 @@ class TmpLessonActionInfo {
   String actionName;
   String name;
   String lessonDate;
-  String grade;
-  String totalNote;
+  String? grade;
+  String? totalNote;
   String docId;
   String uid;
   bool isSelected;

@@ -694,7 +694,7 @@ class _MemberInfoState extends State<MemberInfo> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LessonAdd(userInfo),
+                          builder: (context) => LessonAdd(),
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
                         ),
@@ -1550,7 +1550,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LessonAdd(userInfo),
+                          builder: (context) => LessonAdd(),
                           // GlobalWidgetDashboard(), //
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
@@ -1632,7 +1632,7 @@ class LessonCard extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LessonAdd(userInfo),
+                    builder: (context) => LessonAdd(),
                     // GlobalWidgetDashboard(), //
                     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                     settings: RouteSettings(arguments: args),
