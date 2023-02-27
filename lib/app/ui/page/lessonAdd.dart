@@ -357,7 +357,7 @@ class _LessonAddState extends State<LessonAdd> {
                               id = element['id'];
                             }
                            });
-                          //  dayLessonService
+                      
                       isTicketCountChecked ? memberTicketService.updateTicketCountLeft(userInfo.uid, id, userInfo.docId, ticketCountAll-(ticketCountLeft-1), ticketCountLeft-1) :
                       // await totalNoteSave(
                       //     lessonService, customUserInfo, context);
@@ -2147,6 +2147,9 @@ class _LessonAddState extends State<LessonAdd> {
     }
     // 지워야 하는 함수 => 비용이 너무 많이 나감
     // memberInfoController.getLessonDayAndActionNoteData(userInfo.uid, userInfo.docId);
+    // globalVariables.memberTicketList.
+
+    // dayLessonService.updateTicketUsedById(dayLessonList[0][0]['id'], isTicketCountChecked, )
   }
 
   Future<void> totalNoteSave(LessonService lessonService,
