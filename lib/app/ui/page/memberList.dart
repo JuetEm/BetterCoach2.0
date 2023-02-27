@@ -647,10 +647,18 @@ class _MemberListState extends State<MemberList> {
 
                                       /// 회원카드 선택 시 함수
                                       customFunctionOnTap: () async {
-                                        // 회원 카드 선택시 MemberInfo로 이동
-                                        await memberInfoController.getLessonDayAndActionNoteData(userInfo.uid, userInfo.docId).then((value) {
-                                          globalVariables.lessonNoteGlobalList.addAll(value);
+                                        await memberInfoController
+                                            .getLessonDayAndActionNoteData(
+                                                userInfo.uid, userInfo.docId)
+                                            .then((value) {
+                                          globalVariables.lessonNoteGlobalList
+                                              .addAll(value);
+
+                                          print(
+                                              "### globalVariables.lessonNoteGlobalList ${globalVariables.lessonNoteGlobalList}");
                                         });
+
+                                        // 회원 카드 선택시 MemberInfo로 이동
                                         await Navigator.push(
                                           context,
                                           MaterialPageRoute(

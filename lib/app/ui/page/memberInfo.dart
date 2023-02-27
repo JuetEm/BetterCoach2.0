@@ -1571,6 +1571,8 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                       ];
                       print("args.length : ${args.length}");
                       print("[MI]LessonCard-lessonDate : ${lessonDate}");
+                      print(
+                          "### globalVariables.lessonNoteGlobalList ${globalVariables.lessonNoteGlobalList}");
                       Navigator.push(
                         context,
                         MaterialPageRoute(

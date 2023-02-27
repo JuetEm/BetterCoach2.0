@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:web_project/app/data/model/color.dart';
 import 'package:web_project/app/data/model/userInfo.dart';
 
+bool isExpanded = false;
+
 class LessonCardWidget extends StatelessWidget {
   LessonCardWidget({
     Key? key,
@@ -23,8 +25,8 @@ class LessonCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isExpanded = false;
-
+    print('###이건 되니?');
+    print('###lessonActionList: $lessonActionList');
     return Container(
       color: Palette.mainBackground,
       child: Padding(
@@ -115,13 +117,14 @@ class LessonCardWidget extends StatelessWidget {
                       shrinkWrap: true,
                       itemCount: lessonActionList.length,
                       itemBuilder: (context, index) {
+                        print('###빌드는 하긴 하니?');
                         Key? valueKey;
                         lessonActionList[index]['pos'] = index;
                         valueKey = ValueKey(lessonActionList[index]['pos']);
 
                         final doc = lessonActionList[index];
 
-                        // print("bbbbbbbb - doc : ${doc}");
+                        print("bbbbbbbb - doc : ${doc}");
 
                         String uid = doc['uid']; // 강사 고유번호
 
@@ -134,14 +137,16 @@ class LessonCardWidget extends StatelessWidget {
                         String grade = doc['grade']; //수행도
                         String totalNote = doc['totalNote']; //수업총메모
                         int pos = doc['pos']; //수업총메모
-                        // bool isSelected = doc['noteSelected'];
+                        bool isSelected = doc['noteSelected'];
 
-                        bool isSelected;
-                        if (totalNote == "") {
-                          isSelected = true;
-                        } else {
-                          isSelected = false;
-                        }
+                        // bool isSelected;
+
+                        // if (totalNote == "") {
+                        //   isSelected = true;
+                        // } else {
+                        //   isSelected = false;
+                        // }
+                        print('### $index & $isSelected');
 
                         return Offstage(
                           key: valueKey,
