@@ -160,7 +160,9 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
     if (widget.ticketTitle != null) {
       for (int i = 0; i < globalVariables.ticketLibraryList.length; i++) {
         if (widget.ticketTitle ==
-            globalVariables.ticketLibraryList[i]['ticketTitle'] && globalVariables.ticketLibraryList[i]['uid'] == AuthService().currentUser()!.uid) {
+                globalVariables.ticketLibraryList[i]['ticketTitle'] &&
+            globalVariables.ticketLibraryList[i]['uid'] ==
+                AuthService().currentUser()!.uid) {
           var model = DropDownValueModel(
               name: globalVariables.ticketLibraryList[i]['ticketTitle'],
               value: globalVariables.ticketLibraryList[i]['id'],
@@ -638,7 +640,6 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                         ticketDescription: ticketDescription,
                         ticketStartDate: ticketStartDate!,
                         ticketEndDate: ticketEndDate!,
-                        ticketDateLeft: ticketDateLeft,
                       )
                     ],
                   ),

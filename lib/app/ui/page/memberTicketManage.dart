@@ -19,7 +19,6 @@ import 'package:web_project/app/ui/widget/ticketWidget.dart';
 import 'package:web_project/app/data/model/userInfo.dart';
 import 'package:web_project/app/ui/widget/ticketWidget.dart';
 
-
 int ticketCnt = 0; // 사용가능한 수강권 개수
 int expiredTicketCnt = 0; // 만료된 수강권 개수
 
@@ -106,8 +105,8 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                             element['ticketDescription'],
                             DateTime.parse(globalFunction.getDateFromTimeStamp(
                                 element['ticketStartDate'])),
-                            DateTime.parse(
-                                globalFunction.getDateFromTimeStamp(element['ticketEndDate'])),
+                            DateTime.parse(globalFunction.getDateFromTimeStamp(
+                                element['ticketEndDate'])),
                             element['ticketDateLeft'],
                             DateTime.now(),
                             element['isSelected'],
@@ -443,22 +442,22 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                     ticketDescription: widget
                                                             .memberTList![index]
                                                         ['ticketDescription'],
-                                                    ticketStartDate:
-                                                        globalFunction.getDateFromTimeStamp(
+                                                    ticketStartDate: globalFunction
+                                                        .getDateFromTimeStamp(
                                                             widget.memberTList![
                                                                     index][
                                                                 'ticketStartDate']),
-                                                    ticketEndDate:
-                                                        globalFunction.getDateFromTimeStamp(
+                                                    ticketEndDate: globalFunction
+                                                        .getDateFromTimeStamp(
                                                             widget.memberTList![
                                                                     index][
                                                                 'ticketEndDate']),
-                                                    ticketDateLeft: int.parse(
-                                                        widget
-                                                            .memberTList![index]
-                                                                [
-                                                                'ticketDateLeft']
-                                                            .toString()),
+                                                    // ticketDateLeft: int.parse(
+                                                    //     widget
+                                                    //         .memberTList![index]
+                                                    //             [
+                                                    //             'ticketDateLeft']
+                                                    //         .toString()),
                                                     customFunctionOnTap: () {
                                                       for (int i = 0;
                                                           i <
@@ -598,7 +597,8 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                         print("수강권 추가 result");
                                                       });
                                                     },
-                                                    selected: widget.memberTList![index]
+                                                    selected: widget
+                                                            .memberTList![index]
                                                         ['isSelected'],
                                                     ticketCountLeft:
                                                         widget.memberTList![index]
@@ -612,11 +612,11 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                     ticketDescription: widget
                                                             .memberTList![index]
                                                         ['ticketDescription'],
-                                                    ticketStartDate: globalFunction.getDateFromTimeStamp(
-                                                        widget.memberTList![index]
-                                                            ['ticketStartDate']),
-                                                    ticketEndDate: globalFunction.getDateFromTimeStamp(widget.memberTList![index]['ticketEndDate']),
-                                                    ticketDateLeft: widget.memberTList![index]['ticketDateLeft']));
+                                                    ticketStartDate: globalFunction
+                                                        .getDateFromTimeStamp(
+                                                            widget.memberTList![index]['ticketStartDate']),
+                                                    ticketEndDate: globalFunction.getDateFromTimeStamp(widget.memberTList![index]['ticketEndDate'])));
+                                            // ticketDateLeft: widget.memberTList![index]['ticketDateLeft']));
                                           } else {
                                             return null;
                                           }

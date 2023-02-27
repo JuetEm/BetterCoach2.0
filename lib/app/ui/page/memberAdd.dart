@@ -451,7 +451,6 @@ class _MemberAddState extends State<MemberAdd> {
                                           "일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔",
                                       ticketStartDate: "2023.01.14",
                                       ticketEndDate: "2023.02.13",
-                                      ticketDateLeft: 7,
                                       ticketCountAll: 20,
                                       ticketCountLeft: 13,
                                       customFunctionOnHover: () {},

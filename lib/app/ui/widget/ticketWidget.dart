@@ -12,7 +12,7 @@ class TicketWidget extends StatefulWidget {
   final String ticketDescription;
   final String ticketStartDate;
   final String ticketEndDate;
-  final int ticketDateLeft;
+
   bool? selected = false;
   final Function? customFunctionOnHover;
   final Function customFunctionOnTap;
@@ -26,7 +26,6 @@ class TicketWidget extends StatefulWidget {
     required this.ticketDescription,
     required this.ticketStartDate,
     required this.ticketEndDate,
-    required this.ticketDateLeft,
     this.selected,
     this.customFunctionOnHover,
     required this.customFunctionOnTap,
@@ -39,9 +38,13 @@ class TicketWidget extends StatefulWidget {
 
 class _TicketWidgetState extends State<TicketWidget> {
   bool _toggle = false;
-
   @override
   Widget build(BuildContext context) {
+    int ticketDateLeft = int.parse(DateTime.now()
+        .difference(DateTime.parse(widget.ticketEndDate))
+        .inDays
+        .toString());
+
     return GestureDetector(
       child: Card(
         elevation: 2,
@@ -136,13 +139,13 @@ class _TicketWidgetState extends State<TicketWidget> {
                       ),
                       SizedBox(height: 4),
                       Text(
-                        widget.ticketDateLeft > 0
-                            ? "(D+${widget.ticketDateLeft})"
-                            : "(D-${widget.ticketDateLeft.abs()})",
+                        ticketDateLeft > 0
+                            ? "(D+${ticketDateLeft})"
+                            : "(D-${ticketDateLeft.abs()})",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
-                            color: widget.ticketDateLeft <= 7
+                            color: ticketDateLeft <= 14
                                 ? Palette.textRed
                                 : Palette.gray66),
                       ),

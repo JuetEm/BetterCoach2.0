@@ -1138,7 +1138,6 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                       ticketDescription: ticketDescription,
                       ticketStartDate: ticketStartDate,
                       ticketEndDate: ticketEndDate,
-                      ticketDateLeft: ticketDateLeft,
                     )
                   ],
                 ),

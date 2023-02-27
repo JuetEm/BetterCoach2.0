@@ -1122,9 +1122,9 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                       ticketEndDate: globalFunction.getDateFromTimeStamp(
                           globalVariables.memberTicketList[globalVariables
                               .selectedTicketIndex]['ticketEndDate']),
-                      ticketDateLeft: globalVariables.memberTicketList[
-                              globalVariables.selectedTicketIndex]
-                          ['ticketDateLeft'],
+                      // ticketDateLeft: globalVariables.memberTicketList[
+                      //         globalVariables.selectedTicketIndex]
+                      //     ['ticketDateLeft'],
                       ticketCountAll: globalVariables.memberTicketList[
                               globalVariables.selectedTicketIndex]
                           ['ticketCountAll'],
