@@ -26,7 +26,7 @@ import 'package:web_project/app/ui/widget/ticketWidget.dart';
 import 'actionSelector.dart';
 import '../../data/provider/auth_service.dart';
 import '../../data/model/color.dart';
-import 'lessonAdd.dart';
+import '../../../backup/lessonAdd.dart';
 
 import 'lessonUpdate.dart';
 import 'memberAdd.dart';

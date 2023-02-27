@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
-import 'package:web_project/app/ui/page/lessonAdd.dart';
+import 'package:web_project/backup/lessonAdd.dart';
 import 'package:web_project/app/function/globalFunction.dart';
 import 'package:web_project/main.dart';
 
