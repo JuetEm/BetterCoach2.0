@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/date_symbols.dart';
+import 'package:web_project/app/data/model/color.dart';
 
 class LessonCardProvider with ChangeNotifier {
   /** 기본정보 */
@@ -15,7 +16,7 @@ class LessonCardProvider with ChangeNotifier {
   String? actionName = "";
   String? grade = "";
   int? pos = 0;
-  String? totalNote = ""; // 동작별 노트
+  String? totalNote = ""; // 동작별 노트x
   String? apratusName = "";
   Timestamp? anTimestamp;
 
@@ -34,15 +35,15 @@ class LessonCardProvider with ChangeNotifier {
   }
 
   setUid(String uid) {
-    this.uid;
+    this.uid = uid;
   }
 
   String getMemberId() {
     return this.memberId;
   }
 
-  setMemberId(String) {
-    this.memberId;
+  setMemberId(String memberId) {
+    this.memberId = memberId;
   }
 
   String getName() {
@@ -58,7 +59,7 @@ class LessonCardProvider with ChangeNotifier {
   }
 
   setPhoneumber(String phonenumber) {
-    this.phonenumber;
+    this.phonenumber = phonenumber;
   }
 
   String getLessonDate() {
@@ -66,11 +67,15 @@ class LessonCardProvider with ChangeNotifier {
   }
 
   setLessonDate(String lessonDate) {
-    this.lessonDate;
+    this.lessonDate = lessonDate;
   }
 
   String? getActionName(){
     return this.actionName;
+  }
+
+  setActionNate(String actionName){
+    this.actionName = actionName;
   }
 
   String? getGrade(){
@@ -78,7 +83,7 @@ class LessonCardProvider with ChangeNotifier {
   }
 
   setGrade(String grade){
-    this.grade;
+    this.grade = grade;
   }
 
   int? getPos(){
@@ -86,7 +91,7 @@ class LessonCardProvider with ChangeNotifier {
   }
 
   setPos(int pos){
-    this.pos;
+    this.pos = pos;
   }
 
   String? getTotalNote(){
@@ -94,7 +99,7 @@ class LessonCardProvider with ChangeNotifier {
   }
 
   setTotalNote(String totakNote){
-    this.totalNote;
+    this.totalNote = totakNote;
   }
 
   String? getApratusName(){
@@ -102,31 +107,31 @@ class LessonCardProvider with ChangeNotifier {
   }
 
   setAparatunName(String aparatusName){
-    this.apratusName;
+    this.apratusName = aparatusName;
   }
 
-  getanTimestamp(){
+  Timestamp? getanTimestamp(){
     return this.dlTimestamp;
   }
 
-  setanTimestamp(){
-    this.anTimestamp;
+  setanTimestamp(Timestamp andTimestamp){
+    this.anTimestamp = andTimestamp;
   }
 
   String? getTodayNote(){
     return this.todayNote;
   }
 
-  setTodayNote(){
-    this.totalNote;
+  setTodayNote(String tadayNote){             
+    this.totalNote = tadayNote;
   }
 
-  getDltimestamp(){
+  Timestamp? getDltimestamp(){
     return dlTimestamp;
   }
 
-  setDltimestap(DateTime dateTime){
-    this.dlTimestamp;
+  setDltimestap(Timestamp timestamp){
+    this.dlTimestamp = timestamp;
   }
 
   String getPosition(){
@@ -134,8 +139,32 @@ class LessonCardProvider with ChangeNotifier {
   }
 
   setPosition(String position){
-    this.poss
-  }x
+    this.position = position;
+  }
+
+  bool? getNoteSelected(){
+    return this.noteSelected;
+  }             
+
+  setNoteSelected(bool setNetdSelected){
+    this.noteSelected = setNetdSelected;
+  }         
+
+  String? getAnId(){
+    return this.anId;
+  }
+
+  setAnId(String Andi){
+    this.anId = Andi;
+  }
+
+  String? getDnId(){
+    return this.dlId;
+  }
+
+  setDnId(String Dldi){
+    this.dlId = Dldi;
+  }
 
 
 }
