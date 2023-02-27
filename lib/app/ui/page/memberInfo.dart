@@ -1477,6 +1477,7 @@ class _NoteListActionCategoryState extends State<NoteListActionCategory> {
   }
 }
 
+String calDate = "2023-02-25";
 class NoteListDateCategory extends StatefulWidget {
   const NoteListDateCategory({
     Key? key,
@@ -1524,6 +1525,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                 String name = doc.get('name');
                 String lessonDate = doc.get('lessonDate');
                 String todayNote = doc.get('todayNote');
+                print("################  YYYY lessonDate : ${lessonDate}");
 
                 /// lessonActionList 날짜로 필터 해줌
                 lessonActionList = globalVariables.lessonNoteGlobalList
@@ -1532,40 +1534,44 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
 
                 print('###lessonActionList ${lessonActionList.length}');
 
-                return InkWell(
-                    onTap: () {
-                      List<TmpLessonInfo> tmpLessonInfoList = [];
-                      eventList = [];
-                      lessonAddMode = "노트편집";
-                      List<dynamic> args = [
-                        userInfo,
-                        lessonDate,
-                        eventList,
-                        lessonNoteId,
-                        lessonAddMode,
-                        tmpLessonInfoList,
-                        resultActionList,
-                      ];
-                      print("args.length : ${args.length}");
-                      print("[MI]LessonCard-lessonDate : ${lessonDate}");
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LessonAdd(userInfo),
-                          // GlobalWidgetDashboard(), //
-                          // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                          settings: RouteSettings(arguments: args),
-                        ),
-                      );
-                    },
-                    child: LessonCardWidget(
-                      userInfo: widget.userInfo,
-                      memberId: memberId,
-                      lessonDate: lessonDate,
-                      todayNote: todayNote,
-                      lessonActionList: lessonActionList,
-                    ));
+                
+                return Offstage(
+                  offstage: calDate == lessonDate ? false : true,
+                  child: InkWell(
+                      onTap: () {
+                        List<TmpLessonInfo> tmpLessonInfoList = [];
+                        eventList = [];
+                        lessonAddMode = "노트편집";
+                        List<dynamic> args = [
+                          userInfo,
+                          lessonDate,
+                          eventList,
+                          lessonNoteId,
+                          lessonAddMode,
+                          tmpLessonInfoList,
+                          resultActionList,
+                        ];
+                        print("args.length : ${args.length}");
+                        print("[MI]LessonCard-lessonDate : ${lessonDate}");
+                
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LessonAdd(userInfo),
+                            // GlobalWidgetDashboard(), //
+                            // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+                            settings: RouteSettings(arguments: args),
+                          ),
+                        );
+                      },
+                      child: LessonCardWidget(
+                        userInfo: widget.userInfo,
+                        memberId: memberId,
+                        lessonDate: lessonDate,
+                        todayNote: todayNote,
+                        lessonActionList: lessonActionList,
+                      )),
+                );
 
                 // return LessonCard(
                 //   userInfo: widget.userInfo,
