@@ -88,7 +88,6 @@ class _MemberInfoState extends State<MemberInfo> {
   void initState() {
     //처음에만 날짜 받아옴.
     super.initState();
-
   }
 
   @override
@@ -1524,6 +1523,13 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                 String lessonDate = doc.get('lessonDate');
                 String todayNote = doc.get('todayNote');
 
+                /// lessonActionList 날짜로 필터 해줌
+                lessonActionList = globalVariables.lessonNoteGlobalList
+                    .where((element) => element.lessonDate == lessonDate)
+                    .toList();
+
+                print('###lessonActionList ${lessonActionList.length}');
+
                 return InkWell(
                     onTap: () {
                       List<TmpLessonInfo> tmpLessonInfoList = [];
@@ -1551,15 +1557,12 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                         ),
                       );
                     },
-
-// List lessonActionList = globalVariables.lessonNoteGlobalList.where((element) => element.uid = )
-
                     child: LessonCardWidget(
                       userInfo: widget.userInfo,
                       memberId: memberId,
                       lessonDate: lessonDate,
                       todayNote: todayNote,
-                      lessonActionList: globalVariables.lessonNoteGlobalList,
+                      lessonActionList: lessonActionList,
                     ));
 
                 // return LessonCard(

@@ -33,13 +33,18 @@ class LessonCardWidget extends StatefulWidget {
 
 class _LessonCardWidgetState extends State<LessonCardWidget> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     print('###이건 되니?');
 
     return Container(
       color: Palette.mainBackground,
       child: Padding(
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
         child: Column(
           children: [
             /// 수업일 입력창
@@ -121,7 +126,6 @@ class _LessonCardWidgetState extends State<LessonCardWidget> {
                 /// 동작별 메모 한 묶음.
                 Expanded(
                   child: ListView.builder(
-                      padding: EdgeInsets.only(bottom: 10),
                       physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: widget.lessonActionList.length,
@@ -210,8 +214,9 @@ class _LessonCardWidgetState extends State<LessonCardWidget> {
               ],
             ),
             const SizedBox(height: 20),
+            const Divider(),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
+              padding: EdgeInsets.symmetric(vertical: 0),
               child: Center(
                 child: IconButton(
                   icon: Icon(isExpanded
