@@ -130,22 +130,22 @@ class LessonCardWidget extends StatelessWidget {
                         valueKey = ValueKey(lessonNoteInfo.pos);
                         // valueKey = ValueKey(lessonActionList[index]['pos']);
 
-                        final doc = lessonActionList[index];
+                        // final doc = lessonActionList[index];
 
-                        print("bbbbbbbb - doc : ${doc}");
+                        print("bbbbbbbb - doc : ${lessonNoteInfo}");
 
-                        String uid = doc.uid; // doc['uid']; // 강사 고유번호
+                        String uid = lessonNoteInfo.uid; // doc['uid']; // 강사 고유번호
 
-                        String name = doc['name']; //회원이름
+                        String name = lessonNoteInfo.name; //회원이름
                         String phoneNumber =
-                            doc['phoneNumber']; // 회원 고유번호 (전화번호로 회원 식별)
-                        String apratusName = doc['apratusName']; //기구이름
-                        String actionName = doc['actionName']; //동작이름
-                        String lessonDate = doc['lessonDate']; //수업날짜
-                        String grade = doc['grade']; //수행도
-                        String totalNote = doc['totalNote']; //수업총메모
-                        int pos = doc['pos']; //수업총메모
-                        bool isSelected = doc['noteSelected'];
+                            lessonNoteInfo.phoneNumber.toString(); // 회원 고유번호 (전화번호로 회원 식별)
+                        String? apratusName = lessonNoteInfo.apratusName; //기구이름
+                        String? actionName = lessonNoteInfo.actionName; //동작이름
+                        String lessonDate = lessonNoteInfo.lessonDate; //수업날짜
+                        String? grade = lessonNoteInfo.grade; //수행도
+                        String? totalNote = lessonNoteInfo.totalNote; //수업총메모
+                        int? pos = lessonNoteInfo.pos; //수업총메모
+                        bool? isSelected = lessonNoteInfo.noteSelected;
 
                         // bool isSelected;
 
@@ -158,7 +158,7 @@ class LessonCardWidget extends StatelessWidget {
 
                         return Offstage(
                           key: valueKey,
-                          offstage: isExpanded ? false : !isSelected,
+                          offstage: isExpanded ? false : !isSelected!,
                           child: IntrinsicHeight(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -186,7 +186,7 @@ class LessonCardWidget extends StatelessWidget {
                                   child: Padding(
                                     padding: EdgeInsets.only(bottom: 2),
                                     child: Text(
-                                      totalNote,
+                                      totalNote!,
                                       style: TextStyle(
                                           color: Palette.gray00, fontSize: 12),
                                     ),
