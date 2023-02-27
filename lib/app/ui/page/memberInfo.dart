@@ -1477,7 +1477,7 @@ class _NoteListActionCategoryState extends State<NoteListActionCategory> {
   }
 }
 
-String calDate = "2023-02-25";
+// String calDate = "2023-02-25";
 class NoteListDateCategory extends StatefulWidget {
   const NoteListDateCategory({
     Key? key,
@@ -1536,7 +1536,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
 
                 
                 return Offstage(
-                  offstage: calDate == lessonDate ? false : true,
+                  offstage: false, // calDate == lessonDate ? false : true,
                   child: InkWell(
                       onTap: () {
                         List<TmpLessonInfo> tmpLessonInfoList = [];
