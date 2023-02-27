@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:web_project/app/data/model/color.dart';
+import 'package:web_project/app/data/model/lessonNoteInfo.dart';
 import 'package:web_project/app/data/model/userInfo.dart';
+import 'package:web_project/app/ui/page/lessonUpdate.dart';
 
 bool isExpanded = false;
 
@@ -118,15 +120,21 @@ class LessonCardWidget extends StatelessWidget {
                       itemCount: lessonActionList.length,
                       itemBuilder: (context, index) {
                         print('###빌드는 하긴 하니?');
+
+                        // 사용한 모델 객체를 선언해 리스트[index] 로 받음
+                        LessonNoteInfo lessonNoteInfo = lessonActionList[index];
                         Key? valueKey;
-                        lessonActionList[index]['pos'] = index;
-                        valueKey = ValueKey(lessonActionList[index]['pos']);
+                        // 클래스에서 객체 꺼내 쓰는 방식
+                        lessonNoteInfo.pos = index;
+                        // lessonActionList[index]['pos'] = index;
+                        valueKey = ValueKey(lessonNoteInfo.pos);
+                        // valueKey = ValueKey(lessonActionList[index]['pos']);
 
                         final doc = lessonActionList[index];
 
                         print("bbbbbbbb - doc : ${doc}");
 
-                        String uid = doc['uid']; // 강사 고유번호
+                        String uid = doc.uid; // doc['uid']; // 강사 고유번호
 
                         String name = doc['name']; //회원이름
                         String phoneNumber =
