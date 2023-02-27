@@ -89,8 +89,8 @@ class _TicketLibraryManageState extends State<TicketLibraryManage> {
                         ticketEndDate: globalVariables.ticketLibraryList[index]
                                 ['ticketEndDate'] ??
                             "0000-00-00",
-                        ticketDateLeft: globalVariables.ticketLibraryList[index]
-                            ['ticketDateLeft'],
+                        // ticketDateLeft: globalVariables.ticketLibraryList[index]
+                        //     ['ticketDateLeft'],
                       ),
                     );
                   },
