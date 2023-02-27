@@ -110,20 +110,7 @@ List notedActionWidget = [];
 List<String> notedActionsList = [];
 List deleteTargetDocIdLiet = [];
 
-String getActionPosition(
-    String apparatunName, String actionName, List actionList) {
-  String position = "";
 
-  for (int i = 0; i < actionList.length; i++) {
-    if ((actionList[i]['apparatus'] == apparatunName) &&
-        (actionList[i]['name'] == actionName)) {
-      position = actionList[i]['position'];
-      break;
-    }
-  }
-
-  return position;
-}
 
 List<TextEditingController> txtEdtCtrlrList = [];
 
@@ -1264,7 +1251,7 @@ class _LessonAddState extends State<LessonAdd> {
                                               child: LessonActionListTile(
                                                   actionName: actionName,
                                                   apparatus: apratusName,
-                                                  position: getActionPosition(
+                                                  position: globalFunction.getActionPosition(
                                                       apratusName,
                                                       actionName,
                                                       globalVariables

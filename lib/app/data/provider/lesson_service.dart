@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
-import 'package:web_project/backup/lessonAdd.dart';
 import 'package:web_project/app/function/globalFunction.dart';
 import 'package:web_project/main.dart';
 
@@ -306,7 +305,7 @@ class LessonService extends ChangeNotifier {
       rstAObj['noteSelected'] =
           rstAObj['totalNote'].toString().trim().isNotEmpty ? true : false;
       rstAObj['deleteSelected'] = true;
-      rstAObj['position'] = getActionPosition(rstAObj['apratusName'],
+      rstAObj['position'] = globalFunction.getActionPosition(rstAObj['apratusName'],
           rstAObj['actionName'], globalVariables.actionList);
       lessonActionResultList.add(rstAObj);
     }
@@ -355,7 +354,7 @@ class LessonService extends ChangeNotifier {
       rstAObj['noteSelected'] =
           rstAObj['totalNote'].toString().trim().isNotEmpty ? true : false;
       rstAObj['deleteSelected'] = true;
-      rstAObj['position'] = getActionPosition(rstAObj['apratusName'],
+      rstAObj['position'] = globalFunction.getActionPosition(rstAObj['apratusName'],
           rstAObj['actionName'], globalVariables.actionList);
       lessonActionResultList.add(rstAObj);
     }

@@ -11,7 +11,6 @@ import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/ui/page/actionSelector.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
-import 'package:web_project/backup/lessonAdd.dart';
 import 'package:web_project/app/ui/page/report.dart';
 import 'package:web_project/app/ui/page/sequenceLibrary.dart';
 import 'package:web_project/app/ui/page/ticketLibraryManage.dart';

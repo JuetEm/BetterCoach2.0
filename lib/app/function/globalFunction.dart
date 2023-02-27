@@ -99,6 +99,20 @@ class GlobalFunction {
           print("result.docs[i].data() : ${result.docs[i].data()}");
         }
   } */
+  String getActionPosition(
+    String apparatunName, String actionName, List actionList) {
+  String position = "";
+
+  for (int i = 0; i < actionList.length; i++) {
+    if ((actionList[i]['apparatus'] == apparatunName) &&
+        (actionList[i]['name'] == actionName)) {
+      position = actionList[i]['position'];
+      break;
+    }
+  }
+
+  return position;
+}
 
   String getDateFromTimeStamp(var timestamp) {
     String date = "";

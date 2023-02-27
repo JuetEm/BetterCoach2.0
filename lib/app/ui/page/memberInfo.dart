@@ -12,6 +12,7 @@ import 'package:web_project/app/data/model/lessonNoteInfo.dart';
 import 'package:web_project/app/data/provider/lesson_service.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
+import 'package:web_project/app/ui/page/lessonAdd.dart';
 import 'package:web_project/app/ui/page/memberTicketManage.dart';
 import 'package:web_project/app/ui/page/ticketLibraryMake.dart';
 import 'package:web_project/app/ui/widget/baseTableCalendar.dart';
@@ -27,7 +28,6 @@ import 'package:web_project/app/ui/widget/ticketWidget.dart';
 import 'actionSelector.dart';
 import '../../data/provider/auth_service.dart';
 import '../../data/model/color.dart';
-import '../../../backup/lessonAdd.dart';
 
 import 'lessonUpdate.dart';
 import 'memberAdd.dart';
@@ -87,62 +87,8 @@ class _MemberInfoState extends State<MemberInfo> {
   @override
   void initState() {
     //처음에만 날짜 받아옴.
-
-    String memberId = widget.userInfo!.docId;
-    print('#####${widget.userInfo!.docId}');
-
-    List<LessonNoteInfo> parsedLessonNoteGlobalList = [];
-
-    for (var lessonNoteGlobal in globalVariables.lessonNoteGlobalList) {
-      parsedLessonNoteGlobalList.addAll([lessonNoteGlobal]);
-    }
-
-    List<LessonNoteInfo> lessonActionList = parsedLessonNoteGlobalList
-        .where((e) => e.memberId == memberId)
-        .toList();
-
-    print(
-        'memberId: $memberId, parsedLessonNoteGlobalList: ${parsedLessonNoteGlobalList[1].memberId}');
-    print(
-        'memberId: $memberId, parsedLessonNoteGlobalList: ${parsedLessonNoteGlobalList[2].memberId}');
-    print(
-        'memberId: $memberId, parsedLessonNoteGlobalList: ${parsedLessonNoteGlobalList[3].memberId}');
-
-    print('###lessonActionList: ${lessonActionList.length}');
-
     super.initState();
 
-    if (widget.isQuickAdd) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Future.delayed(const Duration(milliseconds: 300), () async {
-          lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
-
-          List<TmpLessonInfo> tmpLessonInfoList = [];
-          eventList = [];
-          lessonAddMode = "노트 추가";
-          List<dynamic> args = [
-            userInfo,
-            lessonDate,
-            eventList,
-            lessonNoteId,
-            lessonAddMode,
-            tmpLessonInfoList,
-            resultActionList,
-          ];
-          print(
-              "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
-
-          await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LessonAdd(),
-              // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-              settings: RouteSettings(arguments: args),
-            ),
-          );
-        });
-      });
-    }
   }
 
   @override
@@ -749,7 +695,7 @@ class _MemberInfoState extends State<MemberInfo> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LessonAdd(),
+                          builder: (context) => LessonAdd(userInfo),
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
                         ),
@@ -1598,7 +1544,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LessonAdd(),
+                          builder: (context) => LessonAdd(userInfo),
                           // GlobalWidgetDashboard(), //
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
@@ -1613,7 +1559,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                       memberId: memberId,
                       lessonDate: lessonDate,
                       todayNote: todayNote,
-                      lessonActionList: lessonActionList,
+                      lessonActionList: globalVariables.lessonNoteGlobalList,
                     ));
 
                 // return LessonCard(
@@ -1683,7 +1629,7 @@ class LessonCard extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LessonAdd(),
+                    builder: (context) => LessonAdd(userInfo),
                     // GlobalWidgetDashboard(), //
                     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                     settings: RouteSettings(arguments: args),

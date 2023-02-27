@@ -10,8 +10,9 @@ import 'package:web_project/app/ui/widget/buttonWidget.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/ui/widget/globalWidget.dart';
 import 'package:web_project/app/ui/widget/lessonActionListTileWidget.dart';
-import 'package:web_project/backup/lessonAdd.dart';
 import 'package:web_project/main.dart';
+
+List lessonActionList = [];
 
 // appBar 출력 화면이름
 String pageName = "노트추가";
@@ -21,6 +22,8 @@ bool isTicketCountChecked = true;
 bool isSequenceSaveChecked = false;
 
 GlobalFunction globalFunction = GlobalFunction();
+
+int customSequenceNumber = 0;
 
 String customSequenceName = '커스텀 시퀀스 ${customSequenceNumber}';
 
