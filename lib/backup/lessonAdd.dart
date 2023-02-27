@@ -51,19 +51,16 @@ class LessonAdd extends StatefulWidget {
 }
 
 class _LessonAddState extends State<LessonAdd> {
-
   @override
   void initState() {
     super.initState();
-    
+
     lessonNoteAndActionList = globalVariables.lessonNoteGlobalList;
     print("@@@@@@@@@@@@@@@@@ ${lessonNoteAndActionList.length}");
-    
   }
 
   @override
   void dispose() {
-    
     super.dispose();
 
     lessonNoteAndActionList = [];
@@ -101,8 +98,8 @@ class _LessonAddState extends State<LessonAdd> {
             ], null),
             body: CenterConstrainedBody(
                 child: Container(
-                            alignment: Alignment.topCenter,
-                            child: SafeArea(
+              alignment: Alignment.topCenter,
+              child: SafeArea(
                   child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Container(
@@ -207,7 +204,7 @@ class _LessonAddState extends State<LessonAdd> {
                                             onChanged: (value) {
                                               isTicketCountChecked =
                                                   !isTicketCountChecked;
-                
+
                                               setState(() {});
                                             },
                                           )
@@ -463,11 +460,11 @@ class _LessonAddState extends State<LessonAdd> {
                                   onChanged: (value) {
                                     isSequenceSaveChecked =
                                         !isSequenceSaveChecked;
-                
+
                                     if (isSequenceSaveChecked == true) {
                                       sequenceNameFocusNode.requestFocus();
                                     }
-                
+
                                     setState(() {});
                                   },
                                 ),
@@ -543,10 +540,10 @@ class _LessonAddState extends State<LessonAdd> {
                               if (newIndex > oldIndex) {
                                 newIndex -= 1;
                               }
-                
+
                               final movedActionList =
                                   lessonNoteAndActionList.removeAt(oldIndex);
-                              lessonNoteAndActionList.insert(  
+                              lessonNoteAndActionList.insert(
                                   newIndex, movedActionList);
                             },
                             physics: BouncingScrollPhysics(),
@@ -556,8 +553,8 @@ class _LessonAddState extends State<LessonAdd> {
                               // lessonNoteInfo 객체화
                               lessonNoteInfo = lessonNoteAndActionList[index];
                               Key? valueKey;
-                              valueKey = ValueKey(Timestamp.now()); 
-                
+                              valueKey = ValueKey(Timestamp.now());
+
                               return GestureDetector(
                                 key: valueKey,
                                 onHorizontalDragUpdate: (details) {
@@ -571,8 +568,28 @@ class _LessonAddState extends State<LessonAdd> {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                        child: LessonActionListTile(actionName: lessonNoteInfo.actionName!, apparatus: lessonNoteInfo.apratusName!, position: lessonNoteInfo.position, name: lessonNoteInfo.name, phoneNumber: lessonNoteInfo.phoneNumber, lessonDate: lessonNoteInfo.lessonDate, grade: lessonNoteInfo.grade, totalNote: lessonNoteInfo.totalNote, docId: widget.userInfo.docId, memberdocId: widget.userInfo.docId, uid: widget.userInfo.uid, pos: lessonNoteInfo.pos, isSelected: lessonNoteInfo.noteSelected!, isSelectable: true, isDraggable: true, customFunctionOnTap: (){})
-                                        ),
+                                        child: LessonActionListTile(
+                                            actionName:
+                                                lessonNoteInfo.actionName!,
+                                            apparatus:
+                                                lessonNoteInfo.apratusName!,
+                                            position: lessonNoteInfo.position,
+                                            name: lessonNoteInfo.name,
+                                            phoneNumber:
+                                                lessonNoteInfo.phoneNumber,
+                                            lessonDate:
+                                                lessonNoteInfo.lessonDate,
+                                            grade: lessonNoteInfo.grade,
+                                            totalNote: lessonNoteInfo.totalNote,
+                                            docId: widget.userInfo.docId,
+                                            memberdocId: widget.userInfo.docId,
+                                            uid: widget.userInfo.uid,
+                                            pos: lessonNoteInfo.pos,
+                                            isSelected:
+                                                lessonNoteInfo.noteSelected!,
+                                            isSelectable: true,
+                                            isDraggable: true,
+                                            customFunctionOnTap: () {})),
                                     Offstage(
                                       offstage: false,
                                       child: IconButton(
@@ -608,15 +625,19 @@ class _LessonAddState extends State<LessonAdd> {
                           const SizedBox(
                             height: 10,
                           ),
-                          const SizedBox(height: 15,),// DeleteButton(actionNullCheck: actionNullCheck, todayNotedocId: todayNotedocId, lessonService: lessonService, dayLessonService: dayLessonService, totalNoteTextFieldDocId: totalNoteTextFieldDocId)
-                          const SizedBox(height: 30,) 
+                          const SizedBox(
+                            height: 15,
+                          ), // DeleteButton(actionNullCheck: actionNullCheck, todayNotedocId: todayNotedocId, lessonService: lessonService, dayLessonService: dayLessonService, totalNoteTextFieldDocId: totalNoteTextFieldDocId)
+                          const SizedBox(
+                            height: 30,
+                          )
                         ],
                       ),
                     ],
                   ),
                 ),
-                            )),
-                          )));
+              )),
+            )));
       },
     );
   }
