@@ -47,6 +47,6 @@ class MemberInfoController {
       });
     });
 
-    return resultLessonNoteData;
+    return lessonNoteInfoList;
   }
 }
