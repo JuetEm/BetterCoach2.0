@@ -413,6 +413,12 @@ class _LessonAddState extends State<LessonAdd> {
                                               fontSize: 20),
                                         ),
                                         SizedBox(height: 10),
+                                        Text(
+                                          '등록일: ${userInfo.registerDate}',
+                                          style: TextStyle(
+                                              color: Palette.gray99,
+                                              fontSize: 14),
+                                        ),
                                       ],
                                     ),
                                     Spacer(),

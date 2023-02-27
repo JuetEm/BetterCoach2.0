@@ -1509,12 +1509,12 @@ class NoteListActionCategory extends StatefulWidget {
 class _NoteListActionCategoryState extends State<NoteListActionCategory> {
   @override
   Widget build(BuildContext context) {
-    Set<List> setList;
-    setList = widget.docs
-        .where(
-            (doc) => doc['apparatusName'] != null && doc['actionName'] != null)
-        .map((doc) => [doc['apparatusName'], doc['actionName']])
-        .toSet();
+    // Set<List> setList;
+    // setList = widget.docs
+    //     .where(
+    //         (doc) => doc['apparatusName'] != null && doc['actionName'] != null)
+    //     .map((doc) => [doc['apparatusName'], doc['actionName']])
+    //     .toSet();
 
     // return Container(
     //   constraints: BoxConstraints(maxWidth: 4720),
