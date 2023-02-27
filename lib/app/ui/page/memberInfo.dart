@@ -290,7 +290,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          const SizedBox(height: 4.0),
+                                          const SizedBox(height: 8.0),
                                           Text(
                                             '${userInfo.phoneNumber}',
                                             style: TextStyle(
@@ -298,6 +298,15 @@ class _MemberInfoState extends State<MemberInfo> {
                                                 //fontWeight: FontWeight.bold,
                                                 color: Palette.gray66),
                                           ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            '등록일: ${userInfo.registerDate}',
+                                            style: TextStyle(
+                                                fontSize: 14.0,
+                                                //fontWeight: FontWeight.bold,
+                                                color: Palette.gray99),
+                                            textAlign: TextAlign.right,
+                                          )
                                         ],
                                       ),
                                     ),
@@ -306,29 +315,59 @@ class _MemberInfoState extends State<MemberInfo> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
-                                        Text(
-                                          '등록일',
-                                          style: TextStyle(
-                                              fontSize: 14.0,
-                                              //fontWeight: FontWeight.bold,
-                                              color: Palette.gray99),
-                                          textAlign: TextAlign.right,
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              isTicketCountChecked
+                                                  ? Icons.confirmation_num
+                                                  : Icons
+                                                      .confirmation_num_outlined,
+                                              color: isTicketCountChecked
+                                                  ? Palette.buttonOrange
+                                                  : Palette.gray99,
+                                            ),
+                                            SizedBox(width: 4),
+                                            Text(
+                                              globalVariables.memberTicketList[
+                                                      globalVariables
+                                                          .selectedTicketIndex]
+                                                      ['ticketCountLeft']
+                                                  .toString(),
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: isTicketCountChecked
+                                                    ? Palette.gray00
+                                                    : Palette.gray99,
+                                              ),
+                                            ),
+                                            Text(
+                                              "/",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: isTicketCountChecked
+                                                    ? Palette.gray00
+                                                    : Palette.gray99,
+                                              ),
+                                            ),
+                                            Text(
+                                              globalVariables.memberTicketList[
+                                                      globalVariables
+                                                          .selectedTicketIndex]
+                                                      ['ticketCountAll']
+                                                  .toString(),
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: isTicketCountChecked
+                                                    ? Palette.gray00
+                                                    : Palette.gray99,
+                                              ),
+                                            ),
+                                            SizedBox(width: 6),
+                                          ],
                                         ),
-                                        Text(
-                                          '${userInfo.registerDate}',
-                                          style: TextStyle(
-                                              fontSize: 14.0,
-                                              //fontWeight: FontWeight.bold,
-                                              color: Palette.gray99),
-                                          textAlign: TextAlign.right,
-                                        ),
-                                        // Text(
-                                        //   '남은횟수 : ${userInfo.registerType}',
-                                        //   style: TextStyle(
-                                        //       fontSize: 14.0,
-                                        //       //fontWeight: FontWeight.bold,
-                                        //       color: Palette.gray99),
-                                        // ),
                                       ],
                                     ),
                                   ],
@@ -678,6 +717,13 @@ class _MemberInfoState extends State<MemberInfo> {
                       lessonDate =
                           DateFormat("yyyy-MM-dd").format(DateTime.now());
 
+                      ticketCountLeft = globalVariables.memberTicketList[
+                              globalVariables.selectedTicketIndex]
+                          ['ticketCountLeft'];
+                      ticketCountAll = globalVariables.memberTicketList[
+                              globalVariables.selectedTicketIndex]
+                          ['ticketCountAll'];
+
                       List<TmpLessonInfo> tmpLessonInfoList = [];
                       eventList = [];
                       lessonAddMode = "노트 추가";
@@ -689,6 +735,8 @@ class _MemberInfoState extends State<MemberInfo> {
                         lessonAddMode,
                         tmpLessonInfoList,
                         resultActionList,
+                        ticketCountLeft,
+                        ticketCountAll,
                       ];
                       print(
                           "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
@@ -1444,9 +1492,64 @@ class NoteListActionCategory extends StatefulWidget {
   State<NoteListActionCategory> createState() => _NoteListActionCategoryState();
 }
 
+// List lessonActionList = [];
+
+//     lessonActionList = globalVariables.lessonNoteGlobalList
+//                     .where((element) => element.lessonDate == lessonDate)
+//                     .toList();
+
 class _NoteListActionCategoryState extends State<NoteListActionCategory> {
   @override
   Widget build(BuildContext context) {
+    Set<List> setList;
+    setList = widget.docs
+        .where(
+            (doc) => doc['apparatusName'] != null && doc['actionName'] != null)
+        .map((doc) => [doc['apparatusName'], doc['actionName']])
+        .toSet();
+
+    // return Container(
+    //   constraints: BoxConstraints(maxWidth: 4720),
+    //   padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+    //   width: MediaQuery.of(context).size.height * 100,
+    //   child: ListView.separated(
+    //     shrinkWrap: true,
+    //     itemCount: widget.docs.length,
+    //     itemBuilder: (context, index) {
+    //       return IntrinsicHeight(
+    //         child: Row(
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           children: [
+    //             SizedBox(
+    //               width: 210,
+    //               child: Chip(
+    //                   label: Text('Shoulder Adduction Double Arms',
+    //                       style: TextStyle(fontSize: 12))),
+    //             ),
+    //             VerticalDivider(),
+    //             SizedBox(width: 5),
+    //             Container(
+    //               constraints: BoxConstraints(maxWidth: 210),
+    //               width: (MediaQuery.of(context).size.width - 272) *
+    //                   actionNoteCount /
+    //                   100,
+    //               child: Container(
+    //                 decoration: BoxDecoration(
+    //                     color: Palette.buttonOrange,
+    //                     borderRadius: BorderRadius.circular(10)),
+    //                 width: 10,
+    //               ),
+    //             )
+    //           ],
+    //         ),
+    //       );
+    //     },
+    //     separatorBuilder: (context, index) {
+    //       return SizedBox(height: 2);
+    //     },
+    //   ),
+    // );
+
     return GroupedListView(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),

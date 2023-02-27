@@ -194,6 +194,8 @@ class _LessonAddState extends State<LessonAdd> {
     String lessonAddMode = argsList[4];
     tmpLessonInfoList = argsList[5]; // null
     // resultActionList = argsList[6];
+    int ticketCountLeft = argsList[7];
+    int ticketCountAll = argsList[8];
 
     print(
         '[LA] 시작 checkInitState - ${checkInitState} / DateChange - ${DateChangeMode} / actionNullCheck - ${actionNullCheck}');
@@ -433,7 +435,9 @@ class _LessonAddState extends State<LessonAdd> {
                                             ),
                                             SizedBox(width: 4),
                                             Text(
-                                              isTicketCountChecked ? "7" : "8",
+                                              isTicketCountChecked
+                                                  ? "${ticketCountLeft - 1}"
+                                                  : '$ticketCountLeft',
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -453,7 +457,7 @@ class _LessonAddState extends State<LessonAdd> {
                                               ),
                                             ),
                                             Text(
-                                              "10",
+                                              "$ticketCountAll",
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -712,7 +716,7 @@ class _LessonAddState extends State<LessonAdd> {
                                               // return
                                               Container(
                                             constraints:
-                                                BoxConstraints(maxHeight: 120),
+                                                BoxConstraints(minHeight: 80),
                                             child: Container(
                                               child: TextFormField(
                                                 onChanged: (value) {
@@ -879,6 +883,9 @@ class _LessonAddState extends State<LessonAdd> {
                                                                 child: Chip(
                                                                   label: Text(
                                                                       "$actionName"),
+                                                                  backgroundColor:
+                                                                      Palette
+                                                                          .titleOrange,
                                                                   deleteIcon:
                                                                       Icon(
                                                                     Icons
@@ -909,56 +916,63 @@ class _LessonAddState extends State<LessonAdd> {
                                                                         () {});
                                                                   },
                                                                 )),
-                                                            TextFormField(
-                                                              onChanged:
-                                                                  (value) {
-                                                                txtEdtCtrlrList[
-                                                                        index]
-                                                                    .text = value;
-                                                                String tmp =
-                                                                    txtEdtCtrlrList[
-                                                                            index]
-                                                                        .text;
-                                                                txtEdtCtrlrList[
-                                                                            index]
-                                                                        .selection =
-                                                                    TextSelection
-                                                                        .fromPosition(TextPosition(
-                                                                            offset:
-                                                                                txtEdtCtrlrList[index].text.length));
-                                                              },
-                                                              controller:
+                                                            Container(
+                                                              constraints:
+                                                                  BoxConstraints(
+                                                                      minHeight:
+                                                                          70),
+                                                              child:
+                                                                  TextFormField(
+                                                                onChanged:
+                                                                    (value) {
                                                                   txtEdtCtrlrList[
-                                                                      index],
-                                                              maxLines: null,
-                                                              autofocus: true,
-                                                              obscureText:
-                                                                  false,
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                /* content padding을 20이상 잡아두지 않으면,
-                                                              한글 입력 시 텍스트가 위아래로 움직이는 오류 발생 */
-                                                                contentPadding:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                            20),
-                                                                hintText:
-                                                                    '동작 수행 시 특이사항을 남겨보세요.',
-                                                                hintStyle: TextStyle(
+                                                                          index]
+                                                                      .text = value;
+                                                                  String tmp =
+                                                                      txtEdtCtrlrList[
+                                                                              index]
+                                                                          .text;
+                                                                  txtEdtCtrlrList[index]
+                                                                          .selection =
+                                                                      TextSelection.fromPosition(TextPosition(
+                                                                          offset: txtEdtCtrlrList[index]
+                                                                              .text
+                                                                              .length));
+                                                                },
+                                                                controller:
+                                                                    txtEdtCtrlrList[
+                                                                        index],
+                                                                maxLines: null,
+                                                                autofocus: true,
+                                                                obscureText:
+                                                                    false,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  /* content padding을 20이상 잡아두지 않으면,
+                                                                한글 입력 시 텍스트가 위아래로 움직이는 오류 발생 */
+                                                                  contentPadding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              20),
+                                                                  hintText:
+                                                                      '이번 수업에서 눈여겨 보아야 할 동작에 대해 남겨주세요.',
+                                                                  hintStyle: TextStyle(
+                                                                      color: Palette
+                                                                          .gray99,
+                                                                      fontSize:
+                                                                          14),
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                ),
+                                                                style: TextStyle(
                                                                     color: Palette
-                                                                        .gray99,
+                                                                        .gray00,
                                                                     fontSize:
                                                                         14),
-                                                                border:
-                                                                    InputBorder
-                                                                        .none,
+                                                                /* validator:
+                                                                    _model.textControllerValidator.asValidator(context), */
                                                               ),
-                                                              style: TextStyle(
-                                                                  color: Palette
-                                                                      .gray00,
-                                                                  fontSize: 14),
-                                                              /* validator:
-                                                                  _model.textControllerValidator.asValidator(context), */
                                                             )
                                                           ],
                                                         ),

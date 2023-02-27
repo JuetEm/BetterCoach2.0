@@ -8,6 +8,7 @@ import 'package:web_project/app/data/model/color.dart';
 import 'package:web_project/app/data/model/lessonNoteInfo.dart';
 import 'package:web_project/app/data/model/userInfo.dart';
 import 'package:web_project/app/ui/page/lessonUpdate.dart';
+import 'package:web_project/app/ui/page/memberInfo.dart';
 
 class LessonCardWidget extends StatefulWidget {
   LessonCardWidget({
@@ -40,7 +41,7 @@ class _LessonCardWidgetState extends State<LessonCardWidget> {
   @override
   Widget build(BuildContext context) {
     print('###이건 되니?');
-
+    inspect(lessonActionList);
     return Container(
       color: Palette.mainBackground,
       child: Padding(

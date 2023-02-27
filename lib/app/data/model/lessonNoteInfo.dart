@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class LessonNoteInfo{
-
-  
+class LessonNoteInfo {
   /** 기본정보 */
   String uid;
   String memberId;
@@ -17,7 +15,7 @@ class LessonNoteInfo{
   int? pos;
   String? totalNote; // 동작별 노트
   String? apratusName;
-  Timestamp? anTimestamp;  
+  Timestamp? anTimestamp;
 
   /**일별 레슨 노트 */
   String? todayNote; // 일별 레슨 노트
@@ -48,6 +46,24 @@ class LessonNoteInfo{
     this.noteSelected,
     this.anId,
     this.dlId,
-    
   );
+  Map<String, dynamic> toJson() => {
+        'uid': uid,
+        'memberId': memberId,
+        'name': name,
+        'phoneNumber': phoneNumber,
+        'lessonDate': lessonDate,
+        'actionName': actionName,
+        'grade': grade,
+        'pos': pos,
+        'totalNote': totalNote,
+        'apratusName': apratusName,
+        'anTimestamp': anTimestamp,
+        'todayNote': todayNote,
+        'dlTimestamp': dlTimestamp,
+        'position': position,
+        'noteSelected': noteSelected,
+        'anId': anId,
+        'dlId': dlId,
+      };
 }
