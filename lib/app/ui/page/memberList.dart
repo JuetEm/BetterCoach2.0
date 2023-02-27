@@ -655,7 +655,7 @@ class _MemberListState extends State<MemberList> {
                                               .addAll(value);
 
                                           print(
-                                              "### globalVariables.lessonNoteGlobalList ${globalVariables.lessonNoteGlobalList}");
+                                              "### globalVariables.lessonNoteGlobalList ${globalVariables.lessonNoteGlobalList.length}");
                                         });
 
                                         // 회원 카드 선택시 MemberInfo로 이동

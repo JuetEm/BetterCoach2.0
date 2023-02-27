@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
+import 'package:web_project/app/data/model/lessonNoteInfo.dart';
 import 'package:web_project/app/data/provider/lesson_service.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
@@ -86,6 +87,28 @@ class _MemberInfoState extends State<MemberInfo> {
   @override
   void initState() {
     //처음에만 날짜 받아옴.
+
+    String memberId = widget.userInfo!.docId;
+    print('#####${widget.userInfo!.docId}');
+
+    List<LessonNoteInfo> parsedLessonNoteGlobalList = [];
+
+    for (var lessonNoteGlobal in globalVariables.lessonNoteGlobalList) {
+      parsedLessonNoteGlobalList.addAll([lessonNoteGlobal]);
+    }
+
+    List<LessonNoteInfo> lessonActionList = parsedLessonNoteGlobalList
+        .where((e) => e.memberId == memberId)
+        .toList();
+
+    print(
+        'memberId: $memberId, parsedLessonNoteGlobalList: ${parsedLessonNoteGlobalList[1].memberId}');
+    print(
+        'memberId: $memberId, parsedLessonNoteGlobalList: ${parsedLessonNoteGlobalList[2].memberId}');
+    print(
+        'memberId: $memberId, parsedLessonNoteGlobalList: ${parsedLessonNoteGlobalList[3].memberId}');
+
+    print('###lessonActionList: ${lessonActionList.length}');
 
     super.initState();
 
@@ -1571,8 +1594,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                       ];
                       print("args.length : ${args.length}");
                       print("[MI]LessonCard-lessonDate : ${lessonDate}");
-                      print(
-                          "### globalVariables.lessonNoteGlobalList ${globalVariables.lessonNoteGlobalList}");
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -1583,12 +1605,15 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                         ),
                       );
                     },
+
+// List lessonActionList = globalVariables.lessonNoteGlobalList.where((element) => element.uid = )
+
                     child: LessonCardWidget(
                       userInfo: widget.userInfo,
                       memberId: memberId,
                       lessonDate: lessonDate,
                       todayNote: todayNote,
-                      lessonActionList: globalVariables.lessonNoteGlobalList,
+                      lessonActionList: lessonActionList,
                     ));
 
                 // return LessonCard(

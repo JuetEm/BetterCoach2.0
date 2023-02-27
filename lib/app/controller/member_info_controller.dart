@@ -39,13 +39,17 @@ class MemberInfoController {
           aNelement['id'],
           lNelement['id'],
         );
-        // print("C'MON ALBERT - uid : ${uid}, memberId : ${memberId}, lNelement['name'] : ${lNelement['name']}, lNelement['phoneNumber'] : ${lNelement['phoneNumber']}, lNelement['lessonDate'] : ${lNelement['lessonDate']}, aNelement['actionName'] : ${aNelement['actionName']}, aNelement['grade'] : ${aNelement['grade']}, aNelement['pos'] : ${aNelement['pos']}, aNelement['totalNote'] : ${aNelement['totalNote']}, aNelement['apratusName'] : ${aNelement['apratusName']}, aNelement['timestamp'] : ${aNelement['timestamp']}, lNelement['todayNote'] : ${lNelement['todayNote']}, lNelement['timestamp'] : ${lNelement['timestamp']}, false, aNelement['id'] : ${aNelement['id']}, lNelement['id'] : ${lNelement['id']}");
-        // print("lessonNoteInfo : ${lessonNoteInfo}");
-        // inspect(lessonNoteInfoList);
-        print(lessonNoteInfo.actionName);
+
         lessonNoteInfoList.add(lessonNoteInfo);
+        // print(
+        //     "C'MON ALBERT - uid : ${uid}, memberId : ${memberId}, lNelement['name'] : ${lNelement['name']}, lNelement['phoneNumber'] : ${lNelement['phoneNumber']}, lNelement['lessonDate'] : ${lNelement['lessonDate']}, aNelement['actionName'] : ${aNelement['actionName']}, aNelement['grade'] : ${aNelement['grade']}, aNelement['pos'] : ${aNelement['pos']}, aNelement['totalNote'] : ${aNelement['totalNote']}, aNelement['apratusName'] : ${aNelement['apratusName']}, aNelement['timestamp'] : ${aNelement['timestamp']}, lNelement['todayNote'] : ${lNelement['todayNote']}, lNelement['timestamp'] : ${lNelement['timestamp']}, false, aNelement['id'] : ${aNelement['id']}, lNelement['id'] : ${lNelement['id']}");
       });
     });
+
+    // print("lessonNoteInfo : ${lessonNoteInfo}");
+    // inspect(lessonNoteInfoList);
+    // print('lessonNoteInfoList: ${lessonNoteInfoList.length}');
+    // print(lessonNoteInfo.actionName);
 
     return lessonNoteInfoList;
   }
