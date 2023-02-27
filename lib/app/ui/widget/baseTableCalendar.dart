@@ -207,7 +207,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
           ticketStartDate =
               "${focusedDate.year}-${focusedDate.month}-${focusedDate.day}";
           ticketStartDate = DateFormat("yyyy-MM-dd").format(focusedDate);
-          ticketStartDateController!.text = ticketStartDate!;
+          ticketStartDateController.text = ticketStartDate!;
           // calendarIsOffStaged = true;
 
           widget.customFunction();
@@ -216,7 +216,7 @@ class _BaseTableCalendarState extends State<BaseTableCalendar> {
           ticketEndDate =
               "${focusedDate.year}-${focusedDate.month}-${focusedDate.day}";
           ticketEndDate = DateFormat("yyyy-MM-dd").format(focusedDate);
-          ticketEndDateController!.text = ticketEndDate!;
+          ticketEndDateController.text = ticketEndDate!;
           // calendarIsOffStaged = true;
           ticketDateLeft = globalFunction.getDDayLeft(ticketEndDate!);
           widget.customFunction();

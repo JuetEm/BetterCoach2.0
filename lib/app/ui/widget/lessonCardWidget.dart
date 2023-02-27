@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
@@ -33,7 +35,7 @@ class _LessonCardWidgetState extends State<LessonCardWidget> {
   @override
   Widget build(BuildContext context) {
     print('###이건 되니?');
-    print('###lessonActionList: ${widget.lessonActionList}');
+
     return Container(
       color: Palette.mainBackground,
       child: Padding(

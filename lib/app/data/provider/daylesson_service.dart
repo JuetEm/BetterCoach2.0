@@ -5,8 +5,7 @@ class DayLessonService extends ChangeNotifier {
   final daylessonCollection =
       FirebaseFirestore.instance.collection('daylesson');
 
-
-      Future<List> readLessonDayNote(
+  Future<List> readLessonDayNote(
     String uid,
   ) async {
     final result;
@@ -33,7 +32,7 @@ class DayLessonService extends ChangeNotifier {
           rstObj['id'] = result.docs[i].id;
           resultList.add(rstObj); */
     }
-    print('[daylesson]resultList:$resultList');
+    // print('[daylesson]resultList:$resultList');
 
     notifyListeners();
 
@@ -65,12 +64,12 @@ class DayLessonService extends ChangeNotifier {
 
       // if (rstObj)
       resultList.add(rstObj);
-      print("[daylesson]result.docs[i].data() : ${result.docs[i].data()}");
+      // print("[daylesson]result.docs[i].data() : ${result.docs[i].data()}");
       /* rstObj = result.docs[i].data();
           rstObj['id'] = result.docs[i].id;
           resultList.add(rstObj); */
     }
-    print('[daylesson]resultList:$resultList');
+    // print('[daylesson]resultList:$resultList');
 
     notifyListeners();
 
@@ -93,12 +92,12 @@ class DayLessonService extends ChangeNotifier {
 
       // if (rstObj)
       resultList.add(rstObj);
-      print("[daylesson]result.docs[i].data() : ${result.docs[i].data()}");
+      // print("[daylesson]result.docs[i].data() : ${result.docs[i].data()}");
       /* rstObj = result.docs[i].data();
           rstObj['id'] = result.docs[i].id;
           resultList.add(rstObj); */
     }
-    print('[daylesson]resultList:$resultList');
+    // print('[daylesson]resultList:$resultList');
 
     notifyListeners();
     return resultList;
@@ -126,7 +125,7 @@ class DayLessonService extends ChangeNotifier {
   }
 
   creatDayNote(
-     String docId,
+    String docId,
     String lessonDate,
     String name,
     // Timestamp,

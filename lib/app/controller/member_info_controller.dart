@@ -26,7 +26,14 @@ class MemberInfoController {
 
     lessonDayNoteList.forEach((lNelement) {
       lessonActionNoteList.forEach((aNelement) {
-        if (lNelement['lessonDate'] == aNelement['lessonDate']) {
+        // print('###Albert, lNelement[docId ${lNelement['docId']}');
+        // print('###Albert, aNelement[docId ${aNelement['docId']}');
+        print('###Albert, -------------------------------------');
+        if (lNelement['lessonDate'] == aNelement['lessonDate'] &&
+            lNelement['docId'] == aNelement['docId']) {
+          // print('###Albert, lNelement[docId ${lNelement['docId']}');
+          // print('###Albert, aNelement[docId ${aNelement['docId']}');
+
           lessonNoteInfo = LessonNoteInfo(
             uid,
             memberId,
