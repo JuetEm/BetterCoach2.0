@@ -163,7 +163,7 @@ class _ActionListTileState extends State<ActionListTile> {
         // print(widget.actionList);
       },
       selectedColor: Palette.gray66,
-      selectedTileColor: Palette.titleOrange,
+      selectedTileColor: Palette.grayEE,
       shape: RoundedRectangleBorder(
           // side: BorderSide(color: Palette.grayEE, width: 1),
           ),

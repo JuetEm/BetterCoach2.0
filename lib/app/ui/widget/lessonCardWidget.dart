@@ -134,11 +134,12 @@ class LessonCardWidget extends StatelessWidget {
 
                         print("bbbbbbbb - doc : ${lessonNoteInfo}");
 
-                        String uid = lessonNoteInfo.uid; // doc['uid']; // 강사 고유번호
+                        String uid =
+                            lessonNoteInfo.uid; // doc['uid']; // 강사 고유번호
 
                         String name = lessonNoteInfo.name; //회원이름
-                        String phoneNumber =
-                            lessonNoteInfo.phoneNumber.toString(); // 회원 고유번호 (전화번호로 회원 식별)
+                        String phoneNumber = lessonNoteInfo.phoneNumber
+                            .toString(); // 회원 고유번호 (전화번호로 회원 식별)
                         String? apratusName = lessonNoteInfo.apratusName; //기구이름
                         String? actionName = lessonNoteInfo.actionName; //동작이름
                         String lessonDate = lessonNoteInfo.lessonDate; //수업날짜
