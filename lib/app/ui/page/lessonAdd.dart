@@ -353,6 +353,8 @@ class _LessonAddState extends State<LessonAdd> {
                       // await totalNoteSave(
                       //     lessonService, customUserInfo, context);
 
+                      
+
                       lessonService.notifyListeners();
                       Navigator.pop(context, lessonActionList);
                     }
