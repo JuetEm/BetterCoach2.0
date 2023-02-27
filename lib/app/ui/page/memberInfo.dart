@@ -12,7 +12,7 @@ import 'package:web_project/app/data/model/lessonNoteInfo.dart';
 import 'package:web_project/app/data/provider/lesson_service.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
-import 'package:web_project/backup/lessonAdd.dart';
+import 'package:web_project/app/ui/page/lessonAdd.dart';
 import 'package:web_project/app/ui/page/memberTicketManage.dart';
 import 'package:web_project/app/ui/page/ticketLibraryMake.dart';
 import 'package:web_project/app/ui/widget/baseTableCalendar.dart';
@@ -696,7 +696,7 @@ class _MemberInfoState extends State<MemberInfo> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LessonAdd(userInfo),
+                          builder: (context) => LessonAdd(),
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
                         ),
@@ -1557,7 +1557,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LessonAdd(userInfo),
+                            builder: (context) => LessonAdd(),
                             // GlobalWidgetDashboard(), //
                             // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                             settings: RouteSettings(arguments: args),
@@ -1640,7 +1640,7 @@ class LessonCard extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LessonAdd(userInfo),
+                    builder: (context) => LessonAdd(),
                     // GlobalWidgetDashboard(), //
                     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                     settings: RouteSettings(arguments: args),
