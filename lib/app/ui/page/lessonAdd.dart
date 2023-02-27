@@ -136,6 +136,8 @@ class _LessonAddState extends State<LessonAdd> {
     deleteTargetDocIdLiet = [];
 
     initStateCheck = true;
+
+    txtEdtCtrlrList = [];
   }
 
   @override
@@ -164,6 +166,8 @@ class _LessonAddState extends State<LessonAdd> {
     lessonAddMode = "";
 
     initStateCheck = true;
+
+    txtEdtCtrlrList = [];
   }
 
   @override
@@ -350,7 +354,7 @@ class _LessonAddState extends State<LessonAdd> {
                       //     lessonService, customUserInfo, context);
 
                       lessonService.notifyListeners();
-                      Navigator.pop(context);
+                      Navigator.pop(context,lessonActionList);
                     }
                   },
                   child: Text(
@@ -1265,34 +1269,52 @@ class _LessonAddState extends State<LessonAdd> {
                                                 ['deleteSelected'] = false;
                                           }
                                         },
-                                        child: LessonActionListTile(
-                                            actionName: actionName,
-                                            apparatus: apratusName,
-                                            position: globalFunction
-                                                .getActionPosition(
-                                                    apratusName,
-                                                    actionName,
-                                                    globalVariables.actionList),
-                                            name: name,
-                                            phoneNumber: phoneNumber,
-                                            lessonDate: lessonDate,
-                                            grade: grade,
-                                            totalNote: totalNote,
-                                            docId: userInfo.docId,
-                                            memberdocId: userInfo.docId,
-                                            uid: uid,
-                                            pos: pos,
-                                            isSelected: isSelected,
-                                            isSelectable: true,
-                                            isDraggable: true,
-                                            customFunctionOnTap: () {
-                                              doc['noteSelected'] =
-                                                  !doc['noteSelected'];
-                                              txtEdtCtrlrList[index].text =
-                                                  totalNote;
-                                              String tmp =
-                                                  txtEdtCtrlrList[index].text;
-                                            }),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: LessonActionListTile(
+                                                  actionName: actionName,
+                                                  apparatus: apratusName,
+                                                  position: globalFunction
+                                                      .getActionPosition(
+                                                          apratusName,
+                                                          actionName,
+                                                          globalVariables
+                                                              .actionList),
+                                                  name: name,
+                                                  phoneNumber: phoneNumber,
+                                                  lessonDate: lessonDate,
+                                                  grade: grade,
+                                                  totalNote: totalNote,
+                                                  docId: userInfo.docId,
+                                                  memberdocId: userInfo.docId,
+                                                  uid: uid,
+                                                  pos: pos,
+                                                  isSelected: isSelected,
+                                                  isSelectable: true,
+                                                  isDraggable: true,
+                                                  customFunctionOnTap: () {
+                                                    doc['noteSelected'] =
+                                                        !doc['noteSelected'];
+                                                    txtEdtCtrlrList[index].text =
+                                                        totalNote;
+                                                    String tmp =
+                                                        txtEdtCtrlrList[index]
+                                                            .text;
+                                                  }),
+                                            ),
+                                            Offstage(
+                                              offstage: lessonActionList[index]
+                                                ['deleteSelected'] ,
+                                              child: IconButton(
+                                                  onPressed: () {},
+                                                  icon: Icon(
+                                                    Icons.delete,
+                                                    color: Palette.statusRed,
+                                                  )),
+                                            )
+                                          ],
+                                        ),
                                       );
                                     }),
 
@@ -1970,8 +1992,10 @@ class _LessonAddState extends State<LessonAdd> {
                                       customUserInfo,
                                       dayLessonService);
 
+                                      
+
                                   lessonService.notifyListeners();
-                                  Navigator.pop(context);
+                                  Navigator.pop(context,lessonActionList);
                                 }
                               },
                             ),
@@ -2022,12 +2046,13 @@ class _LessonAddState extends State<LessonAdd> {
       /* print(
           "tllllllllllll -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}"); */
       if (lessonActionList.isNotEmpty && lessonAddMode == "노트편집") {
-        print(
+        /* print(
             "tllllllllllll  자자자! 노트편집!!! -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}");
         print(
-            "lessonActionList[i]['totalNote'] : ${lessonActionList[i]['totalNote']}");
+            "lessonActionList[i]['totalNote'] : ${lessonActionList[i]['totalNote']}"); */
         lessonActionList[i]['totalNote'] = txtEdtCtrlrList[i].text;
         String tmp = txtEdtCtrlrList[i].text;
+        print("############# - tmp : ${tmp}");
 
         print(
             "lessonActionList[i]['id'] == null? : ${lessonActionList[i]['id'] == null}");
@@ -2057,7 +2082,7 @@ class _LessonAddState extends State<LessonAdd> {
               lessonActionList[i]['phoneNumber'],
               lessonActionList[i]['pos'],
               lessonActionList[i]['timestamp'],
-              lessonActionList[i]['totalNote'],
+              txtEdtCtrlrList[i].text.trim(),
               lessonActionList[i]['uid']);
         }
       } else if (lessonActionList.isNotEmpty && lessonAddMode == "노트 추가") {
@@ -2080,6 +2105,8 @@ class _LessonAddState extends State<LessonAdd> {
         print(
             "tllllllllllll 자자자 그외 뭔가!! -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}");
       }
+
+      
     }
     deleteTargetDocIdLiet.forEach((element) {
       print("deleted actions docId : element : ${element}");
@@ -2111,6 +2138,9 @@ class _LessonAddState extends State<LessonAdd> {
         );
       }
     }
+    // 지워야 하는 함수 => 비용이 너무 많이 나감
+    // memberInfoController.getLessonDayAndActionNoteData(userInfo.uid, userInfo.docId);
+    
   }
 
   Future<void> totalNoteSave(LessonService lessonService,

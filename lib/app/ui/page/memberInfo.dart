@@ -748,7 +748,13 @@ class _MemberInfoState extends State<MemberInfo> {
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
                         ),
-                      );
+                      ).then((value){
+                        print("^^^^^^^^^^^^^^^^ Floating Button Then!!");
+                        resultActionList = value;
+                        setState(() {
+                          
+                        });
+                      });
 
                       // } else {
                       //   //회원정보 보기에서 동작이 달라짐.
@@ -1668,7 +1674,13 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                             // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                             settings: RouteSettings(arguments: args),
                           ),
-                        );
+                        ).then((value){
+                          
+                          lessonActionList = value;
+                          setState(() {
+                            
+                          });
+                        });
                       },
                       child: LessonCardWidget(
                         userInfo: widget.userInfo,
