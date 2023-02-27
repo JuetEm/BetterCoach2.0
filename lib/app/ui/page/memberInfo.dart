@@ -290,7 +290,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          const SizedBox(height: 8.0),
+                                          const SizedBox(height: 10.0),
                                           Text(
                                             '${userInfo.phoneNumber}',
                                             style: TextStyle(
@@ -298,15 +298,6 @@ class _MemberInfoState extends State<MemberInfo> {
                                                 //fontWeight: FontWeight.bold,
                                                 color: Palette.gray66),
                                           ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            '등록일: ${userInfo.registerDate}',
-                                            style: TextStyle(
-                                                fontSize: 14.0,
-                                                //fontWeight: FontWeight.bold,
-                                                color: Palette.gray99),
-                                            textAlign: TextAlign.right,
-                                          )
                                         ],
                                       ),
                                     ),
@@ -368,6 +359,19 @@ class _MemberInfoState extends State<MemberInfo> {
                                             SizedBox(width: 6),
                                           ],
                                         ),
+                                        const SizedBox(height: 8),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 4),
+                                          child: Text(
+                                            '등록일: ${userInfo.registerDate}',
+                                            style: TextStyle(
+                                                fontSize: 14.0,
+                                                //fontWeight: FontWeight.bold,
+                                                color: Palette.gray99),
+                                            textAlign: TextAlign.right,
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ],
@@ -748,12 +752,10 @@ class _MemberInfoState extends State<MemberInfo> {
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
                         ),
-                      ).then((value){
+                      ).then((value) {
                         print("^^^^^^^^^^^^^^^^ Floating Button Then!!");
                         resultActionList = value;
-                        setState(() {
-                          
-                        });
+                        setState(() {});
                       });
 
                       // } else {
@@ -1674,12 +1676,9 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                             // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                             settings: RouteSettings(arguments: args),
                           ),
-                        ).then((value){
-                          
+                        ).then((value) {
                           lessonActionList = value;
-                          setState(() {
-                            
-                          });
+                          setState(() {});
                         });
                       },
                       child: LessonCardWidget(

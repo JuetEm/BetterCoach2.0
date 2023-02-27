@@ -354,7 +354,7 @@ class _LessonAddState extends State<LessonAdd> {
                       //     lessonService, customUserInfo, context);
 
                       lessonService.notifyListeners();
-                      Navigator.pop(context,lessonActionList);
+                      Navigator.pop(context, lessonActionList);
                     }
                   },
                   child: Text(
@@ -413,12 +413,6 @@ class _LessonAddState extends State<LessonAdd> {
                                               fontSize: 20),
                                         ),
                                         SizedBox(height: 10),
-                                        Text(
-                                          '등록일: ${userInfo.registerDate}',
-                                          style: TextStyle(
-                                              color: Palette.gray99,
-                                              fontSize: 14),
-                                        ),
                                       ],
                                     ),
                                     Spacer(),
@@ -1296,8 +1290,8 @@ class _LessonAddState extends State<LessonAdd> {
                                                   customFunctionOnTap: () {
                                                     doc['noteSelected'] =
                                                         !doc['noteSelected'];
-                                                    txtEdtCtrlrList[index].text =
-                                                        totalNote;
+                                                    txtEdtCtrlrList[index]
+                                                        .text = totalNote;
                                                     String tmp =
                                                         txtEdtCtrlrList[index]
                                                             .text;
@@ -1305,7 +1299,7 @@ class _LessonAddState extends State<LessonAdd> {
                                             ),
                                             Offstage(
                                               offstage: lessonActionList[index]
-                                                ['deleteSelected'] ,
+                                                  ['deleteSelected'],
                                               child: IconButton(
                                                   onPressed: () {},
                                                   icon: Icon(
@@ -1992,10 +1986,8 @@ class _LessonAddState extends State<LessonAdd> {
                                       customUserInfo,
                                       dayLessonService);
 
-                                      
-
                                   lessonService.notifyListeners();
-                                  Navigator.pop(context,lessonActionList);
+                                  Navigator.pop(context, lessonActionList);
                                 }
                               },
                             ),
@@ -2105,8 +2097,6 @@ class _LessonAddState extends State<LessonAdd> {
         print(
             "tllllllllllll 자자자 그외 뭔가!! -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}");
       }
-
-      
     }
     deleteTargetDocIdLiet.forEach((element) {
       print("deleted actions docId : element : ${element}");
@@ -2140,7 +2130,6 @@ class _LessonAddState extends State<LessonAdd> {
     }
     // 지워야 하는 함수 => 비용이 너무 많이 나감
     // memberInfoController.getLessonDayAndActionNoteData(userInfo.uid, userInfo.docId);
-    
   }
 
   Future<void> totalNoteSave(LessonService lessonService,
