@@ -64,6 +64,8 @@ List resultMemberList = [];
 
 bool isNoteCalendarHided = true;
 
+List lessonActionList = [];
+
 // 회원 동작별 노트
 List memberActionNote = [];
 
