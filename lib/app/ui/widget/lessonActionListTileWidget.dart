@@ -114,20 +114,12 @@ class _LessonActionListTileState extends State<LessonActionListTile> {
         // Navigator.pop(context, actionInfo);
         setState(() {
           if (manageListContaining(tmpLessonInfoList, tmpLessonInfo, true)) {
-            actionTileColor = Palette.grayFA;
-            apparatusTextColor = Palette.gray99;
-            actionNameTextColor = Palette.gray66;
-
             /* print(
                 "YES contain!! remove item => widget.apparatus : ${widget.uid}/${widget.docId}/${widget.lessonDate}/${widget.apparatus}, widget.actionName : ${widget.actionName}"); */
             // checkedTileList.remove(widget.pos);
 
             // lessonService.deleteFromActionSelect(widget.uid, widget.memberdocId,widget.lessonDate, widget.apparatus, widget.actionName);
           } else {
-            actionTileColor = Palette.buttonOrange;
-            apparatusTextColor = Palette.grayFF;
-            actionNameTextColor = Palette.grayFF;
-
             /* print(
                 "NOT contain!! add item => widget.apparatus : ${widget.apparatus}, widget.actionName : ${widget.actionName}"); */
             // checkedTileList.add(widget.pos);

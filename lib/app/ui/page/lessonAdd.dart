@@ -110,8 +110,6 @@ List notedActionWidget = [];
 List<String> notedActionsList = [];
 List deleteTargetDocIdLiet = [];
 
-
-
 List<TextEditingController> txtEdtCtrlrList = [];
 
 class LessonAdd extends StatefulWidget {
@@ -714,7 +712,7 @@ class _LessonAddState extends State<LessonAdd> {
                                               // return
                                               Container(
                                             constraints:
-                                                BoxConstraints(minHeight: 120),
+                                                BoxConstraints(maxHeight: 120),
                                             child: Container(
                                               child: TextFormField(
                                                 onChanged: (value) {
@@ -1013,29 +1011,30 @@ class _LessonAddState extends State<LessonAdd> {
                                     Text('나의 시퀀스 저장'),
                                     Spacer(),
                                     TextButton(
-                                        onPressed: () {
-                                          /// 저장된 시퀀스들이 있는 화면으로 이동하는 함수
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SequenceLibrary()),
-                                          );
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.folder_outlined,
-                                              color: Palette.gray99,
-                                            ),
-                                            SizedBox(width: 4),
-                                            Text(
-                                              '불러오기',
-                                              style: TextStyle(
-                                                  color: Palette.gray00),
-                                            )
-                                          ],
-                                        ))
+                                      onPressed: () {
+                                        /// 저장된 시퀀스들이 있는 화면으로 이동하는 함수
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SequenceLibrary()),
+                                        );
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.folder_outlined,
+                                            color: Palette.gray99,
+                                          ),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            '불러오기',
+                                            style: TextStyle(
+                                                color: Palette.gray00),
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 )),
 
@@ -1096,10 +1095,11 @@ class _LessonAddState extends State<LessonAdd> {
                                         "[LA] 동작추가시작 tmpLessonInfoList : ${tmpLessonInfoList.length}");
 
                                     // ActionSelector 화면 진입 전에, actionSelected 초기화
-                                    globalVariables.actionList
-                                        .forEach((element) {
-                                      element['actionSelected'] = false;
-                                    });
+                                    globalVariables.actionList.forEach(
+                                      (element) {
+                                        element['actionSelected'] = false;
+                                      },
+                                    );
 
                                     var result = await Navigator.push(
                                       context,
@@ -1107,56 +1107,61 @@ class _LessonAddState extends State<LessonAdd> {
                                         builder: (context) => ActionSelector(),
                                         fullscreenDialog: true,
                                         // setting에서 arguments로 다음 화면에 회원 정보 넘기기
-                                        settings: RouteSettings(arguments: [
-                                          customUserInfo,
-                                          currentAppratus,
-                                          lessonDate,
-                                          checkInitState,
-                                          totalNote,
-                                          tmpLessonInfoList,
-                                          // resultActionList,
-                                        ]),
+                                        settings: RouteSettings(
+                                          arguments: [
+                                            customUserInfo,
+                                            currentAppratus,
+                                            lessonDate,
+                                            checkInitState,
+                                            totalNote,
+                                            tmpLessonInfoList,
+                                            // resultActionList,
+                                          ],
+                                        ),
                                       ),
                                     ).then((value) {
                                       if (value != null) {
                                         print(
                                             "aewregfdsfgdaf - value : ${value}");
-                                        value.forEach((element) {
-                                          var rElement = {
-                                            'actionName': element['name'],
-                                            'docId': customUserInfo.docId,
-                                            'pos': lessonActionList.length,
-                                            'lessonDate': lessonDateArg,
-                                            'totalNote': "",
-                                            'grade': '50',
-                                            'uid': customUserInfo.uid,
-                                            'apratusName': element['apparatus'],
-                                            'timestamp': null,
-                                            'name': customUserInfo.name,
-                                            'phoneNumber':
-                                                customUserInfo.phoneNumber,
-                                            'id': null,
-                                            'noteSelected': false,
-                                            'position': element['name'],
-                                            'deleteSelected': true,
-                                          };
-                                          print("rElement : ${rElement}");
-                                          lessonActionList.add(rElement);
-                                          txtEdtCtrlrList
-                                              .add(new TextEditingController());
-                                          txtEdtCtrlrList[txtEdtCtrlrList
-                                                          .length -
-                                                      1]
-                                                  .selection =
-                                              TextSelection.fromPosition(
-                                                  TextPosition(
-                                                      offset: txtEdtCtrlrList[
-                                                              txtEdtCtrlrList
-                                                                      .length -
-                                                                  1]
-                                                          .text
-                                                          .length));
-                                        });
+                                        value.forEach(
+                                          (element) {
+                                            var rElement = {
+                                              'actionName': element['name'],
+                                              'docId': customUserInfo.docId,
+                                              'pos': lessonActionList.length,
+                                              'lessonDate': lessonDateArg,
+                                              'totalNote': "",
+                                              'grade': '50',
+                                              'uid': customUserInfo.uid,
+                                              'apratusName':
+                                                  element['apparatus'],
+                                              'timestamp': null,
+                                              'name': customUserInfo.name,
+                                              'phoneNumber':
+                                                  customUserInfo.phoneNumber,
+                                              'id': null,
+                                              'noteSelected': false,
+                                              'position': element['name'],
+                                              'deleteSelected': true,
+                                            };
+                                            print("rElement : ${rElement}");
+                                            lessonActionList.add(rElement);
+                                            txtEdtCtrlrList.add(
+                                                new TextEditingController());
+                                            txtEdtCtrlrList[txtEdtCtrlrList
+                                                            .length -
+                                                        1]
+                                                    .selection =
+                                                TextSelection.fromPosition(
+                                                    TextPosition(
+                                                        offset: txtEdtCtrlrList[
+                                                                txtEdtCtrlrList
+                                                                        .length -
+                                                                    1]
+                                                            .text
+                                                            .length));
+                                          },
+                                        );
                                       }
 
                                       return value;
@@ -1245,63 +1250,36 @@ class _LessonAddState extends State<LessonAdd> {
                                                 ['deleteSelected'] = false;
                                           }
                                         },
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: LessonActionListTile(
-                                                  actionName: actionName,
-                                                  apparatus: apratusName,
-                                                  position: globalFunction.getActionPosition(
+                                        child: Expanded(
+                                          child: LessonActionListTile(
+                                              actionName: actionName,
+                                              apparatus: apratusName,
+                                              position: globalFunction
+                                                  .getActionPosition(
                                                       apratusName,
                                                       actionName,
                                                       globalVariables
                                                           .actionList),
-                                                  name: name,
-                                                  phoneNumber: phoneNumber,
-                                                  lessonDate: lessonDate,
-                                                  grade: grade,
-                                                  totalNote: totalNote,
-                                                  docId: userInfo.docId,
-                                                  memberdocId: userInfo.docId,
-                                                  uid: uid,
-                                                  pos: pos,
-                                                  isSelected: isSelected,
-                                                  isSelectable: true,
-                                                  isDraggable: true,
-                                                  customFunctionOnTap: () {
-                                                    doc['noteSelected'] =
-                                                        !doc['noteSelected'];
-                                                    txtEdtCtrlrList[index]
-                                                        .text = totalNote;
-                                                    String tmp =
-                                                        txtEdtCtrlrList[index]
-                                                            .text;
-                                                  }),
-                                            ),
-                                            Offstage(
-                                              offstage: lessonActionList[index]
-                                                  ['deleteSelected'],
-                                              child: IconButton(
-                                                onPressed: () {
-                                                  // 노트편집 화면의 경우 기존 목록에서 동작을 삭제하는 경우 생길 수 있어서, 삭제이벤트 발생시 docId 수집
-                                                  getDeleteTargetDocId(index);
-                                                  lessonActionList
-                                                      .removeAt(index);
-                                                  int i = 0;
-                                                  lessonActionList
-                                                      .forEach((element) {
-                                                    element['pos'] = i;
-                                                    i++;
-                                                  });
-                                                  setState(() {});
-                                                },
-                                                icon: Icon(
-                                                  Icons.delete,
-                                                  color: Palette.statusRed,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                              name: name,
+                                              phoneNumber: phoneNumber,
+                                              lessonDate: lessonDate,
+                                              grade: grade,
+                                              totalNote: totalNote,
+                                              docId: userInfo.docId,
+                                              memberdocId: userInfo.docId,
+                                              uid: uid,
+                                              pos: pos,
+                                              isSelected: isSelected,
+                                              isSelectable: true,
+                                              isDraggable: true,
+                                              customFunctionOnTap: () {
+                                                doc['noteSelected'] =
+                                                    !doc['noteSelected'];
+                                                txtEdtCtrlrList[index].text =
+                                                    totalNote;
+                                                String tmp =
+                                                    txtEdtCtrlrList[index].text;
+                                              }),
                                         ),
                                       );
                                     }),
