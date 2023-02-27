@@ -881,7 +881,10 @@ class _LessonNoteViewState extends State<LessonNoteView> {
         // 캘린더 시작
         Offstage(
           offstage: isNoteCalendarHided,
-          child: TableCalendarWidget(selectedDate: "")
+          child: TableCalendarWidget(
+            selectedDate: "",
+            customFunctionOnDaySelected: () {},
+          )
               .animate(target: !isNoteCalendarHided ? 1 : 0)
               .fadeIn(duration: 300.ms)
               .animate(target: isNoteCalendarHided ? 1 : 0)
@@ -1511,7 +1514,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
           ),
           builder: (context, snapshot) {
             final docs = snapshot.data?.docs ?? []; // 문서들 가져오기
-
+            List<bool> isExpandedList = [];
             if (docs.isEmpty) {
               return Center(child: Text(" "));
             }
@@ -1533,8 +1536,8 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                     .toList();
 
                 print('###lessonActionList ${lessonActionList.length}');
+                isExpandedList.add(false);
 
-                
                 return Offstage(
                   offstage: false, // calDate == lessonDate ? false : true,
                   child: InkWell(
@@ -1553,7 +1556,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                         ];
                         print("args.length : ${args.length}");
                         print("[MI]LessonCard-lessonDate : ${lessonDate}");
-                
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -1570,6 +1573,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                         lessonDate: lessonDate,
                         todayNote: todayNote,
                         lessonActionList: lessonActionList,
+                        isExpanded: isExpandedList[index],
                       )),
                 );
 
