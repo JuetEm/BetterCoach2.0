@@ -124,6 +124,27 @@ class DayLessonService extends ChangeNotifier {
     notifyListeners();
   }
 
+  updateTicketUsed(
+    String id,
+    String docId,
+    String lessonDate,
+    String name,
+    // Timestamp,
+    String todayNote,
+    String uid,
+  ) async {
+    await daylessonCollection.doc(id).update({
+      'docId': docId,
+      'lessonDate': lessonDate,
+      'name': name,
+      'timestamp': DateTime.now(),
+      'todayNote': todayNote,
+      'uid': uid,
+    });
+
+    notifyListeners();
+  }
+
   creatDayNote(
     String docId,
     String lessonDate,

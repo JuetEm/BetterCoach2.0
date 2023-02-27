@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
+import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/ui/widget/actionListTileWidget.dart';
 import 'package:web_project/app/ui/page/actionSelector.dart';
 import 'package:web_project/app/data/provider/lesson_service.dart';
@@ -257,8 +258,8 @@ class _LessonAddState extends State<LessonAdd> {
     //   keyboardOpenBefore = true;
     // }
 
-    return Consumer2<LessonService, DayLessonService>(
-      builder: (context, lessonService, dayLessonService, child) {
+    return Consumer3<LessonService, DayLessonService, MemberTicketService>(
+      builder: (context, lessonService, dayLessonService, memberTicketService, child) {
         print(
             "customUserInfo.uid : ${customUserInfo.uid}, customUserInfo.docId :  ${customUserInfo.docId} lessonDateArg : ${lessonDateArg}");
         if (lessonActionList.isEmpty && lessonAddMode == "노트편집") {
@@ -350,6 +351,14 @@ class _LessonAddState extends State<LessonAdd> {
                       saveMethod(lessonService, lessonDateArg, lessonAddMode,
                           customUserInfo, dayLessonService);
 
+                          String id = "";
+                          globalVariables.memberTicketList.forEach((element) {
+                            if (element['isSelected'] == true) {
+                              id = element['id'];
+                            }
+                           });
+                          //  dayLessonService
+                      isTicketCountChecked ? memberTicketService.updateTicketCountLeft(userInfo.uid, id, userInfo.docId, ticketCountAll-(ticketCountLeft-1), ticketCountLeft-1) :
                       // await totalNoteSave(
                       //     lessonService, customUserInfo, context);
 

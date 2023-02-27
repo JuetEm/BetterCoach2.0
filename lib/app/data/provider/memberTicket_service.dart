@@ -136,6 +136,33 @@ class MemberTicketService extends ChangeNotifier {
     return docId;
   }
 
+  Future<String> updateTicketCountLeft(
+    final String uid,
+    final String docId,
+    final String memberId,
+    final int ticketUsingCount,
+    final int ticketCountLeft,
+  ) async {
+    print("docId : ${docId}");
+    // report 만들기
+    String id = "";
+    await memberTicketCollection.doc(docId).update({
+      'uid': uid, // 작성자 uid
+      'memberId': memberId, // 회원 아이디
+      'ticketCountLeft': ticketCountLeft, // 수강권 남은 횟수
+      'ticketUsingCount': ticketUsingCount, // 수강권 사용 횟수
+    }).then((value) {
+      // id = value
+      // id = docID;
+      print("Successfully completed");
+    }, onError: (e) {
+      print("Error completing: ${e}");
+    });
+    notifyListeners(); // 화면 갱신
+
+    return docId;
+  }
+
   void delete({
     String? docId,
     Function? onSuccess,
