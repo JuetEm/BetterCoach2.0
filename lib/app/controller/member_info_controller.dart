@@ -20,6 +20,7 @@ class MemberInfoController {
         await lessonRepository.getLessonActionNote(uid, memberId);
 
     print('###Albert, tell me ${lessonDayNoteList.length}');
+    // print('###Albert, tell me ${lessonDayNoteList}');
 
     print('###Albert, tell me ${lessonActionNoteList.length}');
 

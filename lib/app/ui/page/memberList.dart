@@ -9,7 +9,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/ui/page/actionSelector.dart';
-import 'package:web_project/app/data/provider/daylesson_service.dart';
+
 import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/app/ui/page/report.dart';
 import 'package:web_project/app/ui/page/sequenceLibrary.dart';
@@ -646,6 +646,9 @@ class _MemberListState extends State<MemberList> {
 
                                       /// 회원카드 선택 시 함수
                                       customFunctionOnTap: () async {
+                                        globalVariables.lessonNoteGlobalList =
+                                            [];
+
                                         await memberInfoController
                                             .getLessonDayAndActionNoteData(
                                                 userInfo.uid, userInfo.docId)
@@ -654,7 +657,7 @@ class _MemberListState extends State<MemberList> {
                                               .addAll(value);
 
                                           print(
-                                              "### globalVariables.lessonNoteGlobalList ${globalVariables.lessonNoteGlobalList.length}");
+                                              "###Albert ${globalVariables.lessonNoteGlobalList.length}");
                                         });
 
                                         // 회원 카드 선택시 MemberInfo로 이동
@@ -674,12 +677,18 @@ class _MemberListState extends State<MemberList> {
                                           ),
                                         ).then((result) {
                                           globalVariables.sortList();
+                                          print(
+                                              '###Albert2 globalVariables.sortList()${globalVariables.sortList()}');
                                           // print("MemberList : userInfo.bodyAnalyzed : ${userInfo.selectedBodyAnalyzed}");
                                           // UserInfo tmpUserInfo = result;
                                           // print("MemberList : tmpUserInfo.bodyAnalyzed : ${tmpUserInfo.selectedBodyAnalyzed}");
                                           setState(() {
                                             print(
                                                 "memberList - memberinfo pop setState!!");
+                                            print(
+                                                "###Albert2 ${globalVariables.lessonNoteGlobalList.length}");
+                                            // print(
+                                            //     "###Albert2 ${globalVariables.lessonNoteGlobalList}");
                                           });
                                         });
                                       },

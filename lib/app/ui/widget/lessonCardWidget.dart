@@ -9,7 +9,7 @@ import 'package:web_project/app/ui/page/lessonUpdate.dart';
 
 bool isExpanded = false;
 
-class LessonCardWidget extends StatelessWidget {
+class LessonCardWidget extends StatefulWidget {
   LessonCardWidget({
     Key? key,
     required this.userInfo,
@@ -26,9 +26,14 @@ class LessonCardWidget extends StatelessWidget {
   final List lessonActionList;
 
   @override
+  State<LessonCardWidget> createState() => _LessonCardWidgetState();
+}
+
+class _LessonCardWidgetState extends State<LessonCardWidget> {
+  @override
   Widget build(BuildContext context) {
     print('###이건 되니?');
-    print('###lessonActionList: $lessonActionList');
+    print('###lessonActionList: ${widget.lessonActionList}');
     return Container(
       color: Palette.mainBackground,
       child: Padding(
@@ -50,7 +55,7 @@ class LessonCardWidget extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(6, 0, 10, 0),
                     child: Text(
-                      '${lessonDate}',
+                      '${widget.lessonDate}',
                       style: TextStyle(
                           color: Palette.gray00, fontWeight: FontWeight.bold),
                       /* validator:
@@ -80,13 +85,13 @@ class LessonCardWidget extends StatelessWidget {
                 child: Container(
                   constraints: BoxConstraints(maxWidth: 366),
                   width: MediaQuery.of(context).size.width - 114,
-                  child: todayNote == ""
+                  child: widget.todayNote == ""
                       ? Text(
                           '-',
                           style: TextStyle(color: Palette.gray99, fontSize: 14),
                         )
                       : Text(
-                          '$todayNote',
+                          '${widget.todayNote}',
                           style: TextStyle(color: Palette.gray00, fontSize: 14),
                         ),
                 ),
@@ -117,12 +122,13 @@ class LessonCardWidget extends StatelessWidget {
                       padding: EdgeInsets.only(bottom: 10),
                       physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: lessonActionList.length,
+                      itemCount: widget.lessonActionList.length,
                       itemBuilder: (context, index) {
                         print('###빌드는 하긴 하니?');
 
                         // 사용한 모델 객체를 선언해 리스트[index] 로 받음
-                        LessonNoteInfo lessonNoteInfo = lessonActionList[index];
+                        LessonNoteInfo lessonNoteInfo =
+                            widget.lessonActionList[index];
                         Key? valueKey;
                         // 클래스에서 객체 꺼내 쓰는 방식
                         lessonNoteInfo.pos = index;
@@ -171,7 +177,7 @@ class LessonCardWidget extends StatelessWidget {
                                     padding: EdgeInsets.only(left: 14),
                                     child: Chip(
                                       backgroundColor: totalNote == ""
-                                          ? Palette.gray99
+                                          ? Palette.grayEE
                                           : Palette.titleOrange,
                                       label: Text("$actionName",
                                           style: TextStyle(
@@ -211,6 +217,7 @@ class LessonCardWidget extends StatelessWidget {
                       : Icons.expand_more_outlined),
                   onPressed: () {
                     isExpanded = !isExpanded;
+                    setState(() {});
                   },
                 ),
               ),
