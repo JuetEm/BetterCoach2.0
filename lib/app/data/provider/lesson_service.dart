@@ -297,8 +297,7 @@ class LessonService extends ChangeNotifier {
     var docsALength = lessonActionResult.docs.length;
     var rstAObj = {};
     for (int i = 0; i < docsALength; i++) {
-      print(
-          "readDateMemberComplexNote - lessonActionResult.docs[i].data() : ${lessonActionResult.docs[i].data()}");
+      // print("readDateMemberComplexNote - lessonActionResult.docs[i].data() : ${lessonActionResult.docs[i].data()}");
       rstAObj = lessonActionResult.docs[i].data();
       rstAObj['id'] = lessonActionResult.docs[i].id;
 
@@ -347,7 +346,7 @@ class LessonService extends ChangeNotifier {
     var rstAObj = {};
     for (int i = 0; i < docsALength; i++) {
       print(
-          "readDateMemberComplexNote - lessonActionResult.docs[i].data() : ${lessonActionResult.docs[i].data()}");
+          "onActionResult.docs[i].data() : ${lessonActionResult.docs[i].data()}");
       rstAObj = lessonActionResult.docs[i].data();
       rstAObj['id'] = lessonActionResult.docs[i].id;
 

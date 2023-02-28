@@ -259,7 +259,8 @@ class _LessonAddState extends State<LessonAdd> {
     // }
 
     return Consumer3<LessonService, DayLessonService, MemberTicketService>(
-      builder: (context, lessonService, dayLessonService, memberTicketService, child) {
+      builder: (context, lessonService, dayLessonService, memberTicketService,
+          child) {
         print(
             "customUserInfo.uid : ${customUserInfo.uid}, customUserInfo.docId :  ${customUserInfo.docId} lessonDateArg : ${lessonDateArg}");
         if (lessonActionList.isEmpty && lessonAddMode == "노트편집") {
@@ -348,22 +349,31 @@ class _LessonAddState extends State<LessonAdd> {
                       /* await todayNoteSave(
                           lessonService, customUserInfo, context); */
 
+                      print(
+                          "!!!!!!!!!!!!!!!!! 완료버튼 - saveMethod START! : ${isTicketCountChecked}");
                       saveMethod(lessonService, lessonDateArg, lessonAddMode,
                           customUserInfo, dayLessonService);
 
-                          String id = "";
-                          globalVariables.memberTicketList.forEach((element) {
-                            if (element['isSelected'] == true) {
-                              id = element['id'];
-                            }
-                           });
-                      
-                      isTicketCountChecked ? memberTicketService.updateTicketCountLeft(userInfo.uid, id, userInfo.docId, ticketCountAll-(ticketCountLeft-1), ticketCountLeft-1) :
+                      String membetTicketId = "";
+                      globalVariables.memberTicketList.forEach((element) {
+                        if (element['isSelected'] == true) {
+                          membetTicketId = element['id'];
+                        }
+                      });
+                      // 멤버 티켓 정보 업데이트 => 수강권 차감 여부 체크시, 남은 횟 수 1회 차감,
+                      print("!!!!!!!!!!!!!!!!! ticketCountLeft : ${ticketCountLeft}");
+                      isTicketCountChecked
+                          ? memberTicketService.updateTicketCountLeft(
+                              userInfo.uid,
+                              membetTicketId,
+                              userInfo.docId,
+                              ticketCountLeft - 1,
+                              ticketCountAll - (ticketCountLeft - 1),
+                              )
+                          : null;
                       // await totalNoteSave(
                       //     lessonService, customUserInfo, context);
-
-                      
-
+                      print("!!!!!!!!!!!!!!!!! ticketCountLeft - 1 : ${ticketCountLeft - 1}");
                       lessonService.notifyListeners();
                       Navigator.pop(context, lessonActionList);
                     }
@@ -1240,10 +1250,11 @@ class _LessonAddState extends State<LessonAdd> {
                                       Key? valueKey;
 
                                       lessonActionList[index]['pos'] = index;
+                                      
                                       valueKey = ValueKey(index);
 
                                       final doc = lessonActionList[index];
-                                      print("동작 목록 리스트 - doc : ${doc}");
+                                      // print("동작 목록 리스트 - doc : ${doc}");
 
                                       String uid = doc['uid']; // 강사 고유번호
 
@@ -1268,14 +1279,13 @@ class _LessonAddState extends State<LessonAdd> {
                                           int sensitivity = 8;
                                           if (details.delta.dx > sensitivity) {
                                             // right swipe
-                                            print(
-                                                "GestureDetector right swipe");
+                                            // print("GestureDetector right swipe");
                                             lessonActionList[index]
                                                 ['deleteSelected'] = true;
                                           } else if (details.delta.dx <
                                               -sensitivity) {
                                             // left swipe
-                                            print("GestureDetector left swipe");
+                                            // print("GestureDetector left swipe");
                                             lessonActionList[index]
                                                 ['deleteSelected'] = false;
                                           }
@@ -1318,7 +1328,19 @@ class _LessonAddState extends State<LessonAdd> {
                                               offstage: lessonActionList[index]
                                                   ['deleteSelected'],
                                               child: IconButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    print("asdfsdfsfsgfdg delete call!! index ${index}");
+                                                    int tmpPos = 0;
+                                                    lessonActionList.removeAt(index);
+                                                    lessonActionList.forEach((element) {
+                                                      element['pos'] = tmpPos;
+                                                      tmpPos ++;
+                                                    });
+                                                    deleteTargetDocIdLiet.add(lessonActionList[index]['id']);
+                                                    setState(() {
+                                                      
+                                                    });
+                                                  },
                                                   icon: Icon(
                                                     Icons.delete,
                                                     color: Palette.statusRed,
@@ -1996,12 +2018,36 @@ class _LessonAddState extends State<LessonAdd> {
 
                                   // await totalNoteSave(
                                   //     lessonService, customUserInfo, context);
+                                  print(
+                                      "!!!!!!!!!!!!!!!!! 저장하기 - saveMethod START : ${isTicketCountChecked}");
                                   saveMethod(
                                       lessonService,
                                       lessonDateArg,
                                       lessonAddMode,
                                       customUserInfo,
                                       dayLessonService);
+
+                                  String membetTicketId = "";
+                                  globalVariables.memberTicketList
+                                      .forEach((element) {
+                                    if (element['isSelected'] == true) {
+                                      membetTicketId = element['id'];
+                                    }
+                                  });
+                                  // 멤버 티켓 정보 업데이트 => 수강권 차감 여부 체크시, 남은 횟 수 1회 차감,
+                                  print(
+                                      "!!!!!!!!!!!!!!!!! isTicketCountChecked : ${isTicketCountChecked}");
+                                  isTicketCountChecked
+                                      ? memberTicketService
+                                          .updateTicketCountLeft(
+                                              userInfo.uid,
+                                              membetTicketId,
+                                              userInfo.docId,
+                                              ticketCountLeft - 1,
+                                              ticketCountAll -
+                                                  (ticketCountLeft - 1),
+                                              )
+                                      : null;
 
                                   lessonService.notifyListeners();
                                   Navigator.pop(context, lessonActionList);
@@ -2042,12 +2088,17 @@ class _LessonAddState extends State<LessonAdd> {
     deleteTargetDocIdLiet.add(lessonActionList[index]['id']);
   }
 
+  int i=0;
   void saveMethod(
       LessonService lessonService,
       String lessonDateArg,
       String lessonAddMode,
       CustomUserInfo.UserInfo customUserInfo,
       DayLessonService dayLessonService) {
+        print("asdfsdfsfsgfdg - saveMethod CALLED!! => ${i}");
+        lessonActionList.forEach((element) {
+          print("asdfsdfsfsgfdg -${element['actionName']} : ${element['pos']}");
+         });
     for (int i = 0; i < lessonActionList.length; i++) {
       /* print(
           "llllllllllll -- lessonActionList.length : ${lessonActionList.length}");
@@ -2061,11 +2112,11 @@ class _LessonAddState extends State<LessonAdd> {
             "lessonActionList[i]['totalNote'] : ${lessonActionList[i]['totalNote']}"); */
         lessonActionList[i]['totalNote'] = txtEdtCtrlrList[i].text;
         String tmp = txtEdtCtrlrList[i].text;
-        print("############# - tmp : ${tmp}");
+        // print("############# - tmp : ${tmp}");
 
-        print(
-            "lessonActionList[i]['id'] == null? : ${lessonActionList[i]['id'] == null}");
+        // print("lessonActionList[i]['id'] == null? : ${lessonActionList[i]['id'] == null}");
         if (lessonActionList[i]['id'] == null) {
+          print("asdfsdfsfsgfdg - 1");
           lessonService.create(
             docId: lessonActionList[i]['docId'],
             uid: lessonActionList[i]['uid'],
@@ -2080,6 +2131,7 @@ class _LessonAddState extends State<LessonAdd> {
             onError: () {},
           );
         } else {
+          print("asdfsdfsfsgfdg - 2");
           lessonService.updateLessonActionNote(
               lessonActionList[i]['id'],
               lessonActionList[i]['docId'],
@@ -2095,8 +2147,9 @@ class _LessonAddState extends State<LessonAdd> {
               lessonActionList[i]['uid']);
         }
       } else if (lessonActionList.isNotEmpty && lessonAddMode == "노트 추가") {
-        print(
-            "tllllllllllll 자자자 노트 추가!! -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}");
+        /* print(
+            "tllllllllllll 자자자 노트 추가!! -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}"); */
+            print("asdfsdfsfsgfdg - 3");
         lessonService.create(
           docId: lessonActionList[i]['docId'],
           uid: lessonActionList[i]['uid'],
@@ -2111,21 +2164,24 @@ class _LessonAddState extends State<LessonAdd> {
           onError: () {},
         );
       } else {
-        print(
-            "tllllllllllll 자자자 그외 뭔가!! -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}");
+        print("asdfsdfsfsgfdg - 4");
+        // print("tllllllllllll 자자자 그외 뭔가!! -- xtEdtCtrlrList[$i].text : ${txtEdtCtrlrList[i].text}");
       }
     }
     deleteTargetDocIdLiet.forEach((element) {
       print("deleted actions docId : element : ${element}");
-      lessonService.delete(docId: element, onSuccess: () {}, onError: () {});
+      lessonService.delete(docId: element, onSuccess: () {
+        
+      }, onError: () {});
     });
+    deleteTargetDocIdLiet = [];
 
     // print("ppppppppp - todayNoteController.text.trim() : ${todayNoteController.text.trim()}, todayNoteView : ${todayNoteView}");
     if (todayNoteController.text.trim().isNotEmpty) {
       if (lessonAddMode == "노트편집") {
+        print("asdfsdfsfsgfdg - 5");
         dayLessonList[0][0]['todayNote'] = todayNoteController.text.trim();
-        print(
-            "ppppppppp - dayLessonList[0]['id'] : ${dayLessonList[0][0]['id']}");
+        // print("ppppppppp - dayLessonList[0]['id'] : ${dayLessonList[0][0]['id']}");
         daylessonService.updateDayNote(
           dayLessonList[0][0]['id'],
           dayLessonList[0][0]['docId'],
@@ -2135,7 +2191,8 @@ class _LessonAddState extends State<LessonAdd> {
           dayLessonList[0][0]['uid'],
         );
       } else if (lessonAddMode == "노트 추가") {
-        print("xmxmxmxmxmxmxmxmx - customUserInfo : ${customUserInfo}");
+        // print("xmxmxmxmxmxmxmxmx - customUserInfo : ${customUserInfo}");
+        print("asdfsdfsfsgfdg - 6");
         dayLessonService.creatDayNote(
           customUserInfo.docId,
           lessonDateArg,
@@ -2147,9 +2204,27 @@ class _LessonAddState extends State<LessonAdd> {
     }
     // 지워야 하는 함수 => 비용이 너무 많이 나감
     // memberInfoController.getLessonDayAndActionNoteData(userInfo.uid, userInfo.docId);
-    // globalVariables.memberTicketList.
+    String ticketId = "";
+    globalVariables.memberTicketList.forEach((element) {
+      if(element['isSelected'] == true && element['memberId'] == userInfo.docId){
+        ticketId = element['id'];
+      } // ? ticketId = element['id'] : ticketId = "";
+      // print("asdfsdfsfsgfdg MEMBER : ${element['isSelected']}, ${element['memberId']}, id : ${element['id']} : ${userInfo.docId}, => ${userInfo.name}");
+    });
+    
 
-    // dayLessonService.updateTicketUsedById(dayLessonList[0][0]['id'], isTicketCountChecked, )
+    /* print("asdfsdfsfsgfdg ticketId : ${ticketId}");
+    print("asdfsdfsfsgfdg dayLessonList[0][0]['id'] : ${dayLessonList[0][0]['id']}");
+    print("asdfsdfsfsgfdg dayLessonList[0][0]['id'] : ${dayLessonList[0][0]['id']}");
+    print("asdfsdfsfsgfdg dayLessonList[0asdfsdfsfsgfdg ][0]['docId'] : ${dayLessonList[0][0]['docId']}");
+    print("asdfsdfsfsgfdg dayLessonList[0][0]['lessonDate'] : ${dayLessonList[0][0]['lessonDate']}");
+    print("asdfsdfsfsgfdg dayLessonList[0][0]['name'] : ${dayLessonList[0][0]['name']}");
+    print("asdfsdfsfsgfdg dayLessonList[0][0]['todayNote'] : ${dayLessonList[0][0]['todayNote']}");
+    print("asdfsdfsfsgfdg dayLessonList[0][0]['uid'] : ${dayLessonList[0][0]['uid']}"); */
+    ticketId != ""
+        ? dayLessonService.updateTicketUsedById(
+            dayLessonList[0][0]['id'], isTicketCountChecked, ticketId)
+        : null;
   }
 
   Future<void> totalNoteSave(LessonService lessonService,

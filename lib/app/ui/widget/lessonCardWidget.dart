@@ -40,8 +40,8 @@ class _LessonCardWidgetState extends State<LessonCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print('###이건 되니?');
-    inspect(lessonActionList);
+    // print('###이건 되니?');
+    // inspect(lessonActionList);
     return Container(
       color: Palette.mainBackground,
       child: Padding(

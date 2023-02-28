@@ -1664,6 +1664,8 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                           lessonAddMode,
                           tmpLessonInfoList,
                           resultActionList,
+                          ticketCountLeft,
+                          ticketCountAll
                         ];
                         print("args.length : ${args.length}");
                         print("[MI]LessonCard-lessonDate : ${lessonDate}");
