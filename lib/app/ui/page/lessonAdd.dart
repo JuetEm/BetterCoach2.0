@@ -28,11 +28,7 @@ import 'memberInfo.dart';
 
 String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
-//TextEditingController nameController = TextEditingController();
-//TextEditingController apratusNameController = TextEditingController();
-//TextEditingController actionNameController = TextEditingController();
 TextEditingController lessonDateController = TextEditingController(text: now);
-//TextEditingController gradeController = TextEditingController(text: "50");
 TextEditingController todayNoteController = TextEditingController();
 
 /// 시퀀스 이름 컨트롤러
@@ -97,8 +93,6 @@ bool keyboardOpenBefore = false;
 String todayNotedocId = "";
 String todayNoteView = "";
 
-// List resultActionList = [];
-
 bool isSequenceSaveChecked = false;
 bool isTicketCountChecked = true;
 
@@ -112,6 +106,10 @@ List<String> notedActionsList = [];
 List deleteTargetDocIdLiet = [];
 
 List<TextEditingController> txtEdtCtrlrList = [];
+
+SaveCurrentLesson(){
+
+}
 
 class LessonAdd extends StatefulWidget {
   const LessonAdd({super.key});

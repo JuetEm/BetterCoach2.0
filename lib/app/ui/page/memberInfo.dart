@@ -754,7 +754,7 @@ class _MemberInfoState extends State<MemberInfo> {
                         ),
                       ).then((value) {
                         print("^^^^^^^^^^^^^^^^ Floating Button Then!!");
-                        resultActionList = value;
+                        // resultActionList = value;
                         setState(() {});
                       });
 
@@ -1038,6 +1038,9 @@ class _LessonNoteViewState extends State<LessonNoteView> {
   }
 }
 
+bool isSelectedTicketExist = false;
+int ticketIndex = 0;
+
 List memberTicketList = [];
 
 class MemberInfoView extends StatefulWidget {
@@ -1054,7 +1057,30 @@ class MemberInfoView extends StatefulWidget {
 
 class _MemberInfoViewState extends State<MemberInfoView> {
   @override
+  void initState() {
+    super.initState();
+    ticketIndex = 0;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    ticketIndex = 0;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // 등록 된 수강권이 있으면 회원관리 기본정보 화면에 수강권 자동 선택
+    
+    isSelectedTicketExist = false;
+    for (int i = 0; i < globalVariables.memberTicketList.length; i++) {
+      ticketIndex++;
+      if ((globalVariables.memberTicketList[i]['isSelected'] == true) &&
+          (globalVariables.memberTicketList[i]['memberId'] == userInfo.docId)) {
+        isSelectedTicketExist = true;
+        break;
+      }
+    }
     _MemberInfoState? parent =
         context.findAncestorStateOfType<_MemberInfoState>();
     // selectedGoals 값 반영하여 FilterChips 동적 생성
@@ -1105,31 +1131,25 @@ class _MemberInfoViewState extends State<MemberInfoView> {
             /// 티켓모양 수강권
             Container(
               alignment: Alignment.center,
-              child: globalVariables.memberTicketList.where((element) {
-                // print("element : ${element}");
-                return (element['isSelected'] == true) &&
-                    (element['memberId'] == userInfo.docId);
-              }).isNotEmpty
+              child: isSelectedTicketExist
                   ? TicketWidget(
                       ticketTitle: globalVariables.memberTicketList[
-                          globalVariables.selectedTicketIndex]['ticketTitle'],
+                          ticketIndex]['ticketTitle'],
                       ticketDescription: globalVariables.memberTicketList[
-                              globalVariables.selectedTicketIndex]
+                              ticketIndex]
                           ['ticketDescription'],
                       ticketStartDate: globalFunction.getDateFromTimeStamp(
-                          globalVariables.memberTicketList[globalVariables
-                              .selectedTicketIndex]['ticketStartDate']),
+                          globalVariables.memberTicketList[ticketIndex]['ticketStartDate']),
                       ticketEndDate: globalFunction.getDateFromTimeStamp(
-                          globalVariables.memberTicketList[globalVariables
-                              .selectedTicketIndex]['ticketEndDate']),
+                          globalVariables.memberTicketList[ticketIndex]['ticketEndDate']),
                       // ticketDateLeft: globalVariables.memberTicketList[
                       //         globalVariables.selectedTicketIndex]
                       //     ['ticketDateLeft'],
                       ticketCountAll: globalVariables.memberTicketList[
-                              globalVariables.selectedTicketIndex]
+                              ticketIndex]
                           ['ticketCountAll'],
                       ticketCountLeft: globalVariables.memberTicketList[
-                              globalVariables.selectedTicketIndex]
+                              ticketIndex]
                           ['ticketCountLeft'],
                       customFunctionOnHover: () {
                         print("수강권 추가 onHover!!");
@@ -1145,7 +1165,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                                       globalVariables.memberTicketList,
                                       widget.userInfo)),
                         ).then((value) {
-                          globalVariables.selectedTicketIndex = value;
+                          ticketIndex = value;
                           print("수강권 클릭 result : ${value}");
                           setState(() {
                             print("memberInfo then setState called!");
@@ -1172,7 +1192,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                                       globalVariables.memberTicketList,
                                       widget.userInfo)),
                         ).then((value) {
-                          globalVariables.selectedTicketIndex = value;
+                          ticketIndex = value;
                           print("수강권 선택 result : ${value}");
                           setState(() {
                             print("memberInfo then setState called!");
