@@ -18,6 +18,7 @@ import 'package:web_project/app/data/provider/lesson_service.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/data/provider/member_service.dart';
 import 'package:web_project/app/data/provider/report_service.dart';
+import 'package:web_project/app/data/provider/sequenceCustom_service.dart';
 import 'package:web_project/app/data/provider/sequenceRecent_service.dart';
 import 'package:web_project/app/data/provider/ticketLibrary_service.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
@@ -224,6 +225,7 @@ void main() async {
             ChangeNotifierProvider(create: (context) => TicketLibraryService()),
             ChangeNotifierProvider(create: (context) => MemberTicketService()),
             ChangeNotifierProvider(create: (context) => SequenceRecentService()),
+            ChangeNotifierProvider(create: (context) => SequenceCustomService()),
           ],
           child: const MyApp(),
         ),
@@ -244,6 +246,7 @@ void main() async {
           ChangeNotifierProvider(create: (context) => TicketLibraryService()),
           ChangeNotifierProvider(create: (context) => MemberTicketService()),
           ChangeNotifierProvider(create: (context) => SequenceRecentService()),
+          ChangeNotifierProvider(create: (context) => SequenceCustomService()),
         ],
         child: const MyApp(),
       ),

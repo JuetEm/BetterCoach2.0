@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:web_project/app/function/globalFunction.dart';
 
-class SequenceRecentService extends ChangeNotifier {
+class SequenceCustomService extends ChangeNotifier {
   CollectionReference<Map<String, dynamic>> sequenceRecentCollection =
-      FirebaseFirestore.instance.collection('sequenceRecent');
+      FirebaseFirestore.instance.collection('sequenceCustom');
 
   GlobalFunction globalFunction = GlobalFunction();
 
@@ -26,10 +26,9 @@ class SequenceRecentService extends ChangeNotifier {
       rstObj = result.docs[i].data();
       // 문서 id는 없으므로 붙여줌
       rstObj['id'] = result.docs[i].id;
-      // print("fdsabmioenroifaenf rstObj : ${rstObj}");
+
       resultList.add(rstObj);
     }
-    notifyListeners();
     return resultList;
   }
 
@@ -37,7 +36,6 @@ class SequenceRecentService extends ChangeNotifier {
   Future<String> create(
     final String uid,
     final String memberId,
-    final String todayNote,
     final List actionList, // List -> Json
     final bool isfavorite, // 즐겨찾는 시퀀스 (추후 추가 가능성)
     final int like, // 좋아요 수 (추후 추가 가능성)

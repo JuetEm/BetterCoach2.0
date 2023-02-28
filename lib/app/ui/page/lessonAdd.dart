@@ -348,6 +348,7 @@ class _LessonAddState extends State<LessonAdd> {
                           sequenceRecentService,
                           userInfo.uid,
                           userInfo.docId,
+                          todayNoteController.text,
                           lessonActionList,
                           false,
                           0,
@@ -1188,7 +1189,7 @@ class _LessonAddState extends State<LessonAdd> {
                               ),
                               onPressed: () async {
 
-                                saveRecentSequence(sequenceRecentService, userInfo.uid, userInfo.docId, lessonActionList, false, 0, Timestamp.now(), userInfo.name);
+                                saveRecentSequence(sequenceRecentService, userInfo.uid, userInfo.docId,  todayNoteController.text, lessonActionList, false, 0, Timestamp.now(), userInfo.name);
                                 print(
                                     "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
 
@@ -1288,6 +1289,7 @@ class _LessonAddState extends State<LessonAdd> {
     SequenceRecentService sequenceRecentService,
     String uid,
     String memberId,
+    String todayNote,
     List actionList, // List -> Json
     bool isfavorite, // 즐겨찾는 시퀀스 (추후 추가 가능성)
     int like, // 좋아요 수 (추후 추가 가능성)
@@ -1298,7 +1300,7 @@ class _LessonAddState extends State<LessonAdd> {
     String sequenceTitle =
         username + "님 " + DateFormat("yyyy-MM-dd HH:MM").format(now);
     sequenceRecentService.create(
-        uid, memberId, actionList, isfavorite, like, timeStamp, sequenceTitle);
+        uid, memberId, todayNote, actionList, isfavorite, like, timeStamp, sequenceTitle);
   }
 
   void saveCustomSequnce() {}
@@ -1397,14 +1399,15 @@ class _LessonAddState extends State<LessonAdd> {
       }
     }
 
-    
     String ticketId = "";
+    globalVariables.memberTicketList.where((element) => element['isSelect'] == true).isNotEmpty ?
+    
     globalVariables.memberTicketList.forEach((element) {
       if (element['isSelected'] == true &&
           element['memberId'] == userInfo.docId) {
         ticketId = element['id'];
       }
-    });
+    }) : ticketId = "";
 
     ticketId != ""
         ? dayLessonService.updateTicketUsedById(
