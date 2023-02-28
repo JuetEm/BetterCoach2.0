@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
+import 'package:web_project/app/data/provider/sequenceCustom_service.dart';
 import 'package:web_project/app/data/provider/sequenceRecent_service.dart';
 import 'package:web_project/app/ui/widget/actionListTileWidget.dart';
 import 'package:web_project/app/ui/page/actionSelector.dart';
@@ -237,10 +238,10 @@ class _LessonAddState extends State<LessonAdd> {
     }
     print("재빌드시 init상태 : ${checkInitState}");
 
-    return Consumer4<LessonService, DayLessonService, MemberTicketService,
-        SequenceRecentService>(
+    return Consumer5<LessonService, DayLessonService, MemberTicketService,
+        SequenceRecentService, SequenceCustomService>(
       builder: (context, lessonService, dayLessonService, memberTicketService,
-          sequenceRecentService, child) {
+          sequenceRecentService, sequenceCustomService, child) {
         print(
             "customUserInfo.uid : ${customUserInfo.uid}, customUserInfo.docId :  ${customUserInfo.docId} lessonDateArg : ${lessonDateArg}");
         if (lessonActionList.isEmpty && lessonAddMode == "노트편집") {
@@ -354,6 +355,18 @@ class _LessonAddState extends State<LessonAdd> {
                           0,
                           Timestamp.now(),
                           userInfo.name);
+                      isSequenceSaveChecked
+                          ? saveCustomSequnce(
+                              sequenceCustomService,
+                              userInfo.uid,
+                              userInfo.docId,
+                              todayNoteController.text,
+                              lessonActionList,
+                              false,
+                              0,
+                              Timestamp.now(),
+                              userInfo.name)
+                          : null;
 
                       lessonService.notifyListeners();
                       Navigator.pop(context, lessonActionList);
@@ -368,7 +381,6 @@ class _LessonAddState extends State<LessonAdd> {
                   )),
             )
           ], null),
-
           body: CenterConstrainedBody(
             child: Container(
               alignment: Alignment.topCenter,
@@ -1188,8 +1200,28 @@ class _LessonAddState extends State<LessonAdd> {
                                     style: TextStyle(fontSize: 16)),
                               ),
                               onPressed: () async {
-
-                                saveRecentSequence(sequenceRecentService, userInfo.uid, userInfo.docId,  todayNoteController.text, lessonActionList, false, 0, Timestamp.now(), userInfo.name);
+                                saveRecentSequence(
+                                    sequenceRecentService,
+                                    userInfo.uid,
+                                    userInfo.docId,
+                                    todayNoteController.text,
+                                    lessonActionList,
+                                    false,
+                                    0,
+                                    Timestamp.now(),
+                                    userInfo.name);
+                                isSequenceSaveChecked
+                                    ? saveCustomSequnce(
+                                        sequenceCustomService,
+                                        userInfo.uid,
+                                        userInfo.docId,
+                                        todayNoteController.text,
+                                        lessonActionList,
+                                        false,
+                                        0,
+                                        Timestamp.now(),
+                                        userInfo.name)
+                                    : null;
                                 print(
                                     "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
 
@@ -1200,7 +1232,7 @@ class _LessonAddState extends State<LessonAdd> {
                                             element['noteSelected'])
                                         .isEmpty) {
                                   //오늘의 노트가 없는 경우, 노트 생성 및 동작 노트들 저장
-                                  
+
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                     content:
@@ -1214,7 +1246,6 @@ class _LessonAddState extends State<LessonAdd> {
                                   print(
                                       "[LA] 일별메모 저장 : todayNotedocId ${todayNotedocId} ");
 
-                                  
                                   print(
                                       "!!!!!!!!!!!!!!!!! 저장하기 - saveMethod START : ${isTicketCountChecked}");
                                   saveMethod(
@@ -1249,7 +1280,6 @@ class _LessonAddState extends State<LessonAdd> {
                                   lessonService.notifyListeners();
                                   Navigator.pop(context, lessonActionList);
                                 }
-
                               },
                             ),
 
@@ -1299,12 +1329,12 @@ class _LessonAddState extends State<LessonAdd> {
     var now = DateTime.now();
     String sequenceTitle =
         username + "님 " + DateFormat("yyyy-MM-dd HH:MM").format(now);
-    sequenceRecentService.create(
-        uid, memberId, todayNote, actionList, isfavorite, like, timeStamp, sequenceTitle);
+    sequenceRecentService.create(uid, memberId, todayNote, actionList,
+        isfavorite, like, timeStamp, sequenceTitle);
   }
 
   void saveCustomSequnce(
-    SequenceRecentService sequenceRecentService,
+    SequenceCustomService sequenceCustomService,
     String uid,
     String memberId,
     String todayNote,
@@ -1317,8 +1347,8 @@ class _LessonAddState extends State<LessonAdd> {
     var now = DateTime.now();
     String sequenceTitle =
         username + "님 " + DateFormat("yyyy-MM-dd HH:MM").format(now);
-    sequenceRecentService.create(
-        uid, memberId, todayNote, actionList, isfavorite, like, timeStamp, sequenceTitle);
+    sequenceCustomService.create(uid, memberId, todayNote, actionList,
+        isfavorite, like, timeStamp, sequenceTitle);
   }
 
   int i = 0;
@@ -1416,14 +1446,16 @@ class _LessonAddState extends State<LessonAdd> {
     }
 
     String ticketId = "";
-    globalVariables.memberTicketList.where((element) => element['isSelect'] == true).isNotEmpty ?
-    
-    globalVariables.memberTicketList.forEach((element) {
-      if (element['isSelected'] == true &&
-          element['memberId'] == userInfo.docId) {
-        ticketId = element['id'];
-      }
-    }) : ticketId = "";
+    globalVariables.memberTicketList
+            .where((element) => element['isSelect'] == true)
+            .isNotEmpty
+        ? globalVariables.memberTicketList.forEach((element) {
+            if (element['isSelected'] == true &&
+                element['memberId'] == userInfo.docId) {
+              ticketId = element['id'];
+            }
+          })
+        : ticketId = "";
 
     ticketId != ""
         ? dayLessonService.updateTicketUsedById(
