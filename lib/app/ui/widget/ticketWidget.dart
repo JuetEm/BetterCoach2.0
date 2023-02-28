@@ -46,6 +46,10 @@ class _TicketWidgetState extends State<TicketWidget> {
         .inDays
         .toString());
 
+    print(
+        '[isSelect] ### ${widget.ticketTitle} isSelectd? ${widget.selected} isAlive? ${widget.isAlive} ###');
+    print('[isSelect] ### 여기는 티켓 속이다 1) 빌드 당시 ###');
+
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -76,7 +80,11 @@ class _TicketWidgetState extends State<TicketWidget> {
           });
         },
         onTap: () {
-          widget.customFunctionOnTap;
+          widget.customFunctionOnTap();
+          print(
+              '[isSelect] ### ${widget.ticketTitle} isSelectd? ${widget.selected} isAlive? ${widget.isAlive} ###');
+          print('[isSelect] ### 여기는 티켓 속이다 2) 온탭 ###');
+          setState(() {});
         },
         child: Container(
           width: 280,

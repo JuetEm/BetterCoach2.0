@@ -304,8 +304,10 @@ class LessonService extends ChangeNotifier {
       rstAObj['noteSelected'] =
           rstAObj['totalNote'].toString().trim().isNotEmpty ? true : false;
       rstAObj['deleteSelected'] = true;
-      rstAObj['position'] = globalFunction.getActionPosition(rstAObj['apratusName'],
-          rstAObj['actionName'], globalVariables.actionList);
+      rstAObj['position'] = globalFunction.getActionPosition(
+          rstAObj['apratusName'],
+          rstAObj['actionName'],
+          globalVariables.actionList);
       lessonActionResultList.add(rstAObj);
     }
 
@@ -345,16 +347,18 @@ class LessonService extends ChangeNotifier {
     var docsALength = lessonActionResult.docs.length;
     var rstAObj = {};
     for (int i = 0; i < docsALength; i++) {
-      print(
-          "onActionResult.docs[i].data() : ${lessonActionResult.docs[i].data()}");
+      // print(
+      //     "onActionResult.docs[i].data() : ${lessonActionResult.docs[i].data()}");
       rstAObj = lessonActionResult.docs[i].data();
       rstAObj['id'] = lessonActionResult.docs[i].id;
 
       rstAObj['noteSelected'] =
           rstAObj['totalNote'].toString().trim().isNotEmpty ? true : false;
       rstAObj['deleteSelected'] = true;
-      rstAObj['position'] = globalFunction.getActionPosition(rstAObj['apratusName'],
-          rstAObj['actionName'], globalVariables.actionList);
+      rstAObj['position'] = globalFunction.getActionPosition(
+          rstAObj['apratusName'],
+          rstAObj['actionName'],
+          globalVariables.actionList);
       lessonActionResultList.add(rstAObj);
     }
 

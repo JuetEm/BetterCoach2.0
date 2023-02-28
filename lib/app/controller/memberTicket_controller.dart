@@ -39,11 +39,14 @@ class MemberTicketController {
     // Tap한 티켓만 선택상태로 변경
     var item = ticketList.firstWhere(
         (element) => element['id'] == currentStateTicketList[index]['id']);
-
+    // print('[isSelect] index를 찾아라 $index');
+    // print('[isSelect] ### 여기는 함수 안이다 to ticketList $index');
     item['isSelected'] = true;
 
     var globalItem = globalList.firstWhere(
         (element) => element['id'] == currentStateTicketList[index]['id']);
+    // print('[isSelect] index를 찾아라 $index');
+    // print('[isSelect] ### 여기는 함수 안이다 to globalList $index');
 
     globalItem['isSelected'] = true;
   }
