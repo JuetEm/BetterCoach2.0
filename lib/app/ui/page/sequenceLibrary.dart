@@ -10,7 +10,9 @@ import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/color.dart';
 import 'package:web_project/app/ui/widget/globalWidget.dart';
 
+// 최근 시퀀스 리스트
 List recentSequenceList =[];
+List rctSqcList = [];
 
 class SequenceLibrary extends StatefulWidget {
   const SequenceLibrary({super.key});
@@ -116,41 +118,49 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                 ),
               ),
 
+              
               /// 최근 시퀀스 탭 내용
               Consumer<SequenceRecentService>(
                   builder: (context, sequenceRecentService, child) {
-                    recentSequenceList = [];
+                    String sequenceTitle = "";
+                    recentSequenceList.isEmpty ? 
                 sequenceRecentService
                     .read(AuthService().currentUser()!.uid)
                     .then((value) {
                       print("value : ${value.length}");
                       recentSequenceList.addAll(value);
-                      print("recentSequenceList.length : ${recentSequenceList[1]['sequenceTitle']}");
-                      String sequenceTitle = recentSequenceList[1]['sequenceTitle'];
-                      print("sequenceTitle : ${sequenceTitle}");
+
+
+                      setState(() {
+                        
+                      });
+                    }).whenComplete((){
                       
-                    });
+                    }) : null;
                 return Container(
                   width: double.infinity,
                   child: ListView.builder(
                     physics: BouncingScrollPhysics(),
                     itemCount: recentSequenceList.length,
                     itemBuilder: (context, index) {
+                      print("hfduosanoirwnvioenroiger - ${recentSequenceList[index]}");
                       return ListTile(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    ImportSequenceFromRecent()),
-                          ).then((value) => Navigator.pop(context));
+                                    ImportSequenceFromRecent(actionList: recentSequenceList[index]['actionList'],)),
+                          ).then((value){
+
+                          });
                         },
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 6, horizontal: 20),
                         tileColor: Palette.mainBackground,
                         title: Row(
                           children: [
-                            Text("머지?"),
+                            Text(recentSequenceList[index]['sequenceTitle']),
                             SizedBox(width: 10),
                             Container(
                               padding: EdgeInsets.symmetric(

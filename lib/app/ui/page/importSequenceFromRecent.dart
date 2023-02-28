@@ -14,7 +14,8 @@ import 'package:web_project/app/ui/widget/globalWidget.dart';
 import 'package:web_project/app/data/model/actionInfo.dart';
 
 class ImportSequenceFromRecent extends StatefulWidget {
-  const ImportSequenceFromRecent({super.key});
+  final actionList;
+  const ImportSequenceFromRecent({required this.actionList, super.key});
 
   @override
   State<ImportSequenceFromRecent> createState() =>
@@ -129,67 +130,65 @@ class _ImportSequenceFromRecentState extends State<ImportSequenceFromRecent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppBarMethod(context, "시퀀스 불러오기", null, null, null),
-      body: Consumer<SequenceRecentService>(
-        builder: (context, sequenceRecentService, child) {
-          sequenceRecentService.read(AuthService().currentUser()!.uid).then((value){
-            
-          });
-          return CenterConstrainedBody(
-            child: Stack(
-              alignment: Alignment.bottomCenter,
+      body: CenterConstrainedBody(
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Column(
               children: [
-                Column(
-                  children: [
-                    /// 헤더
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                      child: Row(children: [
-                        Text(
-                          '시퀀스 제목',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Palette.gray00,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Spacer(),
-                        Text('편집',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Palette.textBlue,
-                            ))
-                      ]),
+                /// 헤더
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: Row(children: [
+                    Text(
+                      '시퀀스 제목',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Palette.gray00,
+                          fontWeight: FontWeight.bold),
                     ),
+                    Spacer(),
+                    Text('편집',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Palette.textBlue,
+                        ))
+                  ]),
+                ),
 
-                    /// 리스트들이 뿌려지는 영역
-                    Expanded(
-                      child: ReorderableListView.builder(
+                /// 리스트들이 뿌려지는 영역
+                Expanded(
+                  child: ReorderableListView.builder(
                         padding: EdgeInsets.only(bottom: 100),
                         onReorder: (oldIndex, newIndex) {
                           if (newIndex > oldIndex) {
                             newIndex -= 1;
                           }
-                          final movedActionList = actionList.removeAt(oldIndex);
-                          actionList.insert(newIndex, movedActionList);
+                          final movedActionList = widget.actionList.removeAt(oldIndex);
+                          widget.actionList.insert(newIndex, movedActionList);
 
                           setState(() {});
                         },
                         physics: BouncingScrollPhysics(),
-                        itemCount: actionList.length,
+                        itemCount: widget.actionList.length,
                         itemBuilder: (context, index) {
+                          
                           Key? valueKey;
-                          actionList[index]['index'] = index;
-                          valueKey = ValueKey(actionList[index]['index']);
+                          widget.actionList[index]['pos'] = index;
+                          valueKey = ValueKey(widget.actionList[index]['pos']);
+
+                          
+
 
                           return ActionListTile(
                             key: valueKey,
                             isSelectable: true,
-                            isSelected: actionList[index]['selected'],
-                            actionList: actionList,
+                            isSelected: widget.actionList[index]['noteSelected'],
+                            actionList: widget.actionList,
                             isDraggable: true,
-                            actionName: actionList[index]['actionName'],
-                            apparatus: actionList[index]['apparatus'],
-                            position: actionList[index]['position'],
+                            actionName: widget.actionList[index]['actionName'],
+                            apparatus: widget.actionList[index]['apratusName'],
+                            position: widget.actionList[index]['pos'].toString(),
                             name: "",
                             phoneNumber: "",
                             lessonDate: "",
@@ -200,10 +199,10 @@ class _ImportSequenceFromRecentState extends State<ImportSequenceFromRecent> {
                             uid: "",
                             pos: index,
                             customFunctionOnTap: () {
-                              actionList[index]['selected'] =
-                                  !actionList[index]['selected'];
+                              widget.actionList[index]['noteSelected'] =
+                                  !widget.actionList[index]['noteSelected'];
 
-                              if (actionList[index]['selected']) {
+                              if (widget.actionList[index]['noteSelected']) {
                                 selectedCnt++;
                               } else {
                                 selectedCnt--;
@@ -212,8 +211,8 @@ class _ImportSequenceFromRecentState extends State<ImportSequenceFromRecent> {
                               print('####여기부터 봐라####');
                               print('seletedCnt: $selectedCnt');
                               print('index: $index');
-                              print('actionList[index]: ${actionList[index]}');
-                              print('actionList: $actionList');
+                              print('widget.actionList[index]: ${widget.actionList[index]}');
+                              print('widget.actionList: $widget.actionList');
                               print('selectedActionList: $selectedActionList');
                               print('####여기까지 봐라####');
 
@@ -222,50 +221,48 @@ class _ImportSequenceFromRecentState extends State<ImportSequenceFromRecent> {
                           );
                         },
                       ),
-                    )
-                  ],
-                ),
-
-                /// 불러오기 버튼을 아래쪽에 Stack
-                Offstage(
-                  // offstage: selectedCnt == 0,
-                  offstage: false,
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 100,
-                    // color: Palette.gray00.withOpacity(0.3), -> ActionSelector에서 쓰려고 만든거임
-
-                    /// 불러오기 버튼
-                    child: ElevatedButton(
-                      onPressed: () {
-                        selectedActionList.addAll(
-                            actionList.where((item) => item['selected']));
-                        // selectedActionList.add(actionList.where((item) => item['selected']));
-                        print(actionList.where((item) => item['selected']));
-                        print('selectedActionList: $selectedActionList');
-                        print('@@@@@ 전송! @@@@@');
-
-                        Navigator.pop(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        elevation: 5,
-                        backgroundColor: Palette.buttonOrange,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 14, horizontal: 90),
-                        child: Text("불러오기", style: TextStyle(fontSize: 16)),
-                      ),
-                    ),
-                  ),
-                ),
+                )
               ],
             ),
-          );
-        },
+
+            /// 불러오기 버튼을 아래쪽에 Stack
+            Offstage(
+              // offstage: selectedCnt == 0,
+              offstage: false,
+              child: Container(
+                alignment: Alignment.center,
+                height: 100,
+                // color: Palette.gray00.withOpacity(0.3), -> ActionSelector에서 쓰려고 만든거임
+
+                /// 불러오기 버튼
+                child: ElevatedButton(
+                  onPressed: () {
+                    selectedActionList
+                        .addAll(actionList.where((item) => item['noteSelected']));
+                    // selectedActionList.add(actionList.where((item) => item['selected']));
+                    print(actionList.where((item) => item['noteSelected']));
+                    print('selectedActionList: $selectedActionList');
+                    print('@@@@@ 전송! @@@@@');
+
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    elevation: 5,
+                    backgroundColor: Palette.buttonOrange,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 90),
+                    child: Text("불러오기", style: TextStyle(fontSize: 16)),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

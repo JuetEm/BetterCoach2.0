@@ -37,7 +37,7 @@ class SequenceRecentService extends ChangeNotifier {
   Future<String> create(
     final String uid,
     final String memberId,
-    final String todayNote,
+    final String todayNote, // 일별 레슨 노트
     final List actionList, // List -> Json
     final bool isfavorite, // 즐겨찾는 시퀀스 (추후 추가 가능성)
     final int like, // 좋아요 수 (추후 추가 가능성)

@@ -29,6 +29,7 @@ class SequenceCustomService extends ChangeNotifier {
 
       resultList.add(rstObj);
     }
+    notifyListeners(); // 화면 갱신
     return resultList;
   }
 
@@ -36,6 +37,7 @@ class SequenceCustomService extends ChangeNotifier {
   Future<String> create(
     final String uid,
     final String memberId,
+    final String todayNote, // 일별 레슨 노트
     final List actionList, // List -> Json
     final bool isfavorite, // 즐겨찾는 시퀀스 (추후 추가 가능성)
     final int like, // 좋아요 수 (추후 추가 가능성)
@@ -48,6 +50,7 @@ class SequenceCustomService extends ChangeNotifier {
     await sequenceRecentCollection.add({
       'uid': uid, // 작성자 uid
       'memberId': memberId, // 회원 docId
+      'todayNote': todayNote,
       'actionList': actionList, // 동작 리스트 (순서 포함)
       'isfavorite': isfavorite,
       'like': like,

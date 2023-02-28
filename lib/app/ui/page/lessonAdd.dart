@@ -1303,7 +1303,23 @@ class _LessonAddState extends State<LessonAdd> {
         uid, memberId, todayNote, actionList, isfavorite, like, timeStamp, sequenceTitle);
   }
 
-  void saveCustomSequnce() {}
+  void saveCustomSequnce(
+    SequenceRecentService sequenceRecentService,
+    String uid,
+    String memberId,
+    String todayNote,
+    List actionList, // List -> Json
+    bool isfavorite, // 즐겨찾는 시퀀스 (추후 추가 가능성)
+    int like, // 좋아요 수 (추후 추가 가능성)
+    Timestamp timeStamp, // 꺼내 쓸 때 변환해서 씀
+    String username,
+  ) {
+    var now = DateTime.now();
+    String sequenceTitle =
+        username + "님 " + DateFormat("yyyy-MM-dd HH:MM").format(now);
+    sequenceRecentService.create(
+        uid, memberId, todayNote, actionList, isfavorite, like, timeStamp, sequenceTitle);
+  }
 
   int i = 0;
   void saveMethod(
