@@ -838,7 +838,7 @@ class _LessonAddState extends State<LessonAdd> {
                                                                           .all(
                                                                               20),
                                                                   hintText:
-                                                                      '이번 수업에서 눈여겨 보아야 할 동작에 대해 남겨주세요.',
+                                                                      '이번 수업에서 주목할 동작에 대해 남겨보세요.',
                                                                   hintStyle: TextStyle(
                                                                       color: Palette
                                                                           .gray99,
