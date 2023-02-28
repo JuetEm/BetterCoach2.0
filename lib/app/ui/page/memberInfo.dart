@@ -220,6 +220,24 @@ class _MemberInfoState extends State<MemberInfo> {
         }
         print('[MBL_Ticket] selectedTicket: $selectedTicket');
 
+
+        // 텍스트 위젯에 바로 변수 썼을 때의 null 값에 대한 처리 => memberInfoTicketList[globalVariables.selectedTicketIndex]['ticketCountLeft']
+        String leftTicketCnt = "";
+        String totalTicketCnt = "";
+        print("globalVariables.selectedTicketIndex : ${globalVariables.selectedTicketIndex}");
+        if(globalVariables.selectedTicketIndex != 0){
+          
+        leftTicketCnt = memberInfoTicketList[globalVariables.selectedTicketIndex]['ticketCountLeft'].toString();
+        totalTicketCnt = memberInfoTicketList[globalVariables.selectedTicketIndex]['ticketCountAll'].toString();
+        }else{
+          leftTicketCnt = " - ";
+          totalTicketCnt = " - ";
+        }
+
+
+        
+        
+
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원관리", () {
@@ -374,11 +392,8 @@ class _MemberInfoState extends State<MemberInfo> {
                                                   : Palette.gray99,
                                             ),
                                             SizedBox(width: 4),
-                                            Text(
-                                              memberInfoTicketList[globalVariables
-                                                          .selectedTicketIndex]
-                                                      ['ticketCountLeft']
-                                                  .toString(),
+                                            Text(leftTicketCnt
+                                              ,
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -397,11 +412,8 @@ class _MemberInfoState extends State<MemberInfo> {
                                                     : Palette.gray99,
                                               ),
                                             ),
-                                            Text(
-                                              memberInfoTicketList[globalVariables
-                                                          .selectedTicketIndex]
-                                                      ['ticketCountAll']
-                                                  .toString(),
+                                            Text(totalTicketCnt
+                                              ,
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
