@@ -26,6 +26,9 @@ GlobalFunction globalFunction = GlobalFunction();
 
 bool favoriteMember = true;
 
+/**메인으로 사용하는 리스트 함수, uid, memberId로 filtering 된다. */
+List ticketList = [];
+
 /** 사용가능한 수강권 리스트 열렸는지 */
 bool isActiveTicketListOpened = true;
 
@@ -69,11 +72,23 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
   Widget build(BuildContext context) {
     return Consumer<MemberTicketService>(
       builder: (context, memberTicketService, child) {
+        /// 메인으로 사용하는 리스트를 글로벌에서 불러와 멤버아이디로 필터링해준다.
+        ticketList = globalVariables.memberTicketList
+            .where((element) => element['memberId'] == userInfo.docId)
+            // .toSet()
+            .toList();
+
+        // print('####Timmy ticketList: $ticketList');
+        // print('####Timmy ticketList.length: ${ticketList.length}');
+        // print(
+        //     '####Timmy globalVariables.memberTicketList.length: ${globalVariables.memberTicketList.length}');
+
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "수강권 관리", () {
-            for (int i = 0; i < globalVariables.memberTicketList.length; i++) {
-              var element = globalVariables.memberTicketList[i];
+            /// pop할 시 컨텐츠
+            for (int i = 0; i < ticketList.length; i++) {
+              var element = ticketList[i];
 
               if (element['isSelected'] == true) {
                 Navigator.pop(context, i);
@@ -86,11 +101,9 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
             TextButton(
                 onPressed: () {
                   int tmpIndex = 0;
-                  globalVariables.memberTicketList = widget.memberTList!;
-                  for (int i = 0;
-                      i < globalVariables.memberTicketList.length;
-                      i++) {
-                    var element = globalVariables.memberTicketList[i];
+                  ticketList = widget.memberTList!;
+                  for (int i = 0; i < ticketList.length; i++) {
+                    var element = ticketList[i];
 
                     if (element['isSelected'] == true) {
                       memberTicketService
