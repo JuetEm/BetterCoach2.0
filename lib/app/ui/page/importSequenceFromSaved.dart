@@ -11,7 +11,8 @@ import 'package:web_project/app/ui/widget/globalWidget.dart';
 import 'package:web_project/app/data/model/actionInfo.dart';
 
 class ImportSequenceFromSaved extends StatefulWidget {
-  const ImportSequenceFromSaved({super.key});
+  final actionList;
+  const ImportSequenceFromSaved({required this.actionList, super.key});
 
   @override
   State<ImportSequenceFromSaved> createState() =>
@@ -158,27 +159,27 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
                       if (newIndex > oldIndex) {
                         newIndex -= 1;
                       }
-                      final movedActionList = actionList.removeAt(oldIndex);
-                      actionList.insert(newIndex, movedActionList);
+                      final movedActionList = widget.actionList.removeAt(oldIndex);
+                      widget.actionList.insert(newIndex, movedActionList);
 
                       setState(() {});
                     },
                     physics: BouncingScrollPhysics(),
-                    itemCount: actionList.length,
+                    itemCount: widget.actionList.length,
                     itemBuilder: (context, index) {
                       Key? valueKey;
-                      actionList[index]['index'] = index;
-                      valueKey = ValueKey(actionList[index]['index']);
+                      widget.actionList[index]['index'] = index;
+                      valueKey = ValueKey(widget.actionList[index]['index']);
 
                       return ActionListTile(
                         key: valueKey,
                         isSelectable: true,
-                        isSelected: actionList[index]['selected'],
-                        actionList: actionList,
+                        isSelected: widget.actionList[index]['noteSelected'] ?? false,
+                        actionList: widget.actionList,
                         isDraggable: true,
-                        actionName: actionList[index]['actionName'],
-                        apparatus: actionList[index]['apparatus'],
-                        position: actionList[index]['position'],
+                        actionName: widget.actionList[index]['actionName'] ?? "",
+                        apparatus: widget.actionList[index]['apparatus'] ?? "",
+                        position: widget.actionList[index]['pos'].toString() ?? "",
                         name: "",
                         phoneNumber: "",
                         lessonDate: "",
@@ -189,10 +190,10 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
                         uid: "",
                         pos: index,
                         customFunctionOnTap: () {
-                          actionList[index]['selected'] =
-                              !actionList[index]['selected'];
+                          widget.actionList[index]['noteSelected'] =
+                              !widget.actionList[index]['noteSelected'];
 
-                          if (actionList[index]['selected']) {
+                          if (widget.actionList[index]['noteSelected'] ?? false) {
                             selectedCnt++;
                           } else {
                             selectedCnt--;
@@ -201,8 +202,8 @@ class _ImportSequenceFromSavedState extends State<ImportSequenceFromSaved> {
                           print('####여기부터 봐라####');
                           print('seletedCnt: $selectedCnt');
                           print('index: $index');
-                          print('actionList[index]: ${actionList[index]}');
-                          print('actionList: $actionList');
+                          print('widget.actionList[index]: ${widget.actionList[index]}');
+                          print('widget.actionList: $widget.actionList');
                           print('selectedActionList: $selectedActionList');
                           print('####여기까지 봐라####');
 

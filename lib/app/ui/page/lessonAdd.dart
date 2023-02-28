@@ -1351,12 +1351,14 @@ class _LessonAddState extends State<LessonAdd> {
     String username,
     String sequenceTitle,
   ) {
-    var now = DateTime.now();
 
-    ImportSequenceController importSequenceController =
-        ImportSequenceController();
-    importSequenceController.createCustomSequence(uid, memberId, todayNote,
-        actionList, isfavorite, like, Timestamp.now(), sequenceTitle);
+    // print("ㄴㅁㅇㄹㄴㅁㅇㄹㄴㅁㄹㅈㄷㄹㅈㄷㄹ actionList : ${actionList}");
+    // 타임 스탬프 생성 난수로 임시명 생서 대체, 원래 전략으로 복귀 해야 함
+    var unixTimestamp = DateTime.now().microsecondsSinceEpoch;
+    // print("unixTimestamp : ${unixTimestamp}");
+
+    sequenceTitle.isEmpty ? sequenceTitle = "커스텀 시퀀스 ${unixTimestamp}" : sequenceTitle = sequenceTitle;
+    sequenceCustomService.create(uid, memberId, unixTimestamp, todayNote, actionList, isfavorite, like, timeStamp, sequenceTitle);
   }
 
   int i = 0;

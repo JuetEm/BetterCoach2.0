@@ -15,11 +15,12 @@ class ImportSequenceController {
 
   int readCustomSequenceTopNumber(String uid) {
     var num = sequenceCustomService.readCustomSequenceTopNum(uid);
+  
     print("num : ${num}");
-    return num;
+    return num ?? 0;
   }
 
-  Future<String> createCustomSequence(
+  createCustomSequence(
       String uid,
       String memberId,
       String todayNote,
@@ -28,17 +29,19 @@ class ImportSequenceController {
       int like,
       Timestamp timestamp,
       String sequenceTitle) async {
+        
     int num = readCustomSequenceTopNumber(uid);
-    num = num++;
+    int rNum = 0;
+    num == 0 ? rNum = 1 : rNum = num;
 
     sequenceTitle.trim().isEmpty
-        ? sequenceTitle = "커스텀 시퀀스 ${num}"
+        ? sequenceTitle = "커스텀 시퀀스 ${rNum}"
         : sequenceTitle = sequenceTitle;
 
     var result = await sequenceCustomService.create(
       uid,
       memberId,
-      num,
+      rNum,
       todayNote,
       actionList,
       isfavorite,

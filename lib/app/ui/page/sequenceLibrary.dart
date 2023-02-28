@@ -84,6 +84,7 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                   sequenceCustomService.read(AuthService().currentUser()!.uid)
                     .then((value) {
                       customSequenceList.addAll(value);
+                      print("fdsafewgvearfdad - customSequenceList : ${customSequenceList}");
                       setState(() {
                         
                       });
@@ -100,7 +101,7 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ImportSequenceFromSaved()),
+                                      ImportSequenceFromSaved(actionList : customSequenceList[index]['actionList'])),
                             ).then((value){});
                           },
                           contentPadding:
@@ -108,7 +109,7 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
                           tileColor: Palette.mainBackground,
                           title: Row(
                             children: [
-                              Text(customSequenceList[index]['name']),
+                              Text(customSequenceList[index]['sequenceTitle']),
                               SizedBox(width: 10),
                               Container(
                                 padding: EdgeInsets.symmetric(

@@ -46,11 +46,11 @@ class SequenceCustomService extends ChangeNotifier {
 
         print("result : ${result}");
 
-        return result;
+        return result ?? 0;
   }
 
   ///Create하기 Delete 기능 없음
-  Future<String> create(
+  create(
     final String uid,
     final String memberId,
     final int num, // 커스텀 시퀀스 #num 에 쓰이는 상수
@@ -63,8 +63,8 @@ class SequenceCustomService extends ChangeNotifier {
   ) async {
     String id = "";
 
-    //
-    var result = await sequenceRecentCollection.add({
+    var result;
+    await sequenceRecentCollection.add({
       'uid': uid, // 작성자 uid
       'memberId': memberId, // 회원 docId
       'todayNote': todayNote,
@@ -78,6 +78,8 @@ class SequenceCustomService extends ChangeNotifier {
       print("Successfully completed");
     }, onError: (e) {
       print("Error completing: ${e}");
+    }).then((value){
+      result = value;
     });
     notifyListeners(); // 화면 갱신
 

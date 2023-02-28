@@ -123,8 +123,6 @@ class _ImportSequenceFromRecentState extends State<ImportSequenceFromRecent> {
   int selectedCnt = 0;
   /**선택된 동작 리스트 -> 추후 돌려줄 것임 */
   List selectedActionList = [];
-  /**sequenceRecentService.read() 의 결과 값 리스트 */
-  List recentSequenceRusltList = [];
 
   @override
   Widget build(BuildContext context) {
