@@ -105,17 +105,23 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "수강권 관리", () {
-            /// pop할 시 컨텐츠
-            for (int i = 0; i < memberManageTicketList.length; i++) {
-              var element = memberManageTicketList[i];
+            print("dafjkelwnovkneo 수강권 관리 백 이벤트");
 
-              if (element['isSelected'] == true) {
-                Navigator.pop(context, i);
-                break;
-              } else if (memberManageTicketList.length - 1 == i) {
-                Navigator.pop(context, -1);
-              } else {
-                Navigator.pop(context, -2);
+            if (memberManageTicketList.isEmpty) {
+              Navigator.pop(context,0);
+            } else {
+              /// pop할 시 컨텐츠
+              for (int i = 0; i < memberManageTicketList.length; i++) {
+                var element = memberManageTicketList[i];
+
+                if (element['isSelected'] == true) {
+                  Navigator.pop(context, i);
+                  break;
+                } else if (memberManageTicketList.length - 1 == i) {
+                  Navigator.pop(context, -1);
+                } else {
+                  Navigator.pop(context, -2);
+                }
               }
             }
           }, [

@@ -10,9 +10,9 @@ import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/ui/page/memberInfo.dart';
 import 'package:web_project/app/ui/page/memberTicketList.dart';
-import 'package:web_project/app/ui/page/ticketLibraryList.dart';
 import 'package:web_project/app/data/provider/auth_service.dart';
-import 'package:web_project/app/ui/widget/baseTableCalendar.dart';
+import 'package:web_project/app/ui/page/ticketLibraryList.dart';
+import 'package:web_project/app/ui/widget/baseTableCalendarForTicketManageView.dart';
 import 'package:web_project/app/ui/widget/centerConstraintBody.dart';
 import 'package:web_project/app/data/model/color.dart';
 import 'package:web_project/app/function/globalFunction.dart';
@@ -1049,11 +1049,12 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                       offstage: calendarIsOffStaged,
                       child: Container(
                         constraints: BoxConstraints.tight(Size.fromHeight(530)),
-                        child: BaseTableCalendar(() {
+                        child: BaseTableCalendarForTicketManageView(() {
                           calendarIsOffStaged = !calendarIsOffStaged;
                           // git test
-                          print("ticketStartDate : $ticketStartDate}");
-                          print("ticketEndDate : $ticketEndDate}");
+                          print(
+                              "두ㅐㅑㅂ푸ㅐㅜ랜우랴ㅐㅍ ticketStartDate : $ticketStartDate}");
+                          print("두ㅐㅑㅂ푸ㅐㅜ랜우랴ㅐㅍ ticketEndDate : $ticketEndDate}");
                           setState(() {});
                         }, true,
                             selectedDate: "",

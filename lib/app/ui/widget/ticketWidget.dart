@@ -41,7 +41,7 @@ class _TicketWidgetState extends State<TicketWidget> {
   bool _toggle = false;
   @override
   Widget build(BuildContext context) {
-    int ticketDateLeft = int.parse(DateTime.now()
+    int ticketDateLeft = int.parse(DateTime.parse(widget.ticketStartDate)
         .difference(DateTime.parse(widget.ticketEndDate))
         .inDays
         .toString());
