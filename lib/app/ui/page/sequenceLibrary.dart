@@ -11,8 +11,12 @@ import 'package:web_project/app/data/model/color.dart';
 import 'package:web_project/app/ui/widget/globalWidget.dart';
 
 // 최근 시퀀스 리스트
-List recentSequenceList =[];
+List recentSequenceList = [];
 List rctSqcList = [];
+
+// 저장된 시퀀스 리스트
+List customSequenceList = [];
+List ctmSqcList = [];
 
 class SequenceLibrary extends StatefulWidget {
   const SequenceLibrary({super.key});
@@ -74,7 +78,10 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
           child: TabBarView(
             children: [
               /// 저장된 시퀀스 탭 내용
-              Consumer<SequenceCustomService>(builder: (context, sequencevmd , child) {
+              Consumer<SequenceCustomService>(builder: (context, sequenceCustomService , child) {
+                sequenceCustomService.read(AuthService().currentUser()!.uid)..then((value){
+                  
+                });
                 return Container(
                   width: double.infinity,
                   child: ListView.builder(
