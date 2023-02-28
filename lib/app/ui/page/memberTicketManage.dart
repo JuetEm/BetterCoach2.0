@@ -102,25 +102,6 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
             // .toSet()
             .toList();
 
-        for (var i = 0; i < ticketList.length; i++) {
-          print(
-              '[isSelect] $i번 name: ${ticketList[i]['name']} memberId: ${ticketList[i]['memberId']} isSelected: ${ticketList[i]['isSelected']}');
-        }
-
-        for (var i = 0; i < activeTicketList.length; i++) {
-          print(
-              '[isSelect] active $i번 name: ${activeTicketList[i]['name']} memberId: ${activeTicketList[i]['memberId']} isSelected: ${activeTicketList[i]['isSelected']}');
-        }
-
-        for (var i = 0; i < expiredTicketList.length; i++) {
-          print(
-              '[isSelect] expired $i번 name: ${expiredTicketList[i]['name']} memberId: ${expiredTicketList[i]['memberId']} isSelected: ${expiredTicketList[i]['isSelected']}');
-        }
-        print('[isSelect] ### 여기까지 빌드 당시였다 ###');
-
-        // print('####Timmy ticketList: $ticketList');
-        // print('####Timmy ticketList.length: ${ticketList.length}');
-
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "수강권 관리", () {
@@ -449,6 +430,28 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                         return Container(
                                           alignment: Alignment.center,
                                           child: TicketWidget(
+                                            customFunctionOnTap: () {
+                                              // 티켓 선택 함수
+                                              MemberTicketController()
+                                                  .ticketSelect(
+                                                ticketList, // Member의 전체 Ticket List
+                                                activeTicketList,
+                                                globalVariables
+                                                    .memberTicketList, // 현재 상태의 Ticket List
+                                                index, // 인덱스
+                                              );
+
+                                              activeTicketList[index]
+                                                  ['isSelected'] = true;
+
+                                              /// 글로벌 업데이트
+                                              MemberTicketController().update(
+                                                  ticketList,
+                                                  globalVariables
+                                                      .memberTicketList);
+
+                                              setState(() {});
+                                            },
                                             customFunctionOnLongPress:
                                                 () async {
                                               var result =
@@ -493,50 +496,6 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                         ['ticketEndDate']),
                                             isAlive: activeTicketList[index]
                                                 ['isAlive'],
-                                            customFunctionOnTap: () {
-                                              // 티켓 선택 함수
-                                              MemberTicketController()
-                                                  .ticketSelect(
-                                                ticketList, // Member의 전체 Ticket List
-                                                activeTicketList,
-                                                globalVariables
-                                                    .memberTicketList, // 현재 상태의 Ticket List
-                                                index, // 인덱스
-                                              );
-
-                                              activeTicketList[index]
-                                                  ['isSelected'] = true;
-
-                                              /// 글로벌 업데이트
-                                              MemberTicketController().update(
-                                                  ticketList,
-                                                  globalVariables
-                                                      .memberTicketList);
-
-                                              for (var i = 0;
-                                                  i < ticketList.length;
-                                                  i++) {
-                                                print(
-                                                    '[isSelect] $index번 name: ${ticketList[i]['name']} memberId: ${ticketList[i]['memberId']} isSelected: ${ticketList[i]['isSelected']}');
-                                              }
-
-                                              for (var i = 0;
-                                                  i < activeTicketList.length;
-                                                  i++) {
-                                                print(
-                                                    '[isSelect] active $index번 name: ${activeTicketList[i]['name']} memberId: ${activeTicketList[i]['memberId']} isSelected: ${activeTicketList[i]['isSelected']}');
-                                              }
-
-                                              for (var i = 0;
-                                                  i < expiredTicketList.length;
-                                                  i++) {
-                                                print(
-                                                    '[isSelect] expired $index번 name: ${expiredTicketList[i]['name']} memberId: ${expiredTicketList[i]['memberId']} isSelected: ${expiredTicketList[i]['isSelected']}');
-                                              }
-                                              print(
-                                                  '[isSelect] ### 여기까지 Active OnTap ###');
-                                              setState(() {});
-                                            },
                                           ),
                                         );
                                       }),
@@ -562,7 +521,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "만료된 수강권(${getListCnt(ticketList, false)})",
+                                          "만료된 수강권(${getListCnt(expiredTicketList, false)})",
                                           style: TextStyle(
                                               fontSize: 16,
                                               color: Palette.gray66,
@@ -614,31 +573,6 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                   globalVariables
                                                       .memberTicketList);
 
-                                              print(
-                                                  "expiredTicketList![index]['isSelected'] : ${expiredTicketList[index]['selectedUi']}");
-
-                                              for (var i = 0;
-                                                  i < ticketList.length;
-                                                  i++) {
-                                                print(
-                                                    '[isSelect] $index번 name: ${ticketList[i]['name']} memberId: ${ticketList[i]['memberId']} isSelected: ${ticketList[i]['isSelected']}');
-                                              }
-
-                                              for (var i = 0;
-                                                  i < activeTicketList.length;
-                                                  i++) {
-                                                print(
-                                                    '[isSelect] active $index번 name: ${activeTicketList[i]['name']} memberId: ${activeTicketList[i]['memberId']} isSelected: ${activeTicketList[i]['isSelected']}');
-                                              }
-
-                                              for (var i = 0;
-                                                  i < expiredTicketList.length;
-                                                  i++) {
-                                                print(
-                                                    '[isSelect] expired $index번 name: ${expiredTicketList[i]['name']} memberId: ${expiredTicketList[i]['memberId']} isSelected: ${expiredTicketList[i]['isSelected']}');
-                                              }
-                                              print(
-                                                  '[isSelect] ### 여기까지 Expired OnTap ###');
                                               setState(() {});
                                             },
                                             customFunctionOnLongPress:
