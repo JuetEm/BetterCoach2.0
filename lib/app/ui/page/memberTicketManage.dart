@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/controller/memberTicket_controller.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
 import 'package:web_project/app/ui/page/memberInfo.dart';
@@ -26,8 +27,13 @@ GlobalFunction globalFunction = GlobalFunction();
 
 bool favoriteMember = true;
 
-/**메인으로 사용하는 리스트 함수, uid, memberId로 filtering 된다. */
+/** 메인으로 사용하는 리스트, uid, memberId로 filtering 된다. */
 List ticketList = [];
+
+/** 사용 가능한 수강권*/
+List activeTicketList = [];
+/** 만료된 수강권. */
+List expiredTicketList = [];
 
 /** 사용가능한 수강권 리스트 열렸는지 */
 bool isActiveTicketListOpened = true;
@@ -50,6 +56,7 @@ class MemberTicketManage extends StatefulWidget {
   UserInfo? userInfo;
   List? memberTList;
   MemberTicketManage({super.key});
+
   MemberTicketManage.getUserInfo(this.memberTList, this.userInfo, {super.key});
 
   @override
@@ -78,6 +85,15 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
             // .toSet()
             .toList();
 
+        activeTicketList = globalVariables.memberTicketList
+            .where((element) => element['memberId'] == userInfo.docId)
+            // .toSet()
+            .toList();
+        expiredTicketList = globalVariables.memberTicketList
+            .where((element) => element['memberId'] == userInfo.docId)
+            // .toSet()
+            .toList();
+
         // print('####Timmy ticketList: $ticketList');
         // print('####Timmy ticketList.length: ${ticketList.length}');
         // print(
@@ -93,42 +109,45 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
               if (element['isSelected'] == true) {
                 Navigator.pop(context, i);
                 break;
-              } else if (globalVariables.memberTicketList.length - 1 == i) {
+              } else if (ticketList.length - 1 == i) {
                 Navigator.pop(context, -1);
+              } else {
+                Navigator.pop(context, -2);
               }
             }
           }, [
             TextButton(
                 onPressed: () {
                   int tmpIndex = 0;
-                  ticketList = widget.memberTList!;
-                  for (int i = 0; i < ticketList.length; i++) {
-                    var element = ticketList[i];
 
-                    if (element['isSelected'] == true) {
-                      memberTicketService
-                          .update(
-                            AuthService().currentUser()!.uid,
-                            element['id'],
-                            widget.userInfo!.docId,
-                            element['ticketUsingCount'],
-                            element['ticketCountLeft'],
-                            element['ticketCountAll'],
-                            element['ticketTitle'],
-                            element['ticketDescription'],
-                            DateTime.parse(globalFunction.getDateFromTimeStamp(
-                                element['ticketStartDate'])),
-                            DateTime.parse(globalFunction.getDateFromTimeStamp(
-                                element['ticketEndDate'])),
-                            element['ticketDateLeft'],
-                            DateTime.now(),
-                            element['isSelected'],
-                            element['isAlive'],
-                          )
-                          .then((value) {});
-                      tmpIndex = i;
-                      break;
-                    }
+                  // 완료 시 글로벌 티켓리스트 업데이트
+                  MemberTicketController()
+                      .update(ticketList, globalVariables.memberTicketList);
+
+                  final selectedTicket = ticketList.firstWhere(
+                      (ticket) => ticket['isSelected'],
+                      orElse: () => null);
+                  if (selectedTicket != null) {
+                    memberTicketService
+                        .update(
+                          AuthService().currentUser()!.uid,
+                          selectedTicket['id'],
+                          widget.userInfo!.docId,
+                          selectedTicket['ticketUsingCount'],
+                          selectedTicket['ticketCountLeft'],
+                          selectedTicket['ticketCountAll'],
+                          selectedTicket['ticketTitle'],
+                          selectedTicket['ticketDescription'],
+                          DateTime.parse(globalFunction.getDateFromTimeStamp(
+                              selectedTicket['ticketStartDate'])),
+                          DateTime.parse(globalFunction.getDateFromTimeStamp(
+                              selectedTicket['ticketEndDate'])),
+                          selectedTicket['ticketDateLeft'],
+                          DateTime.now(),
+                          selectedTicket['isSelected'],
+                          selectedTicket['isAlive'],
+                        )
+                        .then((_) {});
                   }
                   Navigator.pop(context, tmpIndex);
                 },
@@ -178,6 +197,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                 print(
                                     "[TM] 즐겨찾기 로딩후 : ${snapshot.data} / ${widget.userInfo!.docId}");
                                 favoriteMember = snapshot.data;
+
                                 return IconButton(
                                     icon: SvgPicture.asset(
                                       favoriteMember
@@ -186,34 +206,33 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                     ),
                                     iconSize: 40,
                                     onPressed: () async {
+                                      // 즐겨찾기 버튼 클릭 시 토글
                                       favoriteMember = !favoriteMember;
 
+                                      // 멤버ID를 이용하여 favorite bool 값 업데이트
                                       await memberService.updateIsFavorite(
                                           widget.userInfo!.docId,
                                           favoriteMember);
-                                      int rstLnth =
-                                          globalVariables.resultList.length;
-                                      for (int i = 0; i < rstLnth; i++) {
-                                        if (widget.userInfo!.docId ==
-                                            globalVariables.resultList[i]
-                                                ['id']) {
-                                          print(
-                                              "memberInfo - widget.resultMemberList[${i}]['id'] : ${globalVariables.resultList[i]['id']}");
-                                          if (globalVariables.resultList[i]
-                                                  ['isFavorite'] ==
-                                              null) {
-                                            globalVariables.resultList[i]
-                                                ['isFavorite'] = true;
-                                          } else {
-                                            globalVariables.resultList[i]
-                                                    ['isFavorite'] =
-                                                !globalVariables.resultList[i]
-                                                    ['isFavorite'];
-                                          }
 
-                                          break;
-                                        }
+                                      // # Faovrite 반영된 멤버리스트를 Globale에 업로드
+                                      //  ## id 일치하는 element 찾아 선언
+                                      final item =
+                                          globalVariables.resultList.firstWhere(
+                                        (element) =>
+                                            element['id'] ==
+                                            widget.userInfo?.docId,
+                                        orElse: () => null,
+                                      );
+                                      //  ## item이 null값 아닐 경우  일치하는 element 찾아 선언
+                                      if (item != null) {
+                                        item['isFavorite'] =
+                                            item['isFavorite'] == null
+                                                ? true
+                                                : !item['isFavorite'];
+                                        print(
+                                            "memberInfo - widget.resultMemberList[i]['id'] : ${item['id']}");
                                       }
+                                      ;
 
                                       print(
                                           "[TM] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${widget.userInfo!.docId}");
@@ -373,7 +392,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "사용 가능한 수강권(${getListCnt(globalVariables.memberTicketList, true)})",
+                                          "사용 가능한 수강권(${getListCnt(ticketList, true)})",
                                           style: TextStyle(
                                               fontSize: 16,
                                               color: Palette.gray66,
@@ -397,111 +416,88 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                     child: Column(
                                       children: [
                                         ListView.builder(
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            itemCount: globalVariables
-                                                .memberTicketList.length,
-                                            itemBuilder: ((BuildContext context,
-                                                int index) {
-                                              print(
-                                                  "widget.memberTList![index]['ticketCountLeft'] : ${widget.memberTList![index]['ticketCountLeft']} ");
-                                              if (widget.memberTList![index]
-                                                          ['memberId'] ==
-                                                      widget.userInfo!.docId &&
-                                                  widget.memberTList![index]
-                                                          ['isAlive'] ==
-                                                      true) {
-                                                return Container(
-                                                  alignment: Alignment.center,
-                                                  child: TicketWidget(
-                                                    customFunctionOnLongPress:
-                                                        () async {
-                                                      var result =
-                                                          await // 저장하기 성공시 Home로 이동
-                                                          Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                MemberTicketMake(
-                                                                    widget
-                                                                        .userInfo,
-                                                                    widget.memberTList![
-                                                                            index]
-                                                                        [
-                                                                        'ticketTitle'])),
-                                                      ).then((value) {
-                                                        print("수강권 추가 result");
-                                                      });
-                                                    },
-                                                    selected: widget
-                                                            .memberTList![index]
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: activeTicketList.length,
+                                          itemBuilder: ((BuildContext context,
+                                              int index) {
+                                            print(
+                                                "widget.memberTList![index]['ticketCountLeft'] : ${widget.memberTList![index]['ticketCountLeft']} ");
+                                            return Container(
+                                              alignment: Alignment.center,
+                                              child: TicketWidget(
+                                                customFunctionOnLongPress:
+                                                    () async {
+                                                  var result =
+                                                      await // 저장하기 성공시 Home로 이동
+                                                      Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            MemberTicketMake(
+                                                                widget.userInfo,
+                                                                activeTicketList[
+                                                                        index][
+                                                                    'ticketTitle'])),
+                                                  ).then((value) {
+                                                    print("수강권 추가 result");
+                                                  });
+                                                },
+                                                selected:
+                                                    activeTicketList[index]
                                                         ['isSelected'],
-                                                    ticketCountLeft: int.parse(
-                                                        widget
-                                                            .memberTList![index]
-                                                                [
-                                                                'ticketCountLeft']
-                                                            .toString()),
-                                                    ticketCountAll: int.parse(
-                                                        widget
-                                                            .memberTList![index]
-                                                                [
-                                                                'ticketCountAll']
-                                                            .toString()),
-                                                    ticketTitle: widget
-                                                            .memberTList![index]
+                                                ticketCountLeft: int.parse(
+                                                    activeTicketList[index]
+                                                            ['ticketCountLeft']
+                                                        .toString()),
+                                                ticketCountAll: int.parse(
+                                                    activeTicketList[index]
+                                                            ['ticketCountAll']
+                                                        .toString()),
+                                                ticketTitle:
+                                                    activeTicketList[index]
                                                         ['ticketTitle'],
-                                                    ticketDescription: widget
-                                                            .memberTList![index]
+                                                ticketDescription:
+                                                    activeTicketList[index]
                                                         ['ticketDescription'],
-                                                    ticketStartDate: globalFunction
-                                                        .getDateFromTimeStamp(
-                                                            widget.memberTList![
-                                                                    index][
-                                                                'ticketStartDate']),
-                                                    ticketEndDate: globalFunction
-                                                        .getDateFromTimeStamp(
-                                                            widget.memberTList![
-                                                                    index][
-                                                                'ticketEndDate']),
-                                                    // ticketDateLeft: int.parse(
-                                                    //     widget
-                                                    //         .memberTList![index]
-                                                    //             [
-                                                    //             'ticketDateLeft']
-                                                    //         .toString()),
-                                                    customFunctionOnTap: () {
-                                                      for (int i = 0;
-                                                          i <
-                                                              widget
-                                                                  .memberTList!
-                                                                  .length;
-                                                          i++) {
-                                                        if (i == index) {
-                                                          widget.memberTList![i]
-                                                                  [
-                                                                  'isSelected'] =
-                                                              !widget.memberTList![
-                                                                      i][
-                                                                  'isSelected'];
-                                                        } else {
-                                                          widget.memberTList![i]
-                                                                  [
-                                                                  'isSelected'] =
-                                                              false;
-                                                        }
-                                                      }
-                                                      print(
-                                                          "widget.memberTList![index]['selectedUi'] : ${widget.memberTList![index]['selectedUi']}");
-                                                      setState(() {});
-                                                    },
-                                                  ),
-                                                );
-                                              } else {
-                                                return SizedBox.shrink();
-                                              }
-                                            })),
+                                                ticketStartDate: globalFunction
+                                                    .getDateFromTimeStamp(
+                                                        activeTicketList[index][
+                                                            'ticketStartDate']),
+                                                ticketEndDate: globalFunction
+                                                    .getDateFromTimeStamp(widget
+                                                            .memberTList![index]
+                                                        ['ticketEndDate']),
+                                                // ticketDateLeft: int.parse(
+                                                //     widget
+                                                //         .memberTList![index]
+                                                //             [
+                                                //             'ticketDateLeft']
+                                                //         .toString()),
+                                                customFunctionOnTap: () {
+                                                  for (int i = 0;
+                                                      i < ticketList.length;
+                                                      i++) {
+                                                    if (i == index) {
+                                                      ticketList[i]
+                                                              ['isSelected'] =
+                                                          !ticketList[i]
+                                                              ['isSelected'];
+                                                    } else {
+                                                      ticketList[i]
+                                                              ['isSelected'] =
+                                                          false;
+                                                    }
+                                                  }
+                                                  print(
+                                                      "expiredTicketList![index]['selectedUi'] : ${expiredTicketList[index]['selectedUi']}");
+                                                  setState(() {});
+                                                },
+                                              ),
+                                            );
+                                          }),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -525,7 +521,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "만료된 수강권(${getListCnt(globalVariables.memberTicketList, false)})",
+                                          "만료된 수강권(${getListCnt(ticketList, false)})",
                                           style: TextStyle(
                                               fontSize: 16,
                                               color: Palette.gray66,
@@ -552,43 +548,33 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                         scrollDirection: Axis.vertical,
                                         controller: scrollController,
                                         shrinkWrap: true,
-                                        itemCount: globalVariables
-                                            .memberTicketList.length,
+                                        itemCount: expiredTicketList.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           // print("Expired - globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
-                                          if (widget.memberTList![index]
-                                                      ['memberId'] ==
-                                                  widget.userInfo!.docId &&
-                                              widget.memberTList![index]
-                                                      ['isAlive'] ==
-                                                  false) {
+                                          if (ticketList[index]['isAlive'] ==
+                                              false) {
                                             return Container(
                                                 alignment: Alignment.center,
                                                 child: TicketWidget(
                                                     customFunctionOnTap: () {
                                                       for (int i = 0;
-                                                          i <
-                                                              widget
-                                                                  .memberTList!
-                                                                  .length;
+                                                          i < ticketList.length;
                                                           i++) {
                                                         if (i == index) {
-                                                          widget.memberTList![i]
-                                                                  [
+                                                          ticketList[i][
                                                                   'isSelected'] =
-                                                              !widget.memberTList![
+                                                              !expiredTicketList[
                                                                       i][
                                                                   'isSelected'];
                                                         } else {
-                                                          widget.memberTList![i]
-                                                                  [
+                                                          ticketList[i][
                                                                   'isSelected'] =
                                                               false;
                                                         }
                                                       }
                                                       print(
-                                                          "widget.memberTList![index]['isSelected'] : ${widget.memberTList![index]['selectedUi']}");
+                                                          "expiredTicketList![index]['isSelected'] : ${expiredTicketList[index]['selectedUi']}");
                                                       setState(() {});
                                                     },
                                                     customFunctionOnLongPress:
@@ -602,7 +588,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                                 MemberTicketMake(
                                                                     widget
                                                                         .userInfo,
-                                                                    widget.memberTList![
+                                                                    expiredTicketList[
                                                                             index]
                                                                         [
                                                                         'ticketTitle'])),
@@ -610,25 +596,25 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                         print("수강권 추가 result");
                                                       });
                                                     },
-                                                    selected: widget
-                                                            .memberTList![index]
+                                                    selected: widget.memberTList![index]
                                                         ['isSelected'],
                                                     ticketCountLeft:
-                                                        widget.memberTList![index]
+                                                        expiredTicketList[index]
                                                             ['ticketCountLeft'],
                                                     ticketCountAll:
-                                                        widget.memberTList![index]
+                                                        expiredTicketList[index]
                                                             ['ticketCountAll'],
                                                     ticketTitle:
-                                                        widget.memberTList![index]
+                                                        expiredTicketList[index]
                                                             ['ticketTitle'],
-                                                    ticketDescription: widget
-                                                            .memberTList![index]
-                                                        ['ticketDescription'],
+                                                    ticketDescription:
+                                                        expiredTicketList[index][
+                                                            'ticketDescription'],
                                                     ticketStartDate: globalFunction
                                                         .getDateFromTimeStamp(
-                                                            widget.memberTList![index]['ticketStartDate']),
-                                                    ticketEndDate: globalFunction.getDateFromTimeStamp(widget.memberTList![index]['ticketEndDate'])));
+                                                            expiredTicketList[index]
+                                                                ['ticketStartDate']),
+                                                    ticketEndDate: globalFunction.getDateFromTimeStamp(expiredTicketList[index]['ticketEndDate'])));
                                             // ticketDateLeft: widget.memberTList![index]['ticketDateLeft']));
                                           } else {
                                             return null;

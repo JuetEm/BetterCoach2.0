@@ -1073,6 +1073,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
     // 등록 된 수강권이 있으면 회원관리 기본정보 화면에 수강권 자동 선택
 
     isSelectedTicketExist = false;
+
     for (int i = 0; i < globalVariables.memberTicketList.length; i++) {
       ticketIndex++;
       if ((globalVariables.memberTicketList[i]['isSelected'] == true) &&
@@ -1081,6 +1082,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
         break;
       }
     }
+
     _MemberInfoState? parent =
         context.findAncestorStateOfType<_MemberInfoState>();
     // selectedGoals 값 반영하여 FilterChips 동적 생성

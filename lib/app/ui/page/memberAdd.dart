@@ -487,9 +487,6 @@ class _MemberAddState extends State<MemberAdd> {
                                                 width: 2,
                                                 color: Palette.grayEE)),
                                         child: InkWell(
-                                          onHover: (value) {
-                                            print("수강권 추가 onHover!!");
-                                          },
                                           onTap: () {
                                             /// 비워둔 온탭입니다. 기능을 붙여주세요
                                           },
