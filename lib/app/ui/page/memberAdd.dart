@@ -453,7 +453,6 @@ class _MemberAddState extends State<MemberAdd> {
                                       ticketEndDate: "2023.02.13",
                                       ticketCountAll: 20,
                                       ticketCountLeft: 13,
-                                      customFunctionOnHover: () {},
                                       // function OnTap 기능을 붙여주세요
                                       customFunctionOnTap: () {},
                                       // customFunctionOnTap: () async {

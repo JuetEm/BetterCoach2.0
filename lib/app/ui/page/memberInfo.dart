@@ -1071,7 +1071,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
   @override
   Widget build(BuildContext context) {
     // 등록 된 수강권이 있으면 회원관리 기본정보 화면에 수강권 자동 선택
-    
+
     isSelectedTicketExist = false;
     for (int i = 0; i < globalVariables.memberTicketList.length; i++) {
       ticketIndex++;
@@ -1133,27 +1133,23 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               alignment: Alignment.center,
               child: isSelectedTicketExist
                   ? TicketWidget(
-                      ticketTitle: globalVariables.memberTicketList[
-                          ticketIndex]['ticketTitle'],
-                      ticketDescription: globalVariables.memberTicketList[
-                              ticketIndex]
-                          ['ticketDescription'],
+                      ticketTitle: globalVariables.memberTicketList[ticketIndex]
+                          ['ticketTitle'],
+                      ticketDescription: globalVariables
+                          .memberTicketList[ticketIndex]['ticketDescription'],
                       ticketStartDate: globalFunction.getDateFromTimeStamp(
-                          globalVariables.memberTicketList[ticketIndex]['ticketStartDate']),
+                          globalVariables.memberTicketList[ticketIndex]
+                              ['ticketStartDate']),
                       ticketEndDate: globalFunction.getDateFromTimeStamp(
-                          globalVariables.memberTicketList[ticketIndex]['ticketEndDate']),
+                          globalVariables.memberTicketList[ticketIndex]
+                              ['ticketEndDate']),
                       // ticketDateLeft: globalVariables.memberTicketList[
                       //         globalVariables.selectedTicketIndex]
                       //     ['ticketDateLeft'],
-                      ticketCountAll: globalVariables.memberTicketList[
-                              ticketIndex]
-                          ['ticketCountAll'],
-                      ticketCountLeft: globalVariables.memberTicketList[
-                              ticketIndex]
-                          ['ticketCountLeft'],
-                      customFunctionOnHover: () {
-                        print("수강권 추가 onHover!!");
-                      },
+                      ticketCountAll: globalVariables
+                          .memberTicketList[ticketIndex]['ticketCountAll'],
+                      ticketCountLeft: globalVariables
+                          .memberTicketList[ticketIndex]['ticketCountLeft'],
                       customFunctionOnTap: () async {
                         print("수강권 추가 onTap!!");
                         var result = await // 저장하기 성공시 Home로 이동

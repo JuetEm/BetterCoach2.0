@@ -14,7 +14,7 @@ class TicketWidget extends StatefulWidget {
   final String ticketEndDate;
 
   bool? selected = false;
-  final Function? customFunctionOnHover;
+
   final Function customFunctionOnTap;
   final Function? customFunctionOnLongPress;
 
@@ -27,7 +27,6 @@ class TicketWidget extends StatefulWidget {
     required this.ticketStartDate,
     required this.ticketEndDate,
     this.selected,
-    this.customFunctionOnHover,
     required this.customFunctionOnTap,
     this.customFunctionOnLongPress,
   }) : super(key: key);
@@ -45,155 +44,146 @@ class _TicketWidgetState extends State<TicketWidget> {
         .inDays
         .toString());
 
-    return GestureDetector(
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(
-              width: 2,
-              color: widget.selected == null
-                  ? widget.ticketCountLeft == 0
-                      ? Palette.grayEE
-                      : Palette.backgroundOrange
-                  : widget.selected!
-                      ? Palette.textBlue
-                      : widget.ticketCountLeft == 0
-                          ? Palette.grayEE
-                          : Palette.backgroundOrange),
-        ),
-        child: InkWell(
-          onLongPress: () {
-            widget.customFunctionOnLongPress!();
-          },
-          hoverColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          onTapDown: (details) {
-            setState(() {
-              _toggle = true;
-            });
-          },
-          onTapUp: (details) {
-            setState(() {
-              _toggle = false;
-            });
-          },
-          onHover: (value) {
-            widget.customFunctionOnHover!();
-          },
-          onTap: () {
-            widget.customFunctionOnTap();
-          },
-          child: Container(
-            width: 280,
-            height: 140,
-            padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 100,
-                  width: 100,
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(
+            width: 2,
+            color: widget.selected == null
+                ? widget.ticketCountLeft == 0
+                    ? Palette.grayEE
+                    : Palette.backgroundOrange
+                : widget.selected!
+                    ? Palette.textBlue
+                    : widget.ticketCountLeft == 0
+                        ? Palette.grayEE
+                        : Palette.backgroundOrange),
+      ),
+      child: InkWell(
+        onLongPress: () {
+          widget.customFunctionOnLongPress!();
+        },
+        hoverColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        onTapDown: (details) {
+          setState(() {
+            _toggle = true;
+          });
+        },
+        onTapUp: (details) {
+          setState(() {
+            _toggle = false;
+          });
+        },
+        onTap: () {
+          widget.customFunctionOnTap();
+        },
+        child: Container(
+          width: 280,
+          height: 140,
+          padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 100,
+                width: 100,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 6),
+                    Text("남은 횟수",
+                        style: TextStyle(color: Palette.gray66, fontSize: 12)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "${widget.ticketCountLeft}",
+                          style: TextStyle(
+                              color: widget.ticketCountLeft == 0
+                                  ? Palette.gray99
+                                  : Palette.textOrange,
+                              fontWeight: FontWeight.bold,
+                              fontSize: widget.ticketCountAll >= 100 ? 20 : 28),
+                        ),
+                        Text(
+                          "/",
+                          style: TextStyle(
+                              color: widget.ticketCountLeft == 0
+                                  ? Palette.gray99
+                                  : Palette.textOrange,
+                              fontWeight: FontWeight.bold,
+                              fontSize: widget.ticketCountAll >= 100 ? 20 : 28),
+                        ),
+                        Text(
+                          "${widget.ticketCountAll}",
+                          style: TextStyle(
+                              color: Palette.gray99,
+                              fontSize: widget.ticketCountAll >= 100 ? 20 : 28),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      ticketDateLeft > 0
+                          ? "(D+${ticketDateLeft})"
+                          : "(D-${ticketDateLeft.abs()})",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: ticketDateLeft <= 14
+                              ? Palette.textRed
+                              : Palette.gray66),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                  width: 1, color: Palette.grayEE, height: double.infinity),
+              Container(
+                  width: 160,
+                  padding: EdgeInsets.only(left: 10),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 6),
-                      Text("남은 횟수",
-                          style:
-                              TextStyle(color: Palette.gray66, fontSize: 12)),
+                      Text("${widget.ticketTitle}",
+                          style: TextStyle(
+                              color: Palette.gray00,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16)),
+                      SizedBox(height: 5),
+                      Text(
+                        "${widget.ticketDescription}",
+                        style: TextStyle(fontSize: 12, color: Palette.gray66),
+                      ),
+                      SizedBox(height: 10),
+                      Text("시작일: ${widget.ticketStartDate}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          )),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            "${widget.ticketCountLeft}",
-                            style: TextStyle(
-                                color: widget.ticketCountLeft == 0
-                                    ? Palette.gray99
-                                    : Palette.textOrange,
+                          Text("종료일: ${widget.ticketEndDate}",
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize:
-                                    widget.ticketCountAll >= 100 ? 20 : 28),
-                          ),
-                          Text(
-                            "/",
-                            style: TextStyle(
-                                color: widget.ticketCountLeft == 0
-                                    ? Palette.gray99
-                                    : Palette.textOrange,
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    widget.ticketCountAll >= 100 ? 20 : 28),
-                          ),
-                          Text(
-                            "${widget.ticketCountAll}",
-                            style: TextStyle(
-                                color: Palette.gray99,
-                                fontSize:
-                                    widget.ticketCountAll >= 100 ? 20 : 28),
-                          )
+                                fontSize: 12,
+                              )),
                         ],
                       ),
-                      SizedBox(height: 4),
-                      Text(
-                        ticketDateLeft > 0
-                            ? "(D+${ticketDateLeft})"
-                            : "(D-${ticketDateLeft.abs()})",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: ticketDateLeft <= 14
-                                ? Palette.textRed
-                                : Palette.gray66),
-                      ),
                     ],
-                  ),
-                ),
-                Container(
-                    width: 1, color: Palette.grayEE, height: double.infinity),
-                Container(
-                    width: 160,
-                    padding: EdgeInsets.only(left: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("${widget.ticketTitle}",
-                            style: TextStyle(
-                                color: Palette.gray00,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16)),
-                        SizedBox(height: 5),
-                        Text(
-                          "${widget.ticketDescription}",
-                          style: TextStyle(fontSize: 12, color: Palette.gray66),
-                        ),
-                        SizedBox(height: 10),
-                        Text("시작일: ${widget.ticketStartDate}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            )),
-                        Row(
-                          children: [
-                            Text("종료일: ${widget.ticketEndDate}",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                )),
-                          ],
-                        ),
-                      ],
-                    )),
-              ],
-            ),
+                  )),
+            ],
           ),
         ),
-      ).animate(target: _toggle ? 1 : 0).scaleXY(end: 0.95, duration: 100.ms),
-    );
+      ),
+    ).animate(target: _toggle ? 1 : 0).scaleXY(end: 0.95, duration: 100.ms);
   }
 }
 
@@ -236,9 +226,6 @@ class _AddTicketWidgetState extends State<AddTicketWidget> {
             setState(() {
               _toggle = false;
             });
-          },
-          onHover: (value) {
-            print("수강권 추가 onHover!!");
           },
           onTap: () {
             widget.customFunctionOnTap();
