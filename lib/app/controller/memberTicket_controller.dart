@@ -19,4 +19,19 @@ class MemberTicketController {
 
     print('[MemberTicket] memberTicket Updated to Global Variables!');
   }
+
+/** 
+ * Ticket Manage의 티켓을 선택했을 때 선택한것은 활성, 나머지는 비활성 시켜주는 함수 / ticketSelect(멤버의 전체 티켓 리스트, 현재 상태의 티켓 리스트(active,expired), 인덱스) */
+  void ticketSelect(List ticketList, List currentStateTicketList, int index) {
+    // 다른 모든 티켓의 선택 해제
+    ticketList.forEach((element) {
+      element['isSelected'] = false;
+    });
+
+    // Tap한 티켓만 선택상태로 변경
+    var item = ticketList.firstWhere(
+        (element) => element['id'] == currentStateTicketList[index]['id']);
+
+    item['isSelected'] = true;
+  }
 }

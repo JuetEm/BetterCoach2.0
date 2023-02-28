@@ -30,25 +30,27 @@ bool favoriteMember = true;
 /** 메인으로 사용하는 리스트, uid, memberId로 filtering 된다. */
 List ticketList = [];
 
-/** 사용 가능한 수강권*/
+/** 사용 가능한 수강권 리스트 isAlive = true */
 List activeTicketList = [];
-/** 만료된 수강권. */
+/** 만료된 수강권 리스트 isAlive = false */
 List expiredTicketList = [];
 
-/** 사용가능한 수강권 리스트 열렸는지 */
-bool isActiveTicketListOpened = true;
+/** 사용가능한 수강권 리스트 닫혔는지 */
+bool isActiveTicketListHided = false;
 
-/** 만료된 수강권 리스트 열렸는지 */
-bool isExpiredTicketListOpened = true;
+/** 만료된 수강권 리스트 닫혔는지 */
+bool isExpiredTicketListHided = true;
 
+/** 리스트 내에 true 혹은 false값을 가진 내용물 수를 세준다 */
 int getListCnt(List tList, bool checkVal) {
   int cnt = 0;
-  for (var i in tList) {
-    // print("Active cnt : ${i}");
-    if (i['isAlive'] == checkVal && i['memberId'] == userInfo.docId) {
-      cnt++;
-    }
-  }
+
+  cnt = tList
+      .where((element) =>
+          element['isAlive'] == checkVal &&
+          element['memberId'] == userInfo.docId)
+      .length;
+
   return cnt;
 }
 
@@ -82,22 +84,21 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
         /// 메인으로 사용하는 리스트를 글로벌에서 불러와 멤버아이디로 필터링해준다.
         ticketList = globalVariables.memberTicketList
             .where((element) => element['memberId'] == userInfo.docId)
-            // .toSet()
+            .toSet()
             .toList();
 
-        activeTicketList = globalVariables.memberTicketList
-            .where((element) => element['memberId'] == userInfo.docId)
+        /// 멤버ID로 분류된 TicketList를 Active와 Expired로 분류시켜준다.
+        activeTicketList = ticketList
+            .where((element) => element['isAlive'])
             // .toSet()
             .toList();
-        expiredTicketList = globalVariables.memberTicketList
-            .where((element) => element['memberId'] == userInfo.docId)
+        expiredTicketList = ticketList
+            .where((element) => !element!['isAlive'])
             // .toSet()
             .toList();
 
         // print('####Timmy ticketList: $ticketList');
         // print('####Timmy ticketList.length: ${ticketList.length}');
-        // print(
-        //     '####Timmy globalVariables.memberTicketList.length: ${globalVariables.memberTicketList.length}');
 
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
@@ -199,47 +200,49 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                 favoriteMember = snapshot.data;
 
                                 return IconButton(
-                                    icon: SvgPicture.asset(
-                                      favoriteMember
-                                          ? "assets/icons/favoriteSelected.svg"
-                                          : "assets/icons/favoriteUnselected.svg",
-                                    ),
-                                    iconSize: 40,
-                                    onPressed: () async {
-                                      // 즐겨찾기 버튼 클릭 시 토글
-                                      favoriteMember = !favoriteMember;
+                                  icon: SvgPicture.asset(
+                                    favoriteMember
+                                        ? "assets/icons/favoriteSelected.svg"
+                                        : "assets/icons/favoriteUnselected.svg",
+                                  ),
+                                  iconSize: 40,
+                                  onPressed: () async {
+                                    // 즐겨찾기 버튼 클릭 시 토글
+                                    favoriteMember = !favoriteMember;
 
-                                      // 멤버ID를 이용하여 favorite bool 값 업데이트
-                                      await memberService.updateIsFavorite(
-                                          widget.userInfo!.docId,
-                                          favoriteMember);
+                                    // 멤버ID를 이용하여 favorite bool 값 업데이트
+                                    await memberService.updateIsFavorite(
+                                        widget.userInfo!.docId, favoriteMember);
 
-                                      // # Faovrite 반영된 멤버리스트를 Globale에 업로드
-                                      //  ## id 일치하는 element 찾아 선언
-                                      final item =
-                                          globalVariables.resultList.firstWhere(
-                                        (element) =>
-                                            element['id'] ==
-                                            widget.userInfo?.docId,
-                                        orElse: () => null,
-                                      );
-                                      //  ## item이 null값 아닐 경우  일치하는 element 찾아 선언
-                                      if (item != null) {
-                                        item['isFavorite'] =
-                                            item['isFavorite'] == null
-                                                ? true
-                                                : !item['isFavorite'];
-                                        print(
-                                            "memberInfo - widget.resultMemberList[i]['id'] : ${item['id']}");
-                                      }
-                                      ;
-
+                                    // # Faovrite 반영된 멤버리스트를 Globale에 업로드
+                                    //  ## id 일치하는 element 찾아 선언
+                                    final item =
+                                        globalVariables.resultList.firstWhere(
+                                      (element) =>
+                                          element['id'] ==
+                                          widget.userInfo?.docId,
+                                      orElse: () => null,
+                                    );
+                                    //  ## item이 null값 아닐 경우  일치하는 element 찾아 선언
+                                    if (item != null) {
+                                      item['isFavorite'] =
+                                          item['isFavorite'] == null
+                                              ? true
+                                              : !item['isFavorite'];
                                       print(
-                                          "[TM] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${widget.userInfo!.docId}");
-                                      setState(() {
+                                          "memberInfo - widget.resultMemberList[i]['id'] : ${item['id']}");
+                                    }
+                                    ;
+
+                                    print(
+                                        "[TM] 즐겨찾기 변경 클릭 : 변경후 - ${favoriteMember} / ${widget.userInfo!.docId}");
+                                    setState(
+                                      () {
                                         print("ticketManage setState called!");
-                                      });
-                                    });
+                                      },
+                                    );
+                                  },
+                                );
                               }
                             }),
 
@@ -321,9 +324,11 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                         builder: (context) =>
                                             MemberTicketMake.getUserInfo(
                                                 widget.userInfo)),
-                                  ).then((value) {
-                                    print("수강권 추가 result");
-                                  });
+                                  ).then(
+                                    (value) {
+                                      print("수강권 추가 result");
+                                    },
+                                  );
                                 },
                                 label: '수강권 추가하기',
                                 addIcon: true),
@@ -380,8 +385,8 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                 InkWell(
                                   onTap: () {
                                     /// 리스트 오픈 토글
-                                    isActiveTicketListOpened =
-                                        !isActiveTicketListOpened;
+                                    isActiveTicketListHided =
+                                        !isActiveTicketListHided;
 
                                     setState(() {});
                                   },
@@ -399,10 +404,10 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Icon(
-                                          isActiveTicketListOpened
+                                          isActiveTicketListHided
                                               ? Icons.expand_more
                                               : Icons.expand_less,
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -411,7 +416,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                 ////// 사용 가능한 수강권 리스트
 
                                 Offstage(
-                                  offstage: isActiveTicketListOpened,
+                                  offstage: isActiveTicketListHided,
                                   child: Container(
                                     child: Column(
                                       children: [
@@ -440,9 +445,11 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                                 activeTicketList[
                                                                         index][
                                                                     'ticketTitle'])),
-                                                  ).then((value) {
-                                                    print("수강권 추가 result");
-                                                  });
+                                                  ).then(
+                                                    (value) {
+                                                      print("수강권 추가 result");
+                                                    },
+                                                  );
                                                 },
                                                 selected:
                                                     activeTicketList[index]
@@ -469,27 +476,15 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                     .getDateFromTimeStamp(widget
                                                             .memberTList![index]
                                                         ['ticketEndDate']),
-                                                // ticketDateLeft: int.parse(
-                                                //     widget
-                                                //         .memberTList![index]
-                                                //             [
-                                                //             'ticketDateLeft']
-                                                //         .toString()),
                                                 customFunctionOnTap: () {
-                                                  for (int i = 0;
-                                                      i < ticketList.length;
-                                                      i++) {
-                                                    if (i == index) {
-                                                      ticketList[i]
-                                                              ['isSelected'] =
-                                                          !ticketList[i]
-                                                              ['isSelected'];
-                                                    } else {
-                                                      ticketList[i]
-                                                              ['isSelected'] =
-                                                          false;
-                                                    }
-                                                  }
+                                                  // 티켓 선택 함수
+                                                  MemberTicketController()
+                                                      .ticketSelect(
+                                                    ticketList, // Member의 전체 Ticket List
+                                                    activeTicketList, // 현재 상태의 Ticket List
+                                                    index, // 인덱스
+                                                  );
+
                                                   print(
                                                       "expiredTicketList![index]['selectedUi'] : ${expiredTicketList[index]['selectedUi']}");
                                                   setState(() {});
@@ -510,8 +505,8 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                 InkWell(
                                   onTap: () {
                                     /// 리스트 오픈 토글
-                                    isExpiredTicketListOpened =
-                                        !isExpiredTicketListOpened;
+                                    isExpiredTicketListHided =
+                                        !isExpiredTicketListHided;
                                     setState(() {});
                                   },
                                   child: Padding(
@@ -528,10 +523,10 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Icon(
-                                          isExpiredTicketListOpened
+                                          isExpiredTicketListHided
                                               ? Icons.expand_more
                                               : Icons.expand_less,
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -539,7 +534,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
 
                                 ////// 만료된 수강권 리스트
                                 Offstage(
-                                  offstage: isExpiredTicketListOpened,
+                                  offstage: isExpiredTicketListHided,
                                   child: Container(
                                     width: double.infinity,
                                     child: Container(
@@ -551,74 +546,69 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                         itemCount: expiredTicketList.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
-                                          // print("Expired - globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
-                                          if (ticketList[index]['isAlive'] ==
-                                              false) {
-                                            return Container(
-                                                alignment: Alignment.center,
-                                                child: TicketWidget(
-                                                    customFunctionOnTap: () {
-                                                      for (int i = 0;
-                                                          i < ticketList.length;
-                                                          i++) {
-                                                        if (i == index) {
-                                                          ticketList[i][
-                                                                  'isSelected'] =
-                                                              !expiredTicketList[
-                                                                      i][
-                                                                  'isSelected'];
-                                                        } else {
-                                                          ticketList[i][
-                                                                  'isSelected'] =
-                                                              false;
-                                                        }
-                                                      }
-                                                      print(
-                                                          "expiredTicketList![index]['isSelected'] : ${expiredTicketList[index]['selectedUi']}");
-                                                      setState(() {});
-                                                    },
-                                                    customFunctionOnLongPress:
-                                                        () async {
-                                                      var result =
-                                                          await // 저장하기 성공시 Home로 이동
-                                                          Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                MemberTicketMake(
-                                                                    widget
-                                                                        .userInfo,
-                                                                    expiredTicketList[
-                                                                            index]
-                                                                        [
-                                                                        'ticketTitle'])),
-                                                      ).then((value) {
-                                                        print("수강권 추가 result");
-                                                      });
-                                                    },
-                                                    selected: widget.memberTList![index]
-                                                        ['isSelected'],
-                                                    ticketCountLeft:
-                                                        expiredTicketList[index]
-                                                            ['ticketCountLeft'],
-                                                    ticketCountAll:
-                                                        expiredTicketList[index]
-                                                            ['ticketCountAll'],
-                                                    ticketTitle:
-                                                        expiredTicketList[index]
-                                                            ['ticketTitle'],
-                                                    ticketDescription:
-                                                        expiredTicketList[index][
-                                                            'ticketDescription'],
-                                                    ticketStartDate: globalFunction
-                                                        .getDateFromTimeStamp(
-                                                            expiredTicketList[index]
-                                                                ['ticketStartDate']),
-                                                    ticketEndDate: globalFunction.getDateFromTimeStamp(expiredTicketList[index]['ticketEndDate'])));
-                                            // ticketDateLeft: widget.memberTList![index]['ticketDateLeft']));
-                                          } else {
-                                            return null;
-                                          }
+                                          return Container(
+                                            alignment: Alignment.center,
+                                            child: TicketWidget(
+                                              customFunctionOnTap: () {
+                                                // 티켓 선택 함수
+                                                MemberTicketController()
+                                                    .ticketSelect(
+                                                  ticketList, // Member의 전체 Ticket List
+                                                  expiredTicketList, // 현재 상태의 Ticket List
+                                                  index, // 인덱스
+                                                );
+
+                                                setState(() {});
+
+                                                print(
+                                                    "expiredTicketList![index]['isSelected'] : ${expiredTicketList[index]['selectedUi']}");
+                                                setState(() {});
+                                              },
+                                              customFunctionOnLongPress:
+                                                  () async {
+                                                var result =
+                                                    await // 저장하기 성공시 Home로 이동
+                                                    Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MemberTicketMake(
+                                                      widget.userInfo,
+                                                      expiredTicketList[index]
+                                                          ['ticketTitle'],
+                                                    ),
+                                                  ),
+                                                ).then(
+                                                  (value) {
+                                                    print("수강권 추가 result");
+                                                  },
+                                                );
+                                              },
+                                              selected:
+                                                  widget.memberTList![index]
+                                                      ['isSelected'],
+                                              ticketCountLeft:
+                                                  expiredTicketList[index]
+                                                      ['ticketCountLeft'],
+                                              ticketCountAll:
+                                                  expiredTicketList[index]
+                                                      ['ticketCountAll'],
+                                              ticketTitle:
+                                                  expiredTicketList[index]
+                                                      ['ticketTitle'],
+                                              ticketDescription:
+                                                  expiredTicketList[index]
+                                                      ['ticketDescription'],
+                                              ticketStartDate: globalFunction
+                                                  .getDateFromTimeStamp(
+                                                      expiredTicketList[index]
+                                                          ['ticketStartDate']),
+                                              ticketEndDate: globalFunction
+                                                  .getDateFromTimeStamp(
+                                                      expiredTicketList[index]
+                                                          ['ticketEndDate']),
+                                            ),
+                                          );
                                         },
                                       ),
                                     ),

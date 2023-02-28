@@ -152,6 +152,12 @@ class _MemberInfoState extends State<MemberInfo> {
 
     return Consumer2<LessonService, MemberService>(
       builder: (context, lessonService, memberService, child) {
+        /// 메인으로 사용하는 리스트를 글로벌에서 불러와 멤버아이디로 필터링해준다.
+        ticketList = globalVariables.memberTicketList
+            .where((element) => element['memberId'] == userInfo.docId)
+            .toSet()
+            .toList();
+
         print("[MI] 빌드시작  : favoriteMember- ${favoriteMember}");
         // lessonService
         // ignore: dead_code
@@ -319,8 +325,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                             ),
                                             SizedBox(width: 4),
                                             Text(
-                                              globalVariables.memberTicketList[
-                                                      globalVariables
+                                              ticketList[globalVariables
                                                           .selectedTicketIndex]
                                                       ['ticketCountLeft']
                                                   .toString(),
@@ -343,8 +348,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                               ),
                                             ),
                                             Text(
-                                              globalVariables.memberTicketList[
-                                                      globalVariables
+                                              ticketList[globalVariables
                                                           .selectedTicketIndex]
                                                       ['ticketCountAll']
                                                   .toString(),
@@ -721,12 +725,12 @@ class _MemberInfoState extends State<MemberInfo> {
                       lessonDate =
                           DateFormat("yyyy-MM-dd").format(DateTime.now());
 
-                      ticketCountLeft = globalVariables.memberTicketList[
-                              globalVariables.selectedTicketIndex]
-                          ['ticketCountLeft'];
-                      ticketCountAll = globalVariables.memberTicketList[
-                              globalVariables.selectedTicketIndex]
-                          ['ticketCountAll'];
+                      ticketCountLeft =
+                          ticketList[globalVariables.selectedTicketIndex]
+                              ['ticketCountLeft'];
+                      ticketCountAll =
+                          ticketList[globalVariables.selectedTicketIndex]
+                              ['ticketCountAll'];
 
                       List<TmpLessonInfo> tmpLessonInfoList = [];
                       eventList = [];
@@ -1060,15 +1064,6 @@ class _MemberInfoViewState extends State<MemberInfoView> {
 
     isSelectedTicketExist = false;
 
-    for (int i = 0; i < globalVariables.memberTicketList.length; i++) {
-      ticketIndex++;
-      if ((globalVariables.memberTicketList[i]['isSelected'] == true) &&
-          (globalVariables.memberTicketList[i]['memberId'] == userInfo.docId)) {
-        isSelectedTicketExist = true;
-        break;
-      }
-    }
-
     _MemberInfoState? parent =
         context.findAncestorStateOfType<_MemberInfoState>();
     // selectedGoals 값 반영하여 FilterChips 동적 생성
@@ -1121,23 +1116,16 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               alignment: Alignment.center,
               child: isSelectedTicketExist
                   ? TicketWidget(
-                      ticketTitle: globalVariables.memberTicketList[ticketIndex]
-                          ['ticketTitle'],
+                      ticketTitle: ticketList[ticketIndex]['ticketTitle'],
                       ticketDescription: globalVariables
                           .memberTicketList[ticketIndex]['ticketDescription'],
                       ticketStartDate: globalFunction.getDateFromTimeStamp(
-                          globalVariables.memberTicketList[ticketIndex]
-                              ['ticketStartDate']),
+                          ticketList[ticketIndex]['ticketStartDate']),
                       ticketEndDate: globalFunction.getDateFromTimeStamp(
-                          globalVariables.memberTicketList[ticketIndex]
-                              ['ticketEndDate']),
-                      // ticketDateLeft: globalVariables.memberTicketList[
-                      //         globalVariables.selectedTicketIndex]
-                      //     ['ticketDateLeft'],
-                      ticketCountAll: globalVariables
-                          .memberTicketList[ticketIndex]['ticketCountAll'],
-                      ticketCountLeft: globalVariables
-                          .memberTicketList[ticketIndex]['ticketCountLeft'],
+                          ticketList[ticketIndex]['ticketEndDate']),
+                      ticketCountAll: ticketList[ticketIndex]['ticketCountAll'],
+                      ticketCountLeft: ticketList[ticketIndex]
+                          ['ticketCountLeft'],
                       customFunctionOnTap: () async {
                         print("수강권 추가 onTap!!");
                         var result = await // 저장하기 성공시 Home로 이동
@@ -1146,8 +1134,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                           MaterialPageRoute(
                               builder: (context) =>
                                   MemberTicketManage.getUserInfo(
-                                      globalVariables.memberTicketList,
-                                      widget.userInfo)),
+                                      ticketList, widget.userInfo)),
                         ).then((value) {
                           ticketIndex = value;
                           print("수강권 클릭 result : ${value}");
@@ -1165,16 +1152,13 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                       label: '수강권 선택하기',
                       addIcon: true,
                       customFunctionOnTap: () async {
-                        // print("push globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
-                        // print("수강권 추가 onTap!!");
                         var result = await // 저장하기 성공시 Home로 이동
                             Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
                                   MemberTicketManage.getUserInfo(
-                                      globalVariables.memberTicketList,
-                                      widget.userInfo)),
+                                      ticketList, widget.userInfo)),
                         ).then((value) {
                           ticketIndex = value;
                           print("수강권 선택 result : ${value}");
@@ -1682,9 +1666,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                             // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                             settings: RouteSettings(arguments: args),
                           ),
-                        ).then((value) {
-                          
-                        });
+                        ).then((value) {});
                       },
                       child: LessonCardWidget(
                         userInfo: widget.userInfo,

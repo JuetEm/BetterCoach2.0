@@ -1,3 +1,8 @@
+
+/*
+var item = ticketList.firstWhere((element) => element['id']==expiredTicketList[index]['id']);
+
+*/
 /* import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
