@@ -125,7 +125,6 @@ class _LessonCardWidgetState extends State<LessonCardWidget> {
                   ],
                 ),
                 SizedBox(height: 10),
-                Divider(),
 
                 /// 동작별 메모 한 묶음.
                 ListView.builder(
@@ -214,8 +213,7 @@ class _LessonCardWidgetState extends State<LessonCardWidget> {
             ),
             const SizedBox(height: 20),
             const Divider(),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 0),
+            SizedBox(
               child: Center(
                 child: IconButton(
                   icon: Icon(widget.isExpanded
