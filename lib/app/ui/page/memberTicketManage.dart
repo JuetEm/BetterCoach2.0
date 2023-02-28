@@ -28,7 +28,7 @@ GlobalFunction globalFunction = GlobalFunction();
 bool favoriteMember = true;
 
 /** 메인으로 사용하는 리스트, uid, memberId로 filtering 된다. */
-List ticketList = [];
+List memberManageTicketList = [];
 
 /** 사용 가능한 수강권 리스트 isAlive = true */
 List activeTicketList = [];
@@ -82,22 +82,22 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
     return Consumer<MemberTicketService>(
       builder: (context, memberTicketService, child) {
         /// 메인으로 사용하는 리스트를 글로벌에서 불러와 멤버아이디로 필터링해준다.
-        ticketList = globalVariables.memberTicketList
+        memberManageTicketList = globalVariables.memberTicketList
             .where((element) => element['memberId'] == userInfo.docId)
             .toSet()
             .toList();
 
         print('[isSelect] ### 잡으러간다 시작!');
 
-        print('###Tell me Bob! ticketList:$ticketList');
+        print('###Tell me Bob! memberManageTicketList:$memberManageTicketList');
 
         /// 멤버ID로 분류된 TicketList를 Active와 Expired로 분류시켜준다.
-        activeTicketList = ticketList
+        activeTicketList = memberManageTicketList
             .where((element) => element['isAlive'])
             // .toSet()
             .toList();
 
-        expiredTicketList = ticketList
+        expiredTicketList = memberManageTicketList
             .where((element) => !element['isAlive'])
             // .toSet()
             .toList();
@@ -106,13 +106,13 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "수강권 관리", () {
             /// pop할 시 컨텐츠
-            for (int i = 0; i < ticketList.length; i++) {
-              var element = ticketList[i];
+            for (int i = 0; i < memberManageTicketList.length; i++) {
+              var element = memberManageTicketList[i];
 
               if (element['isSelected'] == true) {
                 Navigator.pop(context, i);
                 break;
-              } else if (ticketList.length - 1 == i) {
+              } else if (memberManageTicketList.length - 1 == i) {
                 Navigator.pop(context, -1);
               } else {
                 Navigator.pop(context, -2);
@@ -124,10 +124,11 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                   int tmpIndex = 0;
 
                   // 완료 시 글로벌 티켓리스트 업데이트
-                  MemberTicketController()
-                      .update(ticketList, globalVariables.memberTicketList);
+                  MemberTicketController().update(
+                      memberManageTicketList, globalVariables.memberTicketList);
 
-                  final selectedTicket = ticketList.firstWhere(
+                  setState(() {});
+                  final selectedTicket = memberManageTicketList.firstWhere(
                       (ticket) => ticket['isSelected'],
                       orElse: () => null);
 
@@ -153,7 +154,11 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                         )
                         .then((_) {});
                   }
-                  Navigator.pop(context, tmpIndex);
+
+                  Navigator.pop(
+                    context,
+                    tmpIndex,
+                  );
                 },
                 child: Text(
                   "완료",
@@ -434,7 +439,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                               // 티켓 선택 함수
                                               MemberTicketController()
                                                   .ticketSelect(
-                                                ticketList, // Member의 전체 Ticket List
+                                                memberManageTicketList, // Member의 전체 Ticket List
                                                 activeTicketList,
                                                 globalVariables
                                                     .memberTicketList, // 현재 상태의 Ticket List
@@ -446,7 +451,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
 
                                               /// 글로벌 업데이트
                                               MemberTicketController().update(
-                                                  ticketList,
+                                                  memberManageTicketList,
                                                   globalVariables
                                                       .memberTicketList);
 
@@ -557,7 +562,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                               // 티켓 선택 함수
                                               MemberTicketController()
                                                   .ticketSelect(
-                                                ticketList, // Member의 전체 Ticket List
+                                                memberManageTicketList, // Member의 전체 Ticket List
                                                 expiredTicketList,
                                                 globalVariables
                                                     .memberTicketList, // 현재 상태의 Ticket List
@@ -569,7 +574,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
 
                                               /// 글로벌 업데이트
                                               MemberTicketController().update(
-                                                  ticketList,
+                                                  memberManageTicketList,
                                                   globalVariables
                                                       .memberTicketList);
 

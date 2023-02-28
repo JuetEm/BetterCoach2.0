@@ -58,8 +58,6 @@ class _MemberUpdateState extends State<MemberUpdate> {
     noteController.text = userInfo.note;
     commentController.text = userInfo.comment;
 
-    String imgUrl =
-        "https://newsimg.hankookilbo.com/cms/articlerelease/2021/01/07/0de90f3e-d3fa-452e-a471-aa0bec4a1252.jpg";
     return Consumer<MemberService>(
       builder: (context, memberService, child) {
         return Scaffold(

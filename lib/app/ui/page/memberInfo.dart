@@ -69,6 +69,8 @@ List lessonActionList = [];
 // 회원 동작별 노트
 List memberActionNote = [];
 
+bool isSelectedTicketExist = false;
+
 class MemberInfo extends StatefulWidget {
   UserInfo? userInfo;
   List tmpResultActionList = [];
@@ -138,8 +140,6 @@ class _MemberInfoState extends State<MemberInfo> {
     setState(() {});
   }
 
-  //setState(() {});
-
   @override
   Widget build(BuildContext context) {
     //final authService = context.read<AuthService>();
@@ -186,12 +186,6 @@ class _MemberInfoState extends State<MemberInfo> {
 
     return Consumer2<LessonService, MemberService>(
       builder: (context, lessonService, memberService, child) {
-        /// 메인으로 사용하는 리스트를 글로벌에서 불러와 멤버아이디로 필터링해준다.
-        ticketList = globalVariables.memberTicketList
-            .where((element) => element['memberId'] == userInfo.docId)
-            .toSet()
-            .toList();
-
         print("[MI] 빌드시작  : favoriteMember- ${favoriteMember}");
         // lessonService
         // ignore: dead_code
@@ -204,6 +198,28 @@ class _MemberInfoState extends State<MemberInfo> {
             .then((value) {
           memberActionNote.addAll(value);
         });
+
+        List memberInfoTicketList = [];
+
+        /// 메인으로 사용하는 리스트를 글로벌에서 불러와 멤버아이디로 필터링해준다.
+        memberInfoTicketList = globalVariables.memberTicketList
+            .where((element) => element['memberId'] == userInfo.docId)
+            .toSet()
+            .toList();
+
+        // 선택된 티켓
+        var selectedTicket = memberInfoTicketList.firstWhere(
+            (element) => element['isSelected'] = true,
+            orElse: () => null);
+
+        // 선택된 티켓이 있으면, 선택된 티켓 존재 여부 true, 수강권 추가하기 버튼 -> 사용중인 수강권 위젯
+        if (selectedTicket != null) {
+          isSelectedTicketExist = true;
+        } else {
+          isSelectedTicketExist = false;
+        }
+        print('[MBL_Ticket] selectedTicket: $selectedTicket');
+
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
           appBar: BaseAppBarMethod(context, "회원관리", () {
@@ -359,7 +375,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                             ),
                                             SizedBox(width: 4),
                                             Text(
-                                              ticketList[globalVariables
+                                              memberInfoTicketList[globalVariables
                                                           .selectedTicketIndex]
                                                       ['ticketCountLeft']
                                                   .toString(),
@@ -382,7 +398,7 @@ class _MemberInfoState extends State<MemberInfo> {
                                               ),
                                             ),
                                             Text(
-                                              ticketList[globalVariables
+                                              memberInfoTicketList[globalVariables
                                                           .selectedTicketIndex]
                                                       ['ticketCountAll']
                                                   .toString(),
@@ -759,12 +775,10 @@ class _MemberInfoState extends State<MemberInfo> {
                       lessonDate =
                           DateFormat("yyyy-MM-dd").format(DateTime.now());
 
-                      ticketCountLeft =
-                          ticketList[globalVariables.selectedTicketIndex]
-                              ['ticketCountLeft'];
-                      ticketCountAll =
-                          ticketList[globalVariables.selectedTicketIndex]
-                              ['ticketCountAll'];
+                      ticketCountLeft = memberInfoTicketList[globalVariables
+                          .selectedTicketIndex]['ticketCountLeft'];
+                      ticketCountAll = memberInfoTicketList[globalVariables
+                          .selectedTicketIndex]['ticketCountAll'];
 
                       List<TmpLessonInfo> tmpLessonInfoList = [];
                       eventList = [];
@@ -1062,7 +1076,6 @@ class _LessonNoteViewState extends State<LessonNoteView> {
   }
 }
 
-bool isSelectedTicketExist = false;
 int ticketIndex = 0;
 
 List memberTicketList = [];
@@ -1096,8 +1109,6 @@ class _MemberInfoViewState extends State<MemberInfoView> {
   Widget build(BuildContext context) {
     // 등록 된 수강권이 있으면 회원관리 기본정보 화면에 수강권 자동 선택
 
-    isSelectedTicketExist = false;
-
     _MemberInfoState? parent =
         context.findAncestorStateOfType<_MemberInfoState>();
     // selectedGoals 값 반영하여 FilterChips 동적 생성
@@ -1120,6 +1131,14 @@ class _MemberInfoViewState extends State<MemberInfoView> {
 
     return Consumer<MemberTicketService>(
         builder: (context, memberTicketService, child) {
+      List memberInfoTicketList = [];
+
+      /// 메인으로 사용하는 리스트를 글로벌에서 불러와 멤버아이디로 필터링해준다.
+      memberInfoTicketList = globalVariables.memberTicketList
+          .where((element) => element['memberId'] == userInfo.docId)
+          .toSet()
+          .toList();
+
       return Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20.0),
@@ -1150,17 +1169,19 @@ class _MemberInfoViewState extends State<MemberInfoView> {
               alignment: Alignment.center,
               child: isSelectedTicketExist
                   ? TicketWidget(
-                      ticketTitle: ticketList[ticketIndex]['ticketTitle'],
+                      ticketTitle: memberInfoTicketList[ticketIndex]
+                          ['ticketTitle'],
                       ticketDescription: globalVariables
                           .memberTicketList[ticketIndex]['ticketDescription'],
                       ticketStartDate: globalFunction.getDateFromTimeStamp(
-                          ticketList[ticketIndex]['ticketStartDate']),
+                          memberInfoTicketList[ticketIndex]['ticketStartDate']),
                       ticketEndDate: globalFunction.getDateFromTimeStamp(
-                          ticketList[ticketIndex]['ticketEndDate']),
-                      ticketCountAll: ticketList[ticketIndex]['ticketCountAll'],
-                      ticketCountLeft: ticketList[ticketIndex]
+                          memberInfoTicketList[ticketIndex]['ticketEndDate']),
+                      ticketCountAll: memberInfoTicketList[ticketIndex]
+                          ['ticketCountAll'],
+                      ticketCountLeft: memberInfoTicketList[ticketIndex]
                           ['ticketCountLeft'],
-                      isAlive: ticketList[ticketIndex]['isAlive'],
+                      isAlive: memberInfoTicketList[ticketIndex]['isAlive'],
                       customFunctionOnTap: () async {
                         print("수강권 추가 onTap!!");
                         var result = await // 저장하기 성공시 Home로 이동
@@ -1169,7 +1190,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                           MaterialPageRoute(
                               builder: (context) =>
                                   MemberTicketManage.getUserInfo(
-                                      ticketList, widget.userInfo)),
+                                      memberInfoTicketList, widget.userInfo)),
                         ).then((value) {
                           ticketIndex = value;
                           print("수강권 클릭 result : ${value}");
@@ -1193,9 +1214,10 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                           MaterialPageRoute(
                               builder: (context) =>
                                   MemberTicketManage.getUserInfo(
-                                      ticketList, widget.userInfo)),
+                                      memberInfoTicketList, widget.userInfo)),
                         ).then((value) {
                           ticketIndex = value;
+
                           print("수강권 선택 result : ${value}");
                           setState(() {
                             print("memberInfo then setState called!");
@@ -1586,8 +1608,10 @@ class _NoteListActionCategoryState extends State<NoteListActionCategory> {
       physics: NeverScrollableScrollPhysics(),
       elements: widget.docs,
       groupBy: (element) => element['actionName'],
-      groupSeparatorBuilder: (String value) =>
-          GroupActionContainer(actionName: value),
+      groupSeparatorBuilder: (String value) => Padding(
+        padding: const EdgeInsets.fromLTRB(0, 15, 0, 5),
+        child: GroupActionContainer(actionName: value),
+      ),
       itemBuilder: (BuildContext context, dynamic ddocs) {
         // 달력기능 개발 중
         // DateTime eventDate = DateTime.parse(

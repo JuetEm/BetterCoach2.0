@@ -1254,7 +1254,12 @@ class GroupActionContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Container(
+        padding: EdgeInsets.only(left: 10),
+        alignment: Alignment.centerLeft,
+        child: Chip(label: Text(actionName)));
+
+    Column(
       children: [
         SizedBox(
           height: 16,
