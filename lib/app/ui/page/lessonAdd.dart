@@ -1345,10 +1345,10 @@ class _LessonAddState extends State<LessonAdd> {
     String username,
   ) {
     var now = DateTime.now();
-    String sequenceTitle =
+    /* String sequenceTitle =
         username + "님 " + DateFormat("yyyy-MM-dd HH:MM").format(now);
     sequenceCustomService.create(uid, memberId, todayNote, actionList,
-        isfavorite, like, timeStamp, sequenceTitle);
+        isfavorite, like, timeStamp, sequenceTitle); */
   }
 
   int i = 0;

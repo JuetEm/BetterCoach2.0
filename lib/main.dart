@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:web_project/app/controller/member_info_controller.dart';
+import 'package:web_project/app/controller/memberInfo_controller.dart';
 import 'package:web_project/app/data/provider/analyticLog.dart';
 import 'package:web_project/app/data/provider/action_service.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';

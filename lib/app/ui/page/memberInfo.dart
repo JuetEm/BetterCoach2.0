@@ -86,10 +86,44 @@ class MemberInfo extends StatefulWidget {
 }
 
 class _MemberInfoState extends State<MemberInfo> {
-  @override
   void initState() {
     //처음에만 날짜 받아옴.
+
     super.initState();
+
+    if (widget.isQuickAdd) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future.delayed(const Duration(milliseconds: 300), () async {
+          lessonDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+
+          List<TmpLessonInfo> tmpLessonInfoList = [];
+          eventList = [];
+          lessonAddMode = "노트 추가";
+          List<dynamic> args = [
+            userInfo,
+            lessonDate,
+            eventList,
+            lessonNoteId,
+            lessonAddMode,
+            tmpLessonInfoList,
+            resultActionList,
+            ticketCountLeft,
+            ticketCountAll,
+          ];
+          print(
+              "[MI] 노트추가 클릭  ${lessonDate} / ${lessonAddMode} / tmpLessonInfoList ${tmpLessonInfoList.length}");
+
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LessonAdd(),
+              // setting에서 arguments로 다음 화면에 회원 정보 넘기기
+              settings: RouteSettings(arguments: args),
+            ),
+          );
+        });
+      });
+    }
   }
 
   @override
