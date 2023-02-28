@@ -74,48 +74,52 @@ class _SequenceLibraryState extends State<SequenceLibrary> {
           child: TabBarView(
             children: [
               /// 저장된 시퀀스 탭 내용
-              Container(
-                width: double.infinity,
-                child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: 100,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ImportSequenceFromSaved()),
-                        ).then((value) => Navigator.pop(context));
-                      },
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 6, horizontal: 20),
-                      tileColor: Palette.mainBackground,
-                      title: Row(
-                        children: [
-                          Text('커스텀시퀀스 ${index + 1}'),
-                          SizedBox(width: 10),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 6),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                    color: Palette.gray99, width: 1)),
-                            child: Text(
-                              '${2 * index}',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          )
-                        ],
-                      ),
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                      ),
-                    );
-                  },
-                ),
+              Consumer<SequenceCustomService>(builder: (context, sequencevmd , child) {
+                return Container(
+                  width: double.infinity,
+                  child: ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    itemCount: 100,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ImportSequenceFromSaved()),
+                          ).then((value) => Navigator.pop(context));
+                        },
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 6, horizontal: 20),
+                        tileColor: Palette.mainBackground,
+                        title: Row(
+                          children: [
+                            Text('커스텀시퀀스 ${index + 1}'),
+                            SizedBox(width: 10),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 6),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: Palette.gray99, width: 1)),
+                              child: Text(
+                                '${2 * index}',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+                 
               ),
 
               
