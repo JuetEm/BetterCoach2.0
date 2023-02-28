@@ -820,7 +820,6 @@ class _MemberInfoState extends State<MemberInfo> {
                         print("^^^^^^^^^^^^^^^^ Floating Button Then!!");
                         // resultActionList = value;
                         setState(() {});
-                        myData = await fetchData();
                       });
                     }
                   },
