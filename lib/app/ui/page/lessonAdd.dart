@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:web_project/app/controller/importSequence_controller.dart';
 import 'package:web_project/app/data/model/globalVariables.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/data/provider/memberTicket_service.dart';
@@ -365,7 +366,9 @@ class _LessonAddState extends State<LessonAdd> {
                               false,
                               0,
                               Timestamp.now(),
-                              userInfo.name)
+                              userInfo.name,
+                              sequenceNameController.text,
+                            )
                           : null;
 
                       lessonService.notifyListeners();
@@ -1201,15 +1204,16 @@ class _LessonAddState extends State<LessonAdd> {
                               ),
                               onPressed: () async {
                                 saveRecentSequence(
-                                    sequenceRecentService,
-                                    userInfo.uid,
-                                    userInfo.docId,
-                                    todayNoteController.text,
-                                    lessonActionList,
-                                    false,
-                                    0,
-                                    Timestamp.now(),
-                                    userInfo.name);
+                                  sequenceRecentService,
+                                  userInfo.uid,
+                                  userInfo.docId,
+                                  todayNoteController.text,
+                                  lessonActionList,
+                                  false,
+                                  0,
+                                  Timestamp.now(),
+                                  userInfo.name,
+                                );
                                 isSequenceSaveChecked
                                     ? saveCustomSequnce(
                                         sequenceCustomService,
@@ -1220,7 +1224,9 @@ class _LessonAddState extends State<LessonAdd> {
                                         false,
                                         0,
                                         Timestamp.now(),
-                                        userInfo.name)
+                                        userInfo.name,
+                                        sequenceNameController.text,
+                                      )
                                     : null;
                                 print(
                                     "[LA] 저장버튼실행 actionNullCheck : ${actionNullCheck}/todayNoteView : ${todayNoteView}");
@@ -1343,12 +1349,14 @@ class _LessonAddState extends State<LessonAdd> {
     int like, // 좋아요 수 (추후 추가 가능성)
     Timestamp timeStamp, // 꺼내 쓸 때 변환해서 씀
     String username,
+    String sequenceTitle,
   ) {
     var now = DateTime.now();
-    /* String sequenceTitle =
-        username + "님 " + DateFormat("yyyy-MM-dd HH:MM").format(now);
-    sequenceCustomService.create(uid, memberId, todayNote, actionList,
-        isfavorite, like, timeStamp, sequenceTitle); */
+
+    ImportSequenceController importSequenceController =
+        ImportSequenceController();
+    importSequenceController.createCustomSequence(uid, memberId, todayNote,
+        actionList, isfavorite, like, Timestamp.now(), sequenceTitle);
   }
 
   int i = 0;

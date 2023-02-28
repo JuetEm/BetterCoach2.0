@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:web_project/app/function/globalFunction.dart';
@@ -33,6 +35,20 @@ class SequenceCustomService extends ChangeNotifier {
     return resultList;
   }
 
+  readCustomSequenceTopNum(String uid) {
+    var result;
+    sequenceRecentCollection
+        .where('uid', isEqualTo: uid)
+        .orderBy('num', descending: true)
+        .limit(1).get().then((value){
+          result = value.docs;
+        });
+
+        print("result : ${result}");
+
+        return result;
+  }
+
   ///Create하기 Delete 기능 없음
   Future<String> create(
     final String uid,
@@ -48,7 +64,7 @@ class SequenceCustomService extends ChangeNotifier {
     String id = "";
 
     //
-    await sequenceRecentCollection.add({
+    var result = await sequenceRecentCollection.add({
       'uid': uid, // 작성자 uid
       'memberId': memberId, // 회원 docId
       'todayNote': todayNote,
@@ -65,7 +81,7 @@ class SequenceCustomService extends ChangeNotifier {
     });
     notifyListeners(); // 화면 갱신
 
-    return id;
+    return result;
   }
 
   Future<String> update(

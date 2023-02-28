@@ -18,6 +18,8 @@ class GlobalVariables {
   int selectedTicketIndex = 0;
   // lessonNoteGlobal List
   List lessonNoteGlobalList = [];
+  // customSequence List
+  List customSequenceList = [];
 
   sortList() {
     print("GlobalVariables - sortList is called");
