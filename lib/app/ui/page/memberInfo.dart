@@ -804,10 +804,11 @@ class _MemberInfoState extends State<MemberInfo> {
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
                         ),
-                      ).then((value) {
+                      ).then((value) async {
                         print("^^^^^^^^^^^^^^^^ Floating Button Then!!");
                         // resultActionList = value;
-                        // setState(() {});
+                        setState(() {});
+                        myData = await fetchData();
                       });
                     }
                   },
