@@ -1126,6 +1126,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                       ticketCountAll: ticketList[ticketIndex]['ticketCountAll'],
                       ticketCountLeft: ticketList[ticketIndex]
                           ['ticketCountLeft'],
+                      isAlive: ticketList[ticketIndex]['isAlive'],
                       customFunctionOnTap: () async {
                         print("수강권 추가 onTap!!");
                         var result = await // 저장하기 성공시 Home로 이동

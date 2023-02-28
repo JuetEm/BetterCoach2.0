@@ -57,6 +57,7 @@ String ticketDescription = "";
 String ticketStartDate = "";
 String ticketEndDate = "";
 int ticketDateLeft = 0;
+bool isAlive = true;
 
 bool isFirst = true;
 
@@ -1138,6 +1139,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                       ticketDescription: ticketDescription,
                       ticketStartDate: ticketStartDate,
                       ticketEndDate: ticketEndDate,
+                      isAlive: isAlive,
                     )
                   ],
                 ),

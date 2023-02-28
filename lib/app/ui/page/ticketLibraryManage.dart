@@ -89,6 +89,9 @@ class _TicketLibraryManageState extends State<TicketLibraryManage> {
                         ticketEndDate: globalVariables.ticketLibraryList[index]
                                 ['ticketEndDate'] ??
                             "0000-00-00",
+                        isAlive: true,
+                        selected: globalVariables.ticketLibraryList[index]
+                            ['isSelected'],
                         // ticketDateLeft: globalVariables.ticketLibraryList[index]
                         //     ['ticketDateLeft'],
                       ),

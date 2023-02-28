@@ -12,8 +12,9 @@ class TicketWidget extends StatefulWidget {
   final String ticketDescription;
   final String ticketStartDate;
   final String ticketEndDate;
+  final bool isAlive;
 
-  bool? selected = false;
+  bool? selected;
 
   final Function customFunctionOnTap;
   final Function? customFunctionOnLongPress;
@@ -26,9 +27,10 @@ class TicketWidget extends StatefulWidget {
     required this.ticketDescription,
     required this.ticketStartDate,
     required this.ticketEndDate,
-    this.selected,
+    this.selected = false,
     required this.customFunctionOnTap,
     this.customFunctionOnLongPress,
+    required this.isAlive,
   }) : super(key: key);
 
   @override
@@ -50,15 +52,11 @@ class _TicketWidgetState extends State<TicketWidget> {
         borderRadius: BorderRadius.circular(10),
         side: BorderSide(
             width: 2,
-            color: widget.selected == null
-                ? widget.ticketCountLeft == 0
-                    ? Palette.grayEE
-                    : Palette.backgroundOrange
-                : widget.selected!
-                    ? Palette.textBlue
-                    : widget.ticketCountLeft == 0
-                        ? Palette.grayEE
-                        : Palette.backgroundOrange),
+            color: widget.selected!
+                ? Palette.textBlue
+                : widget.isAlive
+                    ? Palette.backgroundOrange
+                    : Palette.grayEE),
       ),
       child: InkWell(
         onLongPress: () {
@@ -78,7 +76,7 @@ class _TicketWidgetState extends State<TicketWidget> {
           });
         },
         onTap: () {
-          widget.customFunctionOnTap();
+          widget.customFunctionOnTap;
         },
         child: Container(
           width: 280,

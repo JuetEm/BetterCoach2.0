@@ -87,13 +87,15 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
             .toSet()
             .toList();
 
+        print('###Tell me Bob! ticketList:$ticketList');
+
         /// 멤버ID로 분류된 TicketList를 Active와 Expired로 분류시켜준다.
         activeTicketList = ticketList
             .where((element) => element['isAlive'])
             // .toSet()
             .toList();
         expiredTicketList = ticketList
-            .where((element) => !element!['isAlive'])
+            .where((element) => !element['isAlive'])
             // .toSet()
             .toList();
 
@@ -128,6 +130,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                   final selectedTicket = ticketList.firstWhere(
                       (ticket) => ticket['isSelected'],
                       orElse: () => null);
+
                   if (selectedTicket != null) {
                     memberTicketService
                         .update(
@@ -397,7 +400,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "사용 가능한 수강권(${getListCnt(ticketList, true)})",
+                                          "사용 가능한 수강권(${getListCnt(activeTicketList, true)})",
                                           style: TextStyle(
                                               fontSize: 16,
                                               color: Palette.gray66,
@@ -427,8 +430,6 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                           itemCount: activeTicketList.length,
                                           itemBuilder: ((BuildContext context,
                                               int index) {
-                                            print(
-                                                "widget.memberTList![index]['ticketCountLeft'] : ${widget.memberTList![index]['ticketCountLeft']} ");
                                             return Container(
                                               alignment: Alignment.center,
                                               child: TicketWidget(
@@ -473,17 +474,31 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                         activeTicketList[index][
                                                             'ticketStartDate']),
                                                 ticketEndDate: globalFunction
-                                                    .getDateFromTimeStamp(widget
-                                                            .memberTList![index]
-                                                        ['ticketEndDate']),
+                                                    .getDateFromTimeStamp(
+                                                        activeTicketList[index]
+                                                            ['ticketEndDate']),
+                                                isAlive: activeTicketList[index]
+                                                    ['isAlive'],
                                                 customFunctionOnTap: () {
                                                   // 티켓 선택 함수
                                                   MemberTicketController()
                                                       .ticketSelect(
                                                     ticketList, // Member의 전체 Ticket List
-                                                    activeTicketList, // 현재 상태의 Ticket List
+                                                    activeTicketList,
+                                                    globalVariables
+                                                        .memberTicketList, // 현재 상태의 Ticket List
                                                     index, // 인덱스
                                                   );
+
+                                                  activeTicketList[index]
+                                                      ['isSelected'] = true;
+
+                                                  /// 글로벌 업데이트
+                                                  MemberTicketController()
+                                                      .update(
+                                                          ticketList,
+                                                          globalVariables
+                                                              .memberTicketList);
 
                                                   print(
                                                       "expiredTicketList![index]['selectedUi'] : ${expiredTicketList[index]['selectedUi']}");
@@ -554,11 +569,20 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                 MemberTicketController()
                                                     .ticketSelect(
                                                   ticketList, // Member의 전체 Ticket List
-                                                  expiredTicketList, // 현재 상태의 Ticket List
+                                                  expiredTicketList,
+                                                  globalVariables
+                                                      .memberTicketList, // 현재 상태의 Ticket List
                                                   index, // 인덱스
                                                 );
 
-                                                setState(() {});
+                                                expiredTicketList[index]
+                                                    ['isSelected'] = true;
+
+                                                /// 글로벌 업데이트
+                                                MemberTicketController().update(
+                                                    ticketList,
+                                                    globalVariables
+                                                        .memberTicketList);
 
                                                 print(
                                                     "expiredTicketList![index]['isSelected'] : ${expiredTicketList[index]['selectedUi']}");
@@ -584,9 +608,8 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                   },
                                                 );
                                               },
-                                              selected:
-                                                  widget.memberTList![index]
-                                                      ['isSelected'],
+                                              selected: expiredTicketList[index]
+                                                  ['isSelected'],
                                               ticketCountLeft:
                                                   expiredTicketList[index]
                                                       ['ticketCountLeft'],
@@ -607,6 +630,8 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                   .getDateFromTimeStamp(
                                                       expiredTicketList[index]
                                                           ['ticketEndDate']),
+                                              isAlive: expiredTicketList[index]
+                                                  ['isAlive'],
                                             ),
                                           );
                                         },

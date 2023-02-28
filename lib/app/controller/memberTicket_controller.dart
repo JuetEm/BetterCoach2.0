@@ -11,6 +11,8 @@ class MemberTicketController {
       /// 존재하는지 안하는지 확인하는 boolean 값 선언
       final exists = memberTicketList.any((t) => t['id'] == ticket['id']);
 
+      print("###Bob t['id'] == ticket['id'],${exists}, ${ticket['id']}");
+
       if (!exists) memberTicketList.add(ticket);
     });
 
@@ -21,17 +23,28 @@ class MemberTicketController {
   }
 
 /** 
- * Ticket Manage의 티켓을 선택했을 때 선택한것은 활성, 나머지는 비활성 시켜주는 함수 / ticketSelect(멤버의 전체 티켓 리스트, 현재 상태의 티켓 리스트(active,expired), 인덱스) */
-  void ticketSelect(List ticketList, List currentStateTicketList, int index) {
+ * Ticket Manage의 티켓을 선택했을 때 선택한것은 활성, 나머지는 비활성 시켜주는 함수 / ticketSelect(멤버의 전체 티켓 리스트, 현재 상태의 티켓 리스트(active,expired), 글로벌 리스트, 인덱스) */
+
+  void ticketSelect(List ticketList, List currentStateTicketList,
+      List globalList, int index) {
+    if (index >= currentStateTicketList.length) {
+      return;
+    }
+
     // 다른 모든 티켓의 선택 해제
-    ticketList.forEach((element) {
+    for (var element in ticketList) {
       element['isSelected'] = false;
-    });
+    }
 
     // Tap한 티켓만 선택상태로 변경
     var item = ticketList.firstWhere(
         (element) => element['id'] == currentStateTicketList[index]['id']);
 
     item['isSelected'] = true;
+
+    var globalItem = globalList.firstWhere(
+        (element) => element['id'] == currentStateTicketList[index]['id']);
+
+    globalItem['isSelected'] = true;
   }
 }
