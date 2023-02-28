@@ -1,12 +1,14 @@
 import 'package:web_project/app/data/provider/auth_service.dart';
 import 'package:web_project/app/data/provider/daylesson_service.dart';
 import 'package:web_project/app/data/provider/lesson_service.dart';
+import 'package:web_project/app/data/provider/sequenceCustom_service.dart';
 
 class LessonRepository {
   LessonRepository();
 
   LessonService lessonService = LessonService();
   DayLessonService dayLessonService = DayLessonService();
+  SequenceCustomService sequenceCustomService = SequenceCustomService();
 
   /// User Id와 Member Id 일치하는 레슨, 동작 리스트 가져오기
   Future<List> getLessonActionNote(String uid, String memberId) async {
@@ -21,6 +23,14 @@ class LessonRepository {
   Future<List> getLessonDaynNote(String uid) async {
     List resultList = [];
     await dayLessonService.readLessonDayNote(uid).then((value) {
+      resultList.addAll(value);
+    });
+    return resultList;
+  }
+
+  Future<List> getCustomLesson(String uid) async {
+    List resultList = [];
+    await sequenceCustomService.read(uid).then((value){
       resultList.addAll(value);
     });
     return resultList;

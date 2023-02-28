@@ -6,6 +6,7 @@ import 'package:web_project/app/data/repository/lesson_repository.dart';
 import 'package:web_project/app/ui/page/lessonAdd.dart';
 import 'package:web_project/main.dart';
 
+// 챗지피티 만세! 
 // class MemberInfoController {
 //   MemberInfoController();
 

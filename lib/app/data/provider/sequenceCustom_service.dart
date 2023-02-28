@@ -37,6 +37,7 @@ class SequenceCustomService extends ChangeNotifier {
   Future<String> create(
     final String uid,
     final String memberId,
+    final int num, // 커스텀 시퀀스 #num 에 쓰이는 상수
     final String todayNote, // 일별 레슨 노트
     final List actionList, // List -> Json
     final bool isfavorite, // 즐겨찾는 시퀀스 (추후 추가 가능성)
