@@ -312,6 +312,7 @@ class _MemberAddState extends State<MemberAdd> {
                                     hint: "회원명(9자 이하)",
                                     showArrow: false,
                                     customFunction: () {},
+                                    maxLength: 10,
                                   ),
                                 ),
                               ],

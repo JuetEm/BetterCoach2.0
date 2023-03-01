@@ -426,6 +426,7 @@ class BaseTextField extends StatefulWidget {
     required this.hint,
     required this.showArrow,
     required this.customFunction,
+    this.maxLength,
   }) : super(key: key);
 
   final TextEditingController customController;
@@ -433,6 +434,7 @@ class BaseTextField extends StatefulWidget {
   final String hint;
   final showArrow;
   final Function customFunction;
+  int? maxLength;
 
   @override
   State<BaseTextField> createState() => _BaseTextFieldState();
@@ -446,6 +448,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
     return Container(
       alignment: Alignment.center,
       child: TextField(
+        maxLength: widget.maxLength,
         obscureText: widget.hint.contains("비밀번호") ? true : false, // 비밀번호 안보이게
         style: TextStyle(fontSize: 16),
         //focusNode: textFocus,

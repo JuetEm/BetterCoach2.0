@@ -113,6 +113,7 @@ class _MemberUpdateState extends State<MemberUpdate> {
                             hint: "이름",
                             showArrow: false,
                             customFunction: () {},
+                            maxLength: 10,
                           ),
 
                           /// 등록일 입력창
