@@ -97,8 +97,9 @@ String getMonthLateDate() {
 class MemberTicketMake extends StatefulWidget {
   UserInfo? userInfo;
   String? ticketTitle;
-  MemberTicketMake(this.userInfo, this.ticketTitle, {super.key});
-  MemberTicketMake.getUserInfo(this.userInfo, {super.key});
+  Function? notifyFunction;
+  MemberTicketMake(this.userInfo, this.ticketTitle,this.notifyFunction, {super.key});
+  MemberTicketMake.getUserInfo(this.userInfo, this.notifyFunction,{super.key});
 
   @override
   State<MemberTicketMake> createState() => _MemberTicketMakeState();
@@ -537,7 +538,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                             (a['ticketTitle']).compareTo(b['ticketTitle']));
                         print(
                             "create globalVariables.memberTicketList : ${globalVariables.memberTicketList}");
-
+                        widget.notifyFunction!();
                         Navigator.pop(context);
                       });
                     }

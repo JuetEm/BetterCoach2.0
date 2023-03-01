@@ -111,7 +111,9 @@ List deleteTargetDocIdLiet = [];
 List<TextEditingController> txtEdtCtrlrList = [];
 
 class LessonAdd extends StatefulWidget {
-  const LessonAdd({super.key});
+  LessonAdd(this.callbackFunction,{super.key});
+  
+  Function? callbackFunction;
 
   @override
   State<LessonAdd> createState() => _LessonAddState();
@@ -371,10 +373,11 @@ class _LessonAddState extends State<LessonAdd> {
                             )
                           : null;
 
+                          widget.callbackFunction!();
                       lessonService.notifyListeners();
-                      // Navigator.pop(context, lessonActionList);
-                      Navigator.popUntil(
-                          context, ModalRoute.withName('/memberInfo'));
+                      Navigator.pop(context, lessonActionList);
+                      /* Navigator.popUntil(
+                          context, ModalRoute.withName('/memberInfo')); */
                     }
                   },
                   child: Text(
@@ -1284,7 +1287,7 @@ class _LessonAddState extends State<LessonAdd> {
                                               (ticketCountLeft - 1),
                                         )
                                       : null;
-
+                                      widget.callbackFunction!();
                                   lessonService.notifyListeners();
                                   Navigator.pop(context, lessonActionList);
                                 }

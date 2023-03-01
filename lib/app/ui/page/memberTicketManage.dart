@@ -54,6 +54,12 @@ int getListCnt(List tList, bool checkVal) {
   return cnt;
 }
 
+List tmpTMList = [];
+List tmpActiveList = [];
+List tmpExpiredList = [];
+
+// widget.userInfo,activeTicketList[index]['ticketTitle']
+
 class MemberTicketManage extends StatefulWidget {
   UserInfo? userInfo;
   List? memberTList;
@@ -69,38 +75,46 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
   @override
   void initState() {
     super.initState();
+    tmpTMList = [];
+    activeTicketList = [];
+    expiredTicketList = [];
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    tmpTMList = [];
+    activeTicketList = [];
+    expiredTicketList = [];
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<MemberTicketService>(
       builder: (context, memberTicketService, child) {
-        /// 메인으로 사용하는 리스트를 글로벌에서 불러와 멤버아이디로 필터링해준다.
-        memberManageTicketList = globalVariables.memberTicketList
-            .where((element) => element['memberId'] == userInfo.docId)
-            .toSet()
-            .toList();
+        // tmpTMList = [];
+        // activeTicketList = [];
+        // expiredTicketList = [];
+        // DB 방식으로 전환
+        tmpTMList.isEmpty
+            ? 
+            memberTicketService
+                .readByMember(userInfo.uid, userInfo.docId)
+                .then((value) {
+                tmpTMList.addAll(value);
+                setState(() {});
+              }) : tmpTMList = tmpTMList;
 
-        print('[isSelect] ### 잡으러간다 시작!');
+        activeTicketList.isEmpty
+            ? activeTicketList =
+                tmpTMList.where((element) => element['isAlive']).toList()
+            : activeTicketList = activeTicketList;
 
-        print('###Tell me Bob! memberManageTicketList:$memberManageTicketList');
-
-        /// 멤버ID로 분류된 TicketList를 Active와 Expired로 분류시켜준다.
-        activeTicketList = memberManageTicketList
-            .where((element) => element['isAlive'])
-            // .toSet()
-            .toList();
-
-        expiredTicketList = memberManageTicketList
-            .where((element) => !element['isAlive'])
-            // .toSet()
-            .toList();
+        expiredTicketList.isEmpty
+            ? expiredTicketList =
+                tmpTMList.where((element) => !element['isAlive']).toList()
+            : expiredTicketList = expiredTicketList;
 
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
@@ -108,7 +122,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
             print("dafjkelwnovkneo 수강권 관리 백 이벤트");
 
             if (memberManageTicketList.isEmpty) {
-              Navigator.pop(context,0);
+              Navigator.pop(context, 0);
             } else {
               /// pop할 시 컨텐츠
               for (int i = 0; i < memberManageTicketList.length; i++) {
@@ -116,6 +130,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
 
                 if (element['isSelected'] == true) {
                   Navigator.pop(context, i);
+                  print("euovjnosdjabndvoisdioasadfjoisnisd - ${i}");
                   break;
                 } else if (memberManageTicketList.length - 1 == i) {
                   Navigator.pop(context, -1);
@@ -129,9 +144,16 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                 onPressed: () {
                   int tmpIndex = 0;
 
+                  // 업데이트 전 클로벌 변수 초기화
+                  // globalVariables.memberTicketList = [];
                   // 완료 시 글로벌 티켓리스트 업데이트
                   MemberTicketController().update(
                       memberManageTicketList, globalVariables.memberTicketList);
+                  globalVariables.memberTicketList.forEach(
+                    (element) {
+                      // print("fdsaewqghqerfdxf element => ${element}");
+                    },
+                  );
 
                   setState(() {});
                   final selectedTicket = memberManageTicketList.firstWhere(
@@ -160,7 +182,8 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                         )
                         .then((_) {});
                   }
-
+                  
+                  print("dnasofnopwmenfjnweikewop tmpIndex : ${tmpIndex}");
                   Navigator.pop(
                     context,
                     tmpIndex,
@@ -305,13 +328,6 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                   color: Palette.gray99),
                               textAlign: TextAlign.right,
                             ),
-                            // Text(
-                            //   '남은횟수 : ${userInfo.registerType}',
-                            //   style: TextStyle(
-                            //       fontSize: 14.0,
-                            //       //fontWeight: FontWeight.bold,
-                            //       color: Palette.gray99),
-                            // ),
                           ],
                         ),
                       ],
@@ -337,52 +353,23 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                     MaterialPageRoute(
                                         builder: (context) =>
                                             MemberTicketMake.getUserInfo(
-                                                widget.userInfo)),
+                                                widget.userInfo,(){
+                                                  print("러야ㅐㄴ미ㅜㄹㄷ조려노랴ㅐㅓ -노티파이 펑션 전달!!!");
+                                                  setState(() {
+                                                    
+                                                  });
+                                                })),
                                   ).then(
                                     (value) {
                                       print("수강권 추가 result");
+                                      setState(() {
+                                        
+                                      });
                                     },
                                   );
                                 },
                                 label: '수강권 추가하기',
                                 addIcon: true),
-
-                            // ### 기존 버튼 -> 문제 없을 시 삭제
-                            // child: TextButton(
-                            //   onPressed: () async {
-                            //     var result = await // 저장하기 성공시 Home로 이동
-                            //         Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //           builder: (context) =>
-                            //               MemberTicketMake.getUserInfo(
-                            //                   widget.userInfo)),
-                            //     ).then((value) {
-                            //       print("수강권 추가 result");
-                            //     });
-                            //   },
-                            //   child: Container(
-                            //     height: 50,
-                            //     decoration: BoxDecoration(
-                            //         borderRadius: BorderRadius.circular(10),
-                            //         border:
-                            //             Border.all(color: Palette.gray99, width: 2)),
-                            //     child: Row(
-                            //       mainAxisAlignment: MainAxisAlignment.center,
-                            //       children: [
-                            //         Text(
-                            //           "수강권 추가하기",
-                            //           style: TextStyle(
-                            //               fontSize: 16, color: Palette.gray66),
-                            //         ),
-                            //         Icon(
-                            //           Icons.add_circle_outline,
-                            //           color: Palette.gray66,
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
                           ),
 
                           /// 수강권 리스트 영역 시작
@@ -443,6 +430,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                           child: TicketWidget(
                                             customFunctionOnTap: () {
                                               // 티켓 선택 함수
+                                              // 탭시 계속 오류 발생시켜서 3/1 새벽 주석
                                               MemberTicketController()
                                                   .ticketSelect(
                                                 memberManageTicketList, // Member의 전체 Ticket List
@@ -465,6 +453,16 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                             },
                                             customFunctionOnLongPress:
                                                 () async {
+                                              tmpTMList = [];
+                                              activeTicketList = [];
+                                              expiredTicketList = [];
+                                              var value;
+                                              if(index != null && activeTicketList.isNotEmpty){
+                                                value = activeTicketList[index]['ticketTitle'];
+                                              }else{
+                                                value = null;
+                                              }
+                                               
                                               var result =
                                                   await // 저장하기 성공시 Home로 이동
                                                   Navigator.push(
@@ -473,12 +471,16 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                     builder: (context) =>
                                                         MemberTicketMake(
                                                             widget.userInfo,
-                                                            activeTicketList[
-                                                                    index][
-                                                                'ticketTitle'])),
+                                                            value,(){
+                                                              print("조아!?");
+                                                              setState(() {
+                                                                
+                                                              });
+                                                            })),
                                               ).then(
                                                 (value) {
                                                   print("수강권 추가 result");
+                                                  setState(() {});
                                                 },
                                               );
                                             },
@@ -597,12 +599,19 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                       MemberTicketMake(
                                                     widget.userInfo,
                                                     expiredTicketList[index]
-                                                        ['ticketTitle'],
+                                                        ['ticketTitle'],(){
+                                                          print("그래!!");
+                                                          
+                                                          setState(() {
+                                                            
+                                                          });
+                                                        }
                                                   ),
                                                 ),
                                               ).then(
                                                 (value) {
                                                   print("수강권 추가 result");
+                                                  setState(() {});
                                                 },
                                               );
                                             },

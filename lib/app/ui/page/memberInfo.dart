@@ -118,7 +118,11 @@ class _MemberInfoState extends State<MemberInfo> {
           await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LessonAdd(),
+              builder: (context) => LessonAdd(() {
+                print('dkjfjsdaiubgwpejofiow - we are back!!');
+                setState(() {});
+                
+              }),
               // setting에서 arguments로 다음 화면에 회원 정보 넘기기
               settings: RouteSettings(arguments: args),
             ),
@@ -220,23 +224,24 @@ class _MemberInfoState extends State<MemberInfo> {
         }
         print('[MBL_Ticket] selectedTicket: $selectedTicket');
 
-
         // 텍스트 위젯에 바로 변수 썼을 때의 null 값에 대한 처리 => memberInfoTicketList[globalVariables.selectedTicketIndex]['ticketCountLeft']
         String leftTicketCnt = "";
         String totalTicketCnt = "";
-        print("globalVariables.selectedTicketIndex : ${globalVariables.selectedTicketIndex}");
-        if(globalVariables.selectedTicketIndex != 0){
-          
-        leftTicketCnt = memberInfoTicketList[globalVariables.selectedTicketIndex]['ticketCountLeft'].toString();
-        totalTicketCnt = memberInfoTicketList[globalVariables.selectedTicketIndex]['ticketCountAll'].toString();
-        }else{
+        print(
+            "globalVariables.selectedTicketIndex : ${globalVariables.selectedTicketIndex}");
+        if (globalVariables.selectedTicketIndex != 0) {
+          leftTicketCnt =
+              memberInfoTicketList[globalVariables.selectedTicketIndex]
+                      ['ticketCountLeft']
+                  .toString();
+          totalTicketCnt =
+              memberInfoTicketList[globalVariables.selectedTicketIndex]
+                      ['ticketCountAll']
+                  .toString();
+        } else {
           leftTicketCnt = " - ";
           totalTicketCnt = " - ";
         }
-
-
-        
-        
 
         return Scaffold(
           backgroundColor: Palette.secondaryBackground,
@@ -392,8 +397,8 @@ class _MemberInfoState extends State<MemberInfo> {
                                                   : Palette.gray99,
                                             ),
                                             SizedBox(width: 4),
-                                            Text(leftTicketCnt
-                                              ,
+                                            Text(
+                                              leftTicketCnt,
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -412,8 +417,8 @@ class _MemberInfoState extends State<MemberInfo> {
                                                     : Palette.gray99,
                                               ),
                                             ),
-                                            Text(totalTicketCnt
-                                              ,
+                                            Text(
+                                              totalTicketCnt,
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -787,10 +792,14 @@ class _MemberInfoState extends State<MemberInfo> {
                       lessonDate =
                           DateFormat("yyyy-MM-dd").format(DateTime.now());
 
-                      ticketCountLeft = memberInfoTicketList[globalVariables
+                          if(globalVariables
+                          .selectedTicketIndex != 0){
+                            ticketCountLeft = memberInfoTicketList[globalVariables
                           .selectedTicketIndex]['ticketCountLeft'];
                       ticketCountAll = memberInfoTicketList[globalVariables
                           .selectedTicketIndex]['ticketCountAll'];
+                          }
+                      
 
                       List<TmpLessonInfo> tmpLessonInfoList = [];
                       eventList = [];
@@ -812,7 +821,10 @@ class _MemberInfoState extends State<MemberInfo> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LessonAdd(),
+                          builder: (context) => LessonAdd(() {
+                            print('dkjfjsdaiubgwpejofiow - we are back!!');
+                            setState(() {});
+                          }),
                           // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                           settings: RouteSettings(arguments: args),
                         ),
@@ -1140,16 +1152,21 @@ class _MemberInfoViewState extends State<MemberInfoView> {
     print(
         "[MI] 운동목표 칩셋출력 : selectedGoals비었니.? ${widget.userInfo.selectedGoals.isEmpty}");
     print("[MI] 운동목표 칩셋출력 : goalChips ${goalChips}");
-
+    List memberInfoTicketList = [];
     return Consumer<MemberTicketService>(
         builder: (context, memberTicketService, child) {
-      List memberInfoTicketList = [];
+      print(
+          "fdsafwefew globalVariables.memberTicketList - ${globalVariables.memberTicketList}");
+      print("ngfsjytrerg - ${userInfo.docId}");
 
-      /// 메인으로 사용하는 리스트를 글로벌에서 불러와 멤버아이디로 필터링해준다.
-      memberInfoTicketList = globalVariables.memberTicketList
-          .where((element) => element['memberId'] == userInfo.docId)
-          .toSet()
-          .toList();
+      /// 메인으로 사용하는 리스트를 글로벌에서 불러와 멤버아이디로 필터링해준다. => 수강권이 여러개일 경우 항상 첫번째 수강권 선택함
+      memberInfoTicketList.isEmpty
+          ? memberInfoTicketList = globalVariables.memberTicketList
+              .where((element) => element['memberId'] == userInfo.docId)
+              .toSet()
+              .toList()
+          : memberInfoTicketList = memberInfoTicketList;
+      print("ngfsjytrerg - ${memberInfoTicketList}");
 
       return Container(
         width: double.infinity,
@@ -1202,7 +1219,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                           MaterialPageRoute(
                               builder: (context) =>
                                   MemberTicketManage.getUserInfo(
-                                      memberInfoTicketList, widget.userInfo)),
+                                      memberInfoTicketList, widget.userInfo,)),
                         ).then((value) {
                           ticketIndex = value;
                           print("수강권 클릭 result : ${value}");
@@ -1701,12 +1718,12 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                 print("################  YYYY lessonDate : ${lessonDate}");
 
                 /// lessonActionList 날짜로 필터 해줌
-                lessonActionList = globalVariables.lessonNoteGlobalList
+                /* lessonActionList = globalVariables.lessonNoteGlobalList
                     .where((element) => element.lessonDate == lessonDate)
                     .toList();
 
-                print('###lessonActionList ${lessonActionList.length}');
-                isExpandedList.add(false);
+                print('###lessonActionList ${lessonActionList.length}');*/
+                isExpandedList.add(false); 
 
                 return Offstage(
                   offstage: false, // calDate == lessonDate ? false : true,
@@ -1732,7 +1749,10 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LessonAdd(),
+                            builder: (context) => LessonAdd(() {
+                              print('dkjfjsdaiubgwpejofiow - we are back!!');
+                              setState(() {});
+                            }),
                             // GlobalWidgetDashboard(), //
                             // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                             settings: RouteSettings(arguments: args),
@@ -1816,7 +1836,10 @@ class LessonCard extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LessonAdd(),
+                    builder: (context) => LessonAdd(() {
+                      print('dkjfjsdaiubgwpejofiow - we are back!!');
+                      // setState(() {});
+                    }),
                     // GlobalWidgetDashboard(), //
                     // setting에서 arguments로 다음 화면에 회원 정보 넘기기
                     settings: RouteSettings(arguments: args),
