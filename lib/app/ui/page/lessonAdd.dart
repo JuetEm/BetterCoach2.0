@@ -111,8 +111,8 @@ List deleteTargetDocIdLiet = [];
 List<TextEditingController> txtEdtCtrlrList = [];
 
 class LessonAdd extends StatefulWidget {
-  LessonAdd(this.callbackFunction,{super.key});
-  
+  LessonAdd(this.callbackFunction, {super.key});
+
   Function? callbackFunction;
 
   @override
@@ -197,6 +197,10 @@ class _LessonAddState extends State<LessonAdd> {
     // resultActionList = argsList[6];
     int ticketCountLeft = argsList[7];
     int ticketCountAll = argsList[8];
+
+    if (ticketCountLeft == 0 || ticketCountAll == 0) {
+      isTicketCountChecked = false;
+    }
 
     print(
         '[LA] 시작 checkInitState - ${checkInitState} / DateChange - ${DateChangeMode} / actionNullCheck - ${actionNullCheck}');
@@ -373,7 +377,7 @@ class _LessonAddState extends State<LessonAdd> {
                             )
                           : null;
 
-                          widget.callbackFunction!();
+                      widget.callbackFunction!();
                       lessonService.notifyListeners();
                       Navigator.pop(context, lessonActionList);
                       /* Navigator.popUntil(
@@ -1287,7 +1291,7 @@ class _LessonAddState extends State<LessonAdd> {
                                               (ticketCountLeft - 1),
                                         )
                                       : null;
-                                      widget.callbackFunction!();
+                                  widget.callbackFunction!();
                                   lessonService.notifyListeners();
                                   Navigator.pop(context, lessonActionList);
                                 }
