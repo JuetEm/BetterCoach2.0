@@ -98,8 +98,9 @@ class MemberTicketMake extends StatefulWidget {
   UserInfo? userInfo;
   String? ticketTitle;
   Function? notifyFunction;
-  MemberTicketMake(this.userInfo, this.ticketTitle,this.notifyFunction, {super.key});
-  MemberTicketMake.getUserInfo(this.userInfo, this.notifyFunction,{super.key});
+  MemberTicketMake(this.userInfo, this.ticketTitle, this.notifyFunction,
+      {super.key});
+  MemberTicketMake.getUserInfo(this.userInfo, this.notifyFunction, {super.key});
 
   @override
   State<MemberTicketMake> createState() => _MemberTicketMakeState();
@@ -1142,6 +1143,7 @@ class _MemberTicketMakeState extends State<MemberTicketMake> {
                       ticketStartDate: ticketStartDate,
                       ticketEndDate: ticketEndDate,
                       isAlive: isAlive,
+                      ticketDateLeft: "",
                     )
                   ],
                 ),

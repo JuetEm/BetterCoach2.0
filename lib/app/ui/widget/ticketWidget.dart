@@ -41,10 +41,16 @@ class _TicketWidgetState extends State<TicketWidget> {
   bool _toggle = false;
   @override
   Widget build(BuildContext context) {
-    int ticketDateLeft = int.parse(DateTime.parse(widget.ticketStartDate)
-        .difference(DateTime.parse(widget.ticketEndDate))
-        .inDays
-        .toString());
+    int ticketDateLeft = 0;
+
+    try {
+      ticketDateLeft = int.parse(DateTime.parse(widget.ticketStartDate)
+          .difference(DateTime.parse(widget.ticketEndDate))
+          .inDays
+          .toString());
+    } catch (e) {
+      ticketDateLeft = 0;
+    }
 
     print(
         '[isSelect] ### ${widget.ticketTitle} isSelectd? ${widget.selected} isAlive? ${widget.isAlive} ###');

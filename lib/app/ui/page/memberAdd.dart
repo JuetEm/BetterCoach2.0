@@ -455,6 +455,7 @@ class _MemberAddState extends State<MemberAdd> {
                                       ticketCountAll: 20,
                                       ticketCountLeft: 13,
                                       isAlive: true,
+                                      ticketDateLeft: "",
                                       // function OnTap 기능을 붙여주세요
                                       customFunctionOnTap: () {},
                                       // customFunctionOnTap: () async {

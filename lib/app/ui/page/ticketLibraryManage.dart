@@ -58,9 +58,27 @@ class _TicketLibraryManageState extends State<TicketLibraryManage> {
                   shrinkWrap: true,
                   itemCount: widget.TicketLibraryManageList!.length,
                   itemBuilder: (context, index) {
+                    int ticketCountLeft = globalVariables
+                        .ticketLibraryList[index]['ticketCountAll'];
+                    int ticketCountAll = globalVariables
+                        .ticketLibraryList[index]['ticketCountAll'];
+                    String ticketTitle = globalVariables
+                            .ticketLibraryList[index]['ticketTitle'] ??
+                        "";
+                    String ticketDescription = globalVariables
+                            .ticketLibraryList[index]['ticketDescription'] ??
+                        "";
+                    String ticketStartDate = globalVariables
+                            .ticketLibraryList[index]['ticketStartDate'] ??
+                        "";
+                    String ticketEndDate = globalVariables
+                            .ticketLibraryList[index]['ticketEndDate'] ??
+                        "";
+                    bool selected = false;
                     return Container(
                       alignment: Alignment.center,
                       child: TicketWidget(
+                        ticketDateLeft: "",
                         customFunctionOnTap: () async {
                           var result = await // 저장하기 성공시 Home로 이동
                               Navigator.push(
@@ -75,23 +93,14 @@ class _TicketLibraryManageState extends State<TicketLibraryManage> {
                             setState(() {});
                           });
                         },
-                        ticketCountLeft: globalVariables
-                            .ticketLibraryList[index]['ticketCountAll'],
-                        ticketCountAll: globalVariables.ticketLibraryList[index]
-                            ['ticketCountAll'],
-                        ticketTitle: globalVariables.ticketLibraryList[index]
-                            ['ticketTitle'],
-                        ticketDescription: globalVariables
-                            .ticketLibraryList[index]['ticketDescription'],
-                        ticketStartDate: globalVariables
-                                .ticketLibraryList[index]['ticketStartDate'] ??
-                            "0000-00-00",
-                        ticketEndDate: globalVariables.ticketLibraryList[index]
-                                ['ticketEndDate'] ??
-                            "0000-00-00",
+                        ticketCountLeft: ticketCountLeft,
+                        ticketCountAll: ticketCountAll,
+                        ticketTitle: ticketTitle,
+                        ticketDescription: ticketDescription,
+                        ticketStartDate: "0000-00-00",
+                        ticketEndDate: "0000-00-00",
                         isAlive: true,
-                        selected: globalVariables.ticketLibraryList[index]
-                            ['isSelected'],
+                        selected: selected,
                         // ticketDateLeft: globalVariables.ticketLibraryList[index]
                         //     ['ticketDateLeft'],
                       ),

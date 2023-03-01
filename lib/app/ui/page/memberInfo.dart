@@ -121,7 +121,6 @@ class _MemberInfoState extends State<MemberInfo> {
               builder: (context) => LessonAdd(() {
                 print('dkjfjsdaiubgwpejofiow - we are back!!');
                 setState(() {});
-                
               }),
               // setting에서 arguments로 다음 화면에 회원 정보 넘기기
               settings: RouteSettings(arguments: args),
@@ -792,14 +791,12 @@ class _MemberInfoState extends State<MemberInfo> {
                       lessonDate =
                           DateFormat("yyyy-MM-dd").format(DateTime.now());
 
-                          if(globalVariables
-                          .selectedTicketIndex != 0){
-                            ticketCountLeft = memberInfoTicketList[globalVariables
-                          .selectedTicketIndex]['ticketCountLeft'];
-                      ticketCountAll = memberInfoTicketList[globalVariables
-                          .selectedTicketIndex]['ticketCountAll'];
-                          }
-                      
+                      if (globalVariables.selectedTicketIndex != 0) {
+                        ticketCountLeft = memberInfoTicketList[globalVariables
+                            .selectedTicketIndex]['ticketCountLeft'];
+                        ticketCountAll = memberInfoTicketList[globalVariables
+                            .selectedTicketIndex]['ticketCountAll'];
+                      }
 
                       List<TmpLessonInfo> tmpLessonInfoList = [];
                       eventList = [];
@@ -1211,6 +1208,7 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                       ticketCountLeft: memberInfoTicketList[ticketIndex]
                           ['ticketCountLeft'],
                       isAlive: memberInfoTicketList[ticketIndex]['isAlive'],
+                      ticketDateLeft: "",
                       customFunctionOnTap: () async {
                         print("수강권 추가 onTap!!");
                         var result = await // 저장하기 성공시 Home로 이동
@@ -1219,7 +1217,9 @@ class _MemberInfoViewState extends State<MemberInfoView> {
                           MaterialPageRoute(
                               builder: (context) =>
                                   MemberTicketManage.getUserInfo(
-                                      memberInfoTicketList, widget.userInfo,)),
+                                    memberInfoTicketList,
+                                    widget.userInfo,
+                                  )),
                         ).then((value) {
                           ticketIndex = value;
                           print("수강권 클릭 result : ${value}");
@@ -1723,7 +1723,7 @@ class _NoteListDateCategoryState extends State<NoteListDateCategory> {
                     .toList();
 
                 print('###lessonActionList ${lessonActionList.length}');*/
-                isExpandedList.add(false); 
+                isExpandedList.add(false);
 
                 return Offstage(
                   offstage: false, // calDate == lessonDate ? false : true,

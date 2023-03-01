@@ -641,6 +641,7 @@ class _TicketLibraryMakeState extends State<TicketLibraryMake> {
                         ticketStartDate: ticketStartDate!,
                         ticketEndDate: ticketEndDate!,
                         isAlive: true,
+                        ticketDateLeft: "",
                       )
                     ],
                   ),

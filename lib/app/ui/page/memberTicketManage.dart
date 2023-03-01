@@ -98,13 +98,13 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
         // expiredTicketList = [];
         // DB 방식으로 전환
         tmpTMList.isEmpty
-            ? 
-            memberTicketService
+            ? memberTicketService
                 .readByMember(userInfo.uid, userInfo.docId)
                 .then((value) {
                 tmpTMList.addAll(value);
                 setState(() {});
-              }) : tmpTMList = tmpTMList;
+              })
+            : tmpTMList = tmpTMList;
 
         activeTicketList.isEmpty
             ? activeTicketList =
@@ -182,7 +182,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                         )
                         .then((_) {});
                   }
-                  
+
                   print("dnasofnopwmenfjnweikewop tmpIndex : ${tmpIndex}");
                   Navigator.pop(
                     context,
@@ -353,18 +353,15 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                     MaterialPageRoute(
                                         builder: (context) =>
                                             MemberTicketMake.getUserInfo(
-                                                widget.userInfo,(){
-                                                  print("러야ㅐㄴ미ㅜㄹㄷ조려노랴ㅐㅓ -노티파이 펑션 전달!!!");
-                                                  setState(() {
-                                                    
-                                                  });
-                                                })),
+                                                widget.userInfo, () {
+                                              print(
+                                                  "러야ㅐㄴ미ㅜㄹㄷ조려노랴ㅐㅓ -노티파이 펑션 전달!!!");
+                                              setState(() {});
+                                            })),
                                   ).then(
                                     (value) {
                                       print("수강권 추가 result");
-                                      setState(() {
-                                        
-                                      });
+                                      setState(() {});
                                     },
                                   );
                                 },
@@ -428,6 +425,7 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                         return Container(
                                           alignment: Alignment.center,
                                           child: TicketWidget(
+                                            ticketDateLeft: "",
                                             customFunctionOnTap: () {
                                               // 티켓 선택 함수
                                               // 탭시 계속 오류 발생시켜서 3/1 새벽 주석
@@ -439,6 +437,16 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                     .memberTicketList, // 현재 상태의 Ticket List
                                                 index, // 인덱스
                                               );
+
+                                              for (var ticket
+                                                  in expiredTicketList) {
+                                                ticket['isSelected'] = false;
+                                              }
+
+                                              for (var ticket
+                                                  in activeTicketList) {
+                                                ticket['isSelected'] = false;
+                                              }
 
                                               activeTicketList[index]
                                                   ['isSelected'] = true;
@@ -457,12 +465,14 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                               activeTicketList = [];
                                               expiredTicketList = [];
                                               var value;
-                                              if(index != null && activeTicketList.isNotEmpty){
-                                                value = activeTicketList[index]['ticketTitle'];
-                                              }else{
+                                              if (index != null &&
+                                                  activeTicketList.isNotEmpty) {
+                                                value = activeTicketList[index]
+                                                    ['ticketTitle'];
+                                              } else {
                                                 value = null;
                                               }
-                                               
+
                                               var result =
                                                   await // 저장하기 성공시 Home로 이동
                                                   Navigator.push(
@@ -471,12 +481,10 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                     builder: (context) =>
                                                         MemberTicketMake(
                                                             widget.userInfo,
-                                                            value,(){
-                                                              print("조아!?");
-                                                              setState(() {
-                                                                
-                                                              });
-                                                            })),
+                                                            value, () {
+                                                          print("조아!?");
+                                                          setState(() {});
+                                                        })),
                                               ).then(
                                                 (value) {
                                                   print("수강권 추가 result");
@@ -577,6 +585,16 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                 index, // 인덱스
                                               );
 
+                                              for (var ticket
+                                                  in expiredTicketList) {
+                                                ticket['isSelected'] = false;
+                                              }
+
+                                              for (var ticket
+                                                  in activeTicketList) {
+                                                ticket['isSelected'] = false;
+                                              }
+
                                               expiredTicketList[index]
                                                   ['isSelected'] = true;
 
@@ -597,16 +615,15 @@ class _MemberTicketManageState extends State<MemberTicketManage> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       MemberTicketMake(
-                                                    widget.userInfo,
-                                                    expiredTicketList[index]
-                                                        ['ticketTitle'],(){
-                                                          print("그래!!");
-                                                          
-                                                          setState(() {
-                                                            
-                                                          });
-                                                        }
-                                                  ),
+                                                          widget.userInfo,
+                                                          expiredTicketList[
+                                                                  index]
+                                                              ['ticketTitle'],
+                                                          () {
+                                                    print("그래!!");
+
+                                                    setState(() {});
+                                                  }),
                                                 ),
                                               ).then(
                                                 (value) {
