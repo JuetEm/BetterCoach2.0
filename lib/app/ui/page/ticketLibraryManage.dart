@@ -78,7 +78,7 @@ class _TicketLibraryManageState extends State<TicketLibraryManage> {
                     return Container(
                       alignment: Alignment.center,
                       child: TicketWidget(
-                        ticketDateLeft: "",
+                        // ticketDateLeft: "",
                         customFunctionOnTap: () async {
                           var result = await // 저장하기 성공시 Home로 이동
                               Navigator.push(
